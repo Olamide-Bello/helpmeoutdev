@@ -5,3 +5,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn-hover {
+    @apply cursor-pointer bg-white text-primary-600 duration-500;
+  }
+}

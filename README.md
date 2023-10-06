@@ -20,6 +20,7 @@ npm install
 
 ```bash
 npm run dev
+```
 
 ## Types
 
@@ -103,7 +104,7 @@ function Home() {
 }
 
 export default Home;
-``
+```
 However, it is not mandatory, just to help maintain consistency.
 
 

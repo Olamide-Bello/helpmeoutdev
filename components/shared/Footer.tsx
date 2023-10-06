@@ -1,4 +1,4 @@
-import { footerLinks } from "@/helpers";
+import { footerLinks } from "@/data";
 import Image from 'next/image';
 
 const Footer:React.FC = () => {

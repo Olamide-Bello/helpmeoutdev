@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.js\"",
-    "check-format": "prettier --check \"src/**/*.js\""
+    "check-format": "prettier --check \"src/**/*.js\" || echo 'Prettier found formatting issues. Please run `npm run format`.'"
   },
   "dependencies": {
     "next": "13.5.4",
@@ -23,6 +23,7 @@
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
     "tailwindcss": "^3.3.3",
@@ -30,7 +31,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run check-format"
+      "pre-commit": "lint-staged"
     }
   }
 }

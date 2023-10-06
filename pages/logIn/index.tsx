@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
-const LogIn = () => {
+
+const LogIn: React.FC = () => {
   return (
     <section className="px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem]">
       <div className="flex items-center gap-[10px]">
@@ -57,7 +58,7 @@ const LogIn = () => {
         </section>
         <form className="flex flex-col w-[475px]">
           <div>
-            <p className="text-16px] font-Sora font-medium mb-[14px]">Email</p>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">Email</p>
             <input
               type="email"
               placeholder="Enter your email address"
@@ -66,14 +67,14 @@ const LogIn = () => {
             />
           </div>
           <div>
-            <p className="text-16px] font-Sora font-medium mb-[14px]">
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Password
             </p>
             <input
               type="password"
               placeholder="Enter your Password"
               required
-              min={5}
+              minLength={5}
               className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[17px]"
             />
           </div>

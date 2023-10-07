@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const Footer:React.FC = () => {
   return (
-    <div className="md:h-[347px] py-[98px] px-4 md:px-0 w-full bg-primary-600">
+    <div className="md:h-[347px] py-[98px] px-4  ss:px-8 md:px-0 w-full bg-primary-600">
       <div className="xl:w-[1440px] mx-auto w-full md:px-[100px]  gap-8 md:gap-0 flex flex-col md:flex-row justify-between items-start">
         <div className="flex gap-1 items-center">
           <Image src="/assets/shared/white-logo.svg" alt="Logo" width={40} height={40}/>
@@ -11,7 +11,7 @@ const Footer:React.FC = () => {
             HelpMeOut
           </h1>
         </div>
-        <div className="flex flex-col md:flex-row gap-[60px] md:gap-[220px] ">
+        <div className="flex flex-col ss:flex-row w-full md:w-auto ss:justify-between md:flex-row gap-[60px] md:gap-[220px] ">
           {footerLinks.map((item) => {
             return (
               <div key={item.header} className="text-white text-[16px] ">

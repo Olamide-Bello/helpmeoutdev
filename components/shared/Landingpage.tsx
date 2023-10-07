@@ -111,7 +111,7 @@ const Landingpage = () => {
               <Image
                 className=" w-full"
                 src={Repo}
-                width={400}
+                width={500}
                 height={200}
                 alt="image"
               />
@@ -141,7 +141,7 @@ const Landingpage = () => {
             <Image
               className=" pt-6"
               src={Card}
-              width={400}
+              width={500}
               height={200}
               alt="image"
             />
@@ -161,7 +161,7 @@ const Landingpage = () => {
             <Image
               className=" pt-6"
               src={Card}
-              width={400}
+              width={500}
               height={200}
               alt="image"
             />
@@ -181,7 +181,7 @@ const Landingpage = () => {
             <Image
               className=" pt-6"
               src={Card}
-              width={400}
+              width={500}
               height={200}
               alt="image"
             />

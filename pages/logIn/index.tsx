@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react'
 import Image from 'next/image'
-import { auth, facebookProvider, googleProvider } from "../../components/Auth/firebase";
-import { createUserWithEmailAndPassword, signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { auth, facebookProvider, googleProvider } from '../../components/Auth/firebase'
+import { createUserWithEmailAndPassword, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
 
 const LogIn: React.FC = () => {
 

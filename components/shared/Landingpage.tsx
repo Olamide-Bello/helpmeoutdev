@@ -10,9 +10,10 @@ import Card from '../../public/assets/home/card-img.png'
 import Arrow from '../../public/assets/home/arrow-right.svg'
 
 
+
 const Landingpage = () => {
   return (
-    <div>
+    <>
       <div className="  lg:flex px-[20px] md:px[50px] lg:px-[70px] xl:px-[100px] min-h-[80vh] items-center">
         <div className=" w-full lg:w-1/2 pt-10">
           <h1 className=" font-sora font-bold text-[32px] lg:text-[45px] xl:text-[65px]">
@@ -23,7 +24,7 @@ const Landingpage = () => {
             how to get things done on a website.
           </p>
 
-          <Link href="https://drive.google.com/file/d/1CJL2t1dV3-FD6q-gaWOqhlTgu7I2yKAF/view?usp=sharing">
+          <Link href="/">
             <button className=" bg-[#120B48] py-5 px-6 flex text-white rounded-lg gap-2 mt-10">
               <p>Install HelpMeOut</p>
               <Image src={Arrow} width={24} height={24} alt=" right Arrow" />
@@ -188,7 +189,7 @@ const Landingpage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

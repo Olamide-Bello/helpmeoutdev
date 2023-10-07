@@ -1,105 +1,118 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { auth, facebookProvider, googleProvider } from '../../components/Auth/firebase'
-import { createUserWithEmailAndPassword, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
+import Link from 'next/link'
+import {
+  auth,
+  facebookProvider,
+  googleProvider,
+} from '../../components/Auth/firebase'
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth'
+
+interface User {
+  uid: string
+  email: string | null
+  displayName: string | null
+}
 
 const LogIn: React.FC = () => {
+  const [userExist, setUserExist] = useState<boolean>(false)
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [user, setUser] = useState<User | null>(null)
 
-  const [email, setEmail] = useState("");
-    
-    const [password, setPassword] = useState("");
+  console.log(auth?.currentUser?.email)
 
-    const [users, setUser] = useState(null);
-    
-    console.log(auth?.currentUser?.email);
-        
-        const signUp = () => {
-          
-        createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            // ...
-            console.log(user);
-            alert("Successfully created an Account");
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            //const errorMessage = error.message;
-            // ..
-            alert(errorCode);
-          });  
-           
-        };
+  const signUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const newUser = userCredential.user
+        // ...
+        console.log(newUser)
+        setUser(newUser)
+        setUserExist(true) // Change to true
+        alert('Successfully created an Account')
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        //const errorMessage = error.message;
+        // ..
+        alert(errorCode)
+      })
+  }
 
-        const signInWithGoogle = () => {
-          
-          signInWithPopup(auth, googleProvider)
-            .then((userCredential) => {
-              // Signed in 
-              const user = userCredential.user;
-              // ...
-              console.log(user);
-              alert("Successfully created an Account");
-            })
-            .catch((error) => {
-              const errorCode = error.code;
-              //const errorMessage = error.message;
-              // ..
-              alert(errorCode);
-            });  
-             
-          };
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((userCredential) => {
+        const newUser = userCredential.user
 
-          const signInWithFacebook = () => {
-          
-            signInWithPopup(auth, facebookProvider)
-              .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                // ...
-                console.log(user);
-                alert("Successfully created an Account");
-              })
-              .catch((error) => {
-                const errorCode = error.code;
-                //const errorMessage = error.message;
-                // ..
-                alert(errorCode);
-              });  
-               
-            };
+        console.log(newUser)
+        setUser(newUser)
+        setUserExist(true) // Change to true
+        alert('Successfully created an Account')
+      })
+      .catch((error) => {
+        const errorCode = error.code
 
-            
+        alert(errorCode)
+      })
+  }
+
+  const signInWithFacebook = () => {
+    signInWithPopup(auth, facebookProvider)
+      .then((userCredential) => {
+        // Signed in
+        const newUser = userCredential.user
+        // ...
+        console.log(newUser)
+        setUser(newUser)
+        setUserExist(true) // Change to true
+        alert('Successfully created an Account')
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        //const errorMessage = error.message;
+        // ..
+        alert(errorCode)
+      })
+  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in
-        setUser(users);
+        setUser(user)
       } else {
         // User is signed out
-        setUser(null);
+        setUser(null)
       }
-    });
-    
-    // Cleanup the subscription when the component unmounts
-    return () => unsubscribe();
-    }, [auth]);
+    })
 
-  const handleSignOut = () => signOut(auth).then(() => {
-    setUser(null);
-    // Sign-out successful.
-  }).catch((error) => {
-    // An error happened.
-    const errorCode = error.code;
-    alert(errorCode);
-  });
-  
+    // Cleanup the subscription when the component unmounts
+    return () => unsubscribe()
+  }, []) // Remove [auth] from the dependencies
+
+  const handleSignOut = () =>
+    signOut(auth)
+      .then(() => {
+        setUser(null)
+        setUserExist(false) // Change to false
+        alert('Successfully Signed Out!')
+      })
+      .catch((error) => {
+        // An error happened.
+        const errorCode = error.code
+        alert(errorCode)
+      })
 
   return (
     <section className="px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem]">
-      <div className="flex items-center gap-[10px]">
+      <Link href={'/'} className="flex items-center gap-[10px] cursor-pointer">
         <Image
           src={'/assets/shared/logo.svg'}
           alt="logo"
@@ -107,7 +120,7 @@ const LogIn: React.FC = () => {
           height={40}
         />
         <h3 className="font-Sora font-bold">HelpMeOut</h3>
-      </div>
+      </Link>
 
       <div className="flex flex-col justify-center items-center">
         <section className="mt-[2rem] flex flex-col items-center">
@@ -119,7 +132,10 @@ const LogIn: React.FC = () => {
             <br /> moves on{' '}
             <span className="text-primary-600 font-semibold">HelpMeOut</span>.
           </p>
-          <div onClick={signInWithGoogle} className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px] cursor-pointer">
+          <div
+            onClick={signInWithGoogle}
+            className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px] cursor-pointer"
+          >
             <Image
               src={'/assets/login/Google.svg'}
               alt="google__logo"
@@ -131,7 +147,10 @@ const LogIn: React.FC = () => {
             </p>
           </div>
 
-          <div onClick={signInWithFacebook} className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px]">
+          <div
+            onClick={signInWithFacebook}
+            className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px]"
+          >
             <div className="flex gap-[1rem] ml-[1.5rem] cursor-pointer">
               <Image
                 src={'/assets/login/Facebook.svg'}
@@ -175,12 +194,29 @@ const LogIn: React.FC = () => {
               className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[17px]"
             />
           </div>
-          <button onClick={signUp}  className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white ">
-            Sign Up
-          </button>
+          {userExist && (
+            <button
+              onClick={handleSignOut}
+              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
+            >
+              Sign Out
+            </button>
+          )}
+          {!userExist && (
+            <button
+              onClick={signUp}
+              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
+            >
+              Sign Up
+            </button>
+          )}
+
           <br />
-          <button onClick={handleSignOut}  className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white ">
-            Sign Out
+          <button
+            onClick={handleSignOut}
+            className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
+          >
+            Sign Up
           </button>
         </div>
       </div>

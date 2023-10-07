@@ -73,7 +73,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
             height="40"
           />
           <Image
-            src="/assets/login/facebook.svg"
+            src="/assets/login/Facebook.svg"
             alt="facebook"
             width="40"
             height="40"

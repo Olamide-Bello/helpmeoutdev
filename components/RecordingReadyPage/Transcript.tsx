@@ -17,13 +17,13 @@ const Transcript = () => {
           height="16"
         />
       </div>
-      <div className="w-full h-auto relative">
+      <div className="md:w-[550px] h-auto relative">
         <div className="font-Inter h-[164px] border-[1px] rounded-[12px]  ss:border-none p-3 ss:h-[255px] overflow-y-scroll custom-scrollbar flex flex-col gap-4 relative">
           <div className="flex gap-4">
             <h5 className="font-[400] font-Work-Sans text-[14px] xs:text-[16px] text-black">
               0:01
             </h5>
-            <p className="font-[500] text-[12px] ss:text-[16px] text-black">
+            <p className="font-[500] text-[12px] ss:text-[16px] text-black ">
               First step. Open Facebook on your desktop or mobile device and
               locate "Marketplace" in the left-hand menu or at the top of the{' '}
             </p>

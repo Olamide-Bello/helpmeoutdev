@@ -18,7 +18,7 @@ const Transcript = () => {
         />
       </div>
       <div className="w-full h-auto relative">
-        <div className="font-Inter h-[164px] border-[1px] rounded-[12px]  ss:border-none p-2 ss:h-[255px] overflow-y-scroll custom-scrollbar flex flex-col gap-4 relative">
+        <div className="font-Inter h-[164px] border-[1px] rounded-[12px]  ss:border-none p-3 ss:h-[255px] overflow-y-scroll custom-scrollbar flex flex-col gap-4 relative">
           <div className="flex gap-4">
             <h5 className="font-[400] font-Work-Sans text-[14px] xs:text-[16px] text-black">
               0:01

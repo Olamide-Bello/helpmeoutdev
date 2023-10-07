@@ -46,10 +46,10 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
       </div>
       <h2 className="font-Work-Sans text-[14px] font-[400] text-gray-400 text-center ss:mb-[64px]">
         Your video to johnmark@gmail.com is now ready.
-        <span className="text-primary-600 font-[500]"> Not the receiver?</span>
+        <span className="text-primary-600 font-[500] underline"> Not the receiver?</span>
       </h2>
       {/* Share options */}
-      <div className="mt-[44px] flex gap-3 items-center">
+      <div className="mt-[44px] flex flex-wrap gap-3 items-center">
         <div className="w-[177px] py-[10px] rounded-[8px] border-[1px] border-primary-400 font-[500] flex justify-center items-center gap-[8px] text-primary-600 font-Work-Sans">
           <Image
             src="/assets/video-repo/copy.svg"
@@ -63,20 +63,20 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
           <Image
             src="/assets/video-repo/whatsapp.svg"
             alt="whatsapp"
-            width="24"
-            height="24"
+            width="40"
+            height="40"
           />
           <Image
             src="/assets/video-repo/telegram.svg"
             alt="telegram"
-            width="24"
-            height="24"
+            width="40"
+            height="40"
           />
           <Image
             src="/assets/login/facebook.svg"
             alt="facebook"
-            width="24"
-            height="24"
+            width="40"
+            height="40"
           />
         </div>
       </div>

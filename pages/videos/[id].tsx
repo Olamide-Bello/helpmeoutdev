@@ -4,54 +4,76 @@ import Navbar from '@/components/shared/Navbar'
 import Link from 'next/link'
 import MainLayout from '@/components/shared/MainLayout'
 import Image from 'next/image'
-import VideoPlayer from '@/components/video-repo/VideoPlayer'
-import { Input } from '../../components/video-repo/Input'
-import { Share } from '../../components/video-repo/share'
-import Transcript from '../../components/video-repo/transcript'
+import VideoPlayer from '@/components/SingleViewPage/VideoPlayer'
+import { Input } from '../../components/SingleViewPage/Input'
+import { Share } from '../../components/SingleViewPage/share'
+import Transcript from '../../components/SingleViewPage/transcript'
+import Demo from '@/components/SingleViewPage/Demo'
 
+
+
+// a place array for the transcript component
 const ts = [
     {
-        time: 1,
-        msg: "Hey, testing"
+        time: 0.01,
+        msg: `First step. Open Facebook on your desktop or mobile device and
+        locate "Marketplace" in the left-hand menu or at the top of the
+        . Open Facebook on your desktop or mobile device and locate
+        "Marketplace" in the left-ha`
+    },
+    {
+        time: 0.15,
+        msg: `First step. Open Facebook on your desktop or mobile device and
+        locate "Marketplace" in the left-hand menu or at the top of the
+        . Open Facebook on your desktop or mobile device and locate
+        "Marketplace" in the left-ha`
     }
 ]
 const Single = () => {
     const params = useRouter()
-    const [email, setEmail] = useState<string>("")
-    const [errMsg, setErrMsg] = useState<boolean>(false)
-    const [videoName, setVideoName] = useState<string>("")
+    const [email, setEmail] = useState<string>("") // email to send the video link to
+    const [errMsg, setErrMsg] = useState<boolean>(false) // email validation state
+    const [videoName, setVideoName] = useState<string>("") // name of the video
     const [copied, setCopied] = useState<boolean>(false)
-    const [url, setUrl] = useState<string>("https://www.youtube.com/embed/GoWGGiWDsac?si=SeX_lzGuqyjKaP9-")
-    const { id } = params.query
+    const [url, setUrl] = useState<string>("") // url of the video
+    const { id } = params.query // id for fetching the video from backend
     console.log(id)
 
+    //function to copy url to the clipboard
     const copy = (e: string) => {
         setCopied(true);
         navigator.clipboard.writeText(e);
         setTimeout(() => {
+            //allow the user to be able to copy link again after 3 seconds 
             setCopied(false);
         }, 3000);
         console.log(e);
     };
 
+    //function to handle email change
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
         setEmail(value)
         if (!email) {
+            // to clear the error message when the input field has been cleared
             setErrMsg(false)
         }
     }
 
+    //function to validate the entered email
     const isEmailValid = (mail: string) => {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
         return emailRegex.test(mail)
     }
 
+    // function to send the video url to the entered email
     const sendEmail = () => {
+        //validate the email before taking action
         const valid = isEmailValid(email)
         if (!valid) {
             setErrMsg(true)
         } else {
+            //send the url here
             console.log(email)
         }
     }
@@ -76,7 +98,8 @@ const Single = () => {
                         />
                     </span>
                 </h3>
-                <VideoPlayer url={url} />
+                {/* video player component*/}
+                {url?<VideoPlayer url={url} />: <Demo/>}
                 <div>
                     <div className="flex flex-col gap-6 w-full my-10">
                         <div className="flex md:flex-row flex-col bg-opacity-40 justify-between items-center md:gap-20 gap-5">
@@ -100,7 +123,9 @@ const Single = () => {
                         {errMsg && <p className='text-red-500'>Email is not valid!</p>}
                     </div>
                 </div>
+                {/* share the video on social media */}
                 <Share text={url} />
+                {/* video transcript*/}
                 <Transcript data={ts} />
             </MainLayout>
         </div>

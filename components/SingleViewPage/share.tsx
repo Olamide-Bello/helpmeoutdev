@@ -1,8 +1,8 @@
+import React from 'react'
 import Image from "next/image";
 
-/* eslint-disable react/prop-types */
 export const Share = ({ text }:{text:string}) => {
-  
+    //share options
     const share = [
       {
         id: 1,

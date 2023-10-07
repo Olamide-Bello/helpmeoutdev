@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const VideoContainer = () => {
   return (
-    <div className="hidden w-full md:w-[575px] h-auto aspect-[575/475] rounded-[8px] bg-gray-200 border-[1px] border-primary-400 ss:flex flex-col overflow-hidden">
+    <div className="hidden w-full h-auto aspect-[575/475] rounded-[8px] bg-gray-200 border-[1px] border-primary-400 ss:flex flex-col overflow-hidden">
       <video className="w-full h-full">
         <source type="video/mp4" />
         Your browser does not support the video tag.

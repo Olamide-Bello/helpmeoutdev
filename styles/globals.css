@@ -6,6 +6,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .btn-hover {
+    @apply cursor-pointer bg-white text-primary-600 duration-500;
+  }
+}
+
 /* CSS class for the transcript scrollbar styles */
 .custom-scrollbar {
   scrollbar-width: thin;
@@ -30,4 +36,4 @@
 .custom-scrollbar {
   scrollbar-face-color: #888;
   scrollbar-track-color: #f1f1f1;
-}
+  }

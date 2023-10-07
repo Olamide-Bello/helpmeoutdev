@@ -1,12 +1,13 @@
 import Image from "next/image";
 import MainLayout from "./MainLayout";
+import Link from 'next/link';
 
 const Navbar: React.FC = () => {
   return (
     <MainLayout>
       <div className=" text-primary-600 h-[84px] flex justify-between items-center">
         {/* Logo container */}
-        <div className="flex gap-1 items-center">
+        <Link href='/' className="flex gap-1 items-center">
           <Image
             src="/assets/shared/logo.svg"
             alt="Logo"
@@ -14,7 +15,7 @@ const Navbar: React.FC = () => {
             height={40}
           />
           <h1 className=" text-h6 font-[700] font-Inter">HelpMeOut</h1>
-        </div>
+        </Link>
         {/* Navbar links */}
         <div className="hidden text-h6 font-Work-Sans font-[500] md:flex items-center gap-[39px]">
           <h1>Features</h1>

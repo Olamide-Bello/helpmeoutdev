@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
           <h1>How It Works</h1>
         </div>
         {/* Get Started */}
-        <div className="text-h6 font-Work-Sans font-[500]">Get Started</div>
+        <Link href='/logIn' className="text-h6 font-Work-Sans font-[500]">Get Started</Link>
       </div>
     </MainLayout>
   );

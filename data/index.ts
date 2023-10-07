@@ -35,7 +35,28 @@ export const howItWorks = [
 ];
 
 export const footerLinks = [
-  {header: 'Menu', link1: 'Home', link2: 'Converter', link3: 'How it Works',},
-  {header: 'About Us', link1: 'About', link2: 'Contact Us', link3: 'Privacy Policy',},
-  {header: 'Screen Record', link1: 'Browser Window', link2: 'Desktop', link3: 'Application',},
-]
+  { 
+    header: 'Menu', 
+    links: {
+      link1: { title: 'Home', href: '/' },
+      link2: { title: 'Converter', href: '#' },
+      link3: { title: 'How it Works', href: '#' },
+    }
+  },
+  {
+    header: 'About Us',
+    links: {
+      link1: { title: 'About', href: '#' },
+      link2: { title: 'Contact Us', href: '#' },
+      link3: { title: 'Privacy Policy', href: '#' },
+    }
+  },
+  {
+    header: 'Screen Record',
+    links: {
+      link1: { title: 'Browser Window', href: '#' },
+      link2: { title: 'Desktop', href: '#' },
+      link3: { title: 'Application', href: '#' },
+    }
+  }
+];

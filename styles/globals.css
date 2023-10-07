@@ -10,6 +10,7 @@
   .btn-hover {
     @apply cursor-pointer bg-white text-primary-600 duration-500;
   }
+}
 
 /* CSS class for the transcript scrollbar styles */
 .custom-scrollbar {

@@ -180,7 +180,7 @@ const LogIn: React.FC = () => {
           </button>
           <br />
           <button onClick={handleSignOut}  className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white ">
-            Sign Up
+            Sign Out
           </button>
         </div>
       </div>

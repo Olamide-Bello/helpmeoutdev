@@ -8,6 +8,8 @@ const LogIn: React.FC = () => {
   const [email, setEmail] = useState("");
     
     const [password, setPassword] = useState("");
+
+    const [users, setUser] = useState(null);
     
     console.log(auth?.currentUser?.email);
         
@@ -68,7 +70,7 @@ const LogIn: React.FC = () => {
                
             };
 
-            const [users, setUser] = useState(null);
+            
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

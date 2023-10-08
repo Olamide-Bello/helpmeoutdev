@@ -7,7 +7,7 @@ import {
   googleProvider,
 } from '../../components/Auth/firebase'
 import {
-  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signInWithPopup,
   signOut,
   onAuthStateChanged,
@@ -19,7 +19,7 @@ interface User {
   displayName: string | null
 }
 
-const LogIn: React.FC = () => {
+const SignUp: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -28,64 +28,71 @@ const LogIn: React.FC = () => {
 
   console.log(auth?.currentUser?.email)
 
-  const login = () => {
-    signInWithEmailAndPassword(auth, email, password)
+  const signUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const newUser = userCredential.user
+        // ...
+        console.log(newUser)
+        setUser(newUser)
+        setUserExist(true)
+        setMessage('Account Created Successfully!')
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        setMessage('Account already exists Log In!')
+      })
+  }
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((userCredential) => {
+        const newUser = userCredential.user
+
+        console.log(newUser)
+        setUser(newUser)
+        setUserExist(true) // Change to true
+        setMessage('Account Created Successfully!')
+      })
+      .catch((error) => {
+        const errorCode = error.code
+
+        setMessage('Account already exist Log In!')
+      })
+  }
+
+  const signInWithFacebook = () => {
+    signInWithPopup(auth, facebookProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
 
         console.log(newUser)
         setUser(newUser)
         setUserExist(true)
-        setMessage('Successfully Logged In!')
+        setMessage('Account Created Successfully!')
       })
       .catch((error) => {
         const errorCode = error.code
 
-        setMessage('Account does not exist Sign Up!')
-      })
-  }
-
-  const loginWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((userCredential) => {
-        const newUser = userCredential.user
-        console.log(newUser)
-        setUser(newUser)
-        setUserExist(true) // Change to true
-        setMessage('Successfully Logged In!')
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        setMessage('Account does not exist Sign Up!')
-      })
-  }
-
-  const logInWithFacebook = () => {
-    signInWithPopup(auth, facebookProvider)
-      .then((userCredential) => {
-        const newUser = userCredential.user
-        console.log(newUser)
-        setUser(newUser)
-        setUserExist(true) // Change to true
-        setMessage('Successfully Logged In!')
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        setMessage('Account does not exist Sign Up!')
+        setMessage('Account already exist Log In!')
       })
   }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        // User is signed in
         setUser(user)
       } else {
+        // User is signed out
         setUser(null)
       }
     })
 
     return () => unsubscribe()
   }, [])
+
   const handleSignOut = () =>
     signOut(auth)
       .then(() => {
@@ -113,7 +120,7 @@ const LogIn: React.FC = () => {
       <div className="flex flex-col justify-center items-center">
         <section className="mt-[2rem] flex flex-col items-center">
           <h1 className="text-primary-400 font-semibold font-Sora text-[32px] mb-[8px] tracking-wide">
-            Log in
+            Sign Up
           </h1>
           <p className="text-primary-300 text-center text-[15px] font-Work-Sans font-medium tracking-tight mb-[32px]">
             Join millions of others in sharing successful
@@ -121,7 +128,7 @@ const LogIn: React.FC = () => {
             <span className="text-primary-600 font-semibold">HelpMeOut</span>.
           </p>
           <div
-            onClick={loginWithGoogle}
+            onClick={signInWithGoogle}
             className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px] cursor-pointer"
           >
             <Image
@@ -136,7 +143,7 @@ const LogIn: React.FC = () => {
           </div>
 
           <div
-            onClick={logInWithFacebook}
+            onClick={signInWithFacebook}
             className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px]"
           >
             <div className="flex gap-[1rem] ml-[1.5rem] cursor-pointer">
@@ -192,10 +199,10 @@ const LogIn: React.FC = () => {
           )}
           {!userExist && (
             <button
-              onClick={login}
+              onClick={signUp}
               className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
             >
-              Log In
+              Sign Up
             </button>
           )}
 
@@ -205,10 +212,10 @@ const LogIn: React.FC = () => {
             </p>
           )}
           <h2 className="mt-[1rem] text-center text-[17px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
-            Don&apos;t Have Account{' '}
-            <Link href={'/signUp'}>
+            Already Have Account{' '}
+            <Link href={'/logIn'}>
               <span className="font-bold text-[18px] hover:underline cursor-pointer font-Sora">
-                Sign Up
+                Log In
               </span>
             </Link>
           </h2>
@@ -218,4 +225,4 @@ const LogIn: React.FC = () => {
   )
 }
 
-export default LogIn
+export default SignUp

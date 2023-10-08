@@ -1,24 +1,37 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
+import {onAuthStateChanged, User} from 'firebase/auth'
 import { ContextTypes } from '@/types/video-repo'
 import 'react-toastify/dist/ReactToastify.css'
 
+import {auth} from '../components/Auth/firebase'
 
 export const GlobalContext = createContext({
     logged: false ,
     setLogged: () => { },
-    username: "",
-    setUsername: () => { }
+    user: null,
+    setUser: () => { }
 } as ContextTypes)
 
 const GlobalState = ({ children }: { children: React.ReactNode }) => {
     const [logged, setLogged]= useState<boolean>(false)
-    const [username, setUsername]= useState<string>("John Mark")
+    const [user, setUser]= useState<User | null>(null)
+
+
+    useEffect(() => {
+        const manageUserState = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser)
+            setLogged(true)
+        })
+        return () => {
+            manageUserState();
+        }
+    }, [])
 
     const contextValue:ContextTypes = {
         logged,
         setLogged,
-        username,
-        setUsername
+        user,
+        setUser
     }
   return (
     <GlobalContext.Provider value={contextValue}>

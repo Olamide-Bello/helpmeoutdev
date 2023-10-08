@@ -54,7 +54,7 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/")
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
@@ -91,7 +91,7 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/")
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
@@ -127,7 +127,7 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/")
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code

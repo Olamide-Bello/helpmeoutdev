@@ -53,7 +53,7 @@ const SignUp: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/")
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
@@ -90,7 +90,7 @@ const SignUp: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/")
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
@@ -128,7 +128,7 @@ const SignUp: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/")
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code

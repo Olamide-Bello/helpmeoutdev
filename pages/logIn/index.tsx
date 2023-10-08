@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -13,6 +13,12 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth'
 
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { useRouter } from 'next/router'
+import { GlobalContext } from '@/context/GlobalContext'
+
+
 interface User {
   uid: string
   email: string | null
@@ -25,6 +31,8 @@ const LogIn: React.FC = () => {
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
+  const {setUsername, setLogged} = useContext(GlobalContext)
+  const history = useRouter()
 
   console.log(auth?.currentUser?.email)
 
@@ -32,16 +40,36 @@ const LogIn: React.FC = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const newUser = userCredential.user
-
         console.log(newUser)
         setUser(newUser)
         setUserExist(true)
-        setMessage('Successfully Logged In!')
+        toast.success('Successfully Logged In', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
 
-        setMessage('Account does not exist Sign Up!')
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'red', // Change the background color as needed
+            color: 'white', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
       })
   }
 
@@ -52,11 +80,32 @@ const LogIn: React.FC = () => {
         console.log(newUser)
         setUser(newUser)
         setUserExist(true) // Change to true
-        setMessage('Successfully Logged In!')
+        toast.success('Successfully Logged In Google Account', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
-        setMessage('Account does not exist Sign Up!')
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'red', // Change the background color as needed
+            color: 'white', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
       })
   }
 
@@ -67,11 +116,32 @@ const LogIn: React.FC = () => {
         console.log(newUser)
         setUser(newUser)
         setUserExist(true) // Change to true
-        setMessage('Successfully Logged In!')
+        toast.success('Successfully Logged In Facebook Account', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
-        setMessage('Account does not exist Sign Up!')
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'red', // Change the background color as needed
+            color: 'white', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
       })
   }
 
@@ -91,11 +161,31 @@ const LogIn: React.FC = () => {
       .then(() => {
         setUser(null)
         setUserExist(false)
-        setMessage('Successfully Signed Out!')
+        toast.success('Successfully signed out', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
       })
       .catch((error) => {
         const errorCode = error.code
-        setMessage(errorCode)
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'red', // Change the background color as needed
+            color: 'white', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
       })
 
   return (
@@ -214,6 +304,7 @@ const LogIn: React.FC = () => {
           </h2>
         </div>
       </div>
+      
     </section>
   )
 }

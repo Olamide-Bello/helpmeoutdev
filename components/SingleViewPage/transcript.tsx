@@ -15,7 +15,7 @@ const Transcript = ({ data }: { data: any }) => {
                 </select>
             </div>
             {/* this maps the transcript array recieved from the backend */}
-            <div className='md:pr-20 mt-10 font-Work-Sans'>
+            <div className='h-[450px] overflow-y-scroll custom-scrollbar md:pr-20 mt-10 font-Work-Sans'>
             {data?.map((el: any, i: number) => {
                 const lastItem = data.length - 1;
                 return (

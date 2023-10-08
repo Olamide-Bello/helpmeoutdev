@@ -33,7 +33,7 @@ const Single = () => {
     const params = useRouter()
     const [email, setEmail] = useState<string>("") // email to send the video link to
     const [errMsg, setErrMsg] = useState<boolean>(false) // email validation state
-    const [videoName, setVideoName] = useState<string>("") // name of the video
+    const [videoName, setVideoName] = useState<string>("How To Create A Facebook Ad Listing") // name of the video
     const [copied, setCopied] = useState<boolean>(false)
     const [url, setUrl] = useState<string>("") // url of the video
     const { id } = params.query // id for fetching the video from backend
@@ -80,15 +80,15 @@ const Single = () => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar noNav={true} />
             <MainLayout>
-                <div className='text-gray-300 mb-3 mt-2'>
-                    <Link href='/'><span className='text-lg font-normal font-Work-Sans '>Home</span></Link>&nbsp;/&nbsp;
-                    <Link href='/videos'><span className='text-lg font-normal font-Work-Sans'>Recent Videos</span></Link>&nbsp;/&nbsp;
-                    <span className='text-primary-400'>{videoName}</span>
+                <div className='text-gray-200 mb-3 mt-2'>
+                    <Link href='/'><span className='text-gray-200  text-lg font-normal font-Work-Sans '>Home</span></Link>&nbsp;/&nbsp;
+                    <Link href='/videos'><span className='text-gray-200  text-lg font-normal font-Work-Sans'>Recent Videos</span></Link>&nbsp;/&nbsp;
+                    <span className='text-primary-400 font-[500]'>{videoName}</span>
                 </div>
                 <h3 className="flex font-2xl font-[600] text-lg text-black font-Sora gap-2 items-center mb-5">
-                    {videoName || "How To Create A Facebook Ad Listing  "}
+                    {videoName}
                     <span>
                         <Image
                             src="/assets/video-repo/edit.svg"
@@ -99,7 +99,7 @@ const Single = () => {
                     </span>
                 </h3>
                 {/* video player component*/}
-                {url?<VideoPlayer url={url} />: <Demo/>}
+                {url ? <VideoPlayer url={url} /> : <Demo />}
                 <div>
                     <div className="flex flex-col gap-6 w-full my-10">
                         <div className="flex md:flex-row flex-col bg-opacity-40 justify-between items-center md:gap-20 gap-5">

@@ -1,6 +1,6 @@
 export interface VideoPageContentProps {
   displayModal: () => void,
-  videoID?: string; // Add a videoID prop
+  videoID?: string | string[] | undefined; // Add a videoID prop
 }
 
 

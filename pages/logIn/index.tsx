@@ -13,6 +13,10 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth'
 
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { useRouter } from 'next/router'
+
 interface User {
   uid: string
   email: string | null
@@ -24,6 +28,7 @@ const LogIn: React.FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
+  const history = useRouter()
 
   console.log(auth?.currentUser?.email)
 
@@ -36,13 +41,34 @@ const LogIn: React.FC = () => {
         console.log(newUser)
         setUser(newUser)
         setUserExist(true) // Change to true
-        alert('Successfully created an Account')
+        toast.success('Successfully created an Account', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
         //const errorMessage = error.message;
         // ..
-        alert(errorCode)
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
       })
   }
 
@@ -54,12 +80,33 @@ const LogIn: React.FC = () => {
         console.log(newUser)
         setUser(newUser)
         setUserExist(true) // Change to true
-        alert('Successfully created an Account')
+        toast.success('Successfully signed in with Google', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
 
-        alert(errorCode)
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
       })
   }
 
@@ -72,13 +119,34 @@ const LogIn: React.FC = () => {
         console.log(newUser)
         setUser(newUser)
         setUserExist(true) // Change to true
-        alert('Successfully created an Account')
+        toast.success('Successfully signed in with Facebook', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+        history.push("/videos")
       })
       .catch((error) => {
         const errorCode = error.code
         //const errorMessage = error.message;
         // ..
-        alert(errorCode)
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
       })
   }
 
@@ -102,12 +170,32 @@ const LogIn: React.FC = () => {
       .then(() => {
         setUser(null)
         setUserExist(false) // Change to false
-        alert('Successfully Signed Out!')
+        toast.success('Successfully signed out', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        });
       })
       .catch((error) => {
         // An error happened.
         const errorCode = error.code
-        alert(errorCode)
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
       })
 
   return (
@@ -212,14 +300,16 @@ const LogIn: React.FC = () => {
           )}
 
           <br />
-          <button
-            onClick={handleSignOut}
-            className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
-          >
-            Sign Up
-          </button>
         </div>
       </div>
+      <ToastContainer 
+      position="top-center" // Position the toast container at the bottom-center
+      autoClose={1500} // Close after 3 seconds (adjust as needed)
+      style={{
+        width: 'fit-content', // Adjust the width as needed
+        textAlign: 'center', // Center-align the container's content
+      }}
+      />
     </section>
   )
 }

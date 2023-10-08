@@ -28,6 +28,7 @@ const LogIn: React.FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
+  const [message, setMessage] = useState<boolean | string>(false)
 
   console.log(auth?.currentUser?.email)
 
@@ -38,14 +39,13 @@ const LogIn: React.FC = () => {
 
         console.log(newUser)
         setUser(newUser)
-        setUserExist(true) // Change to true
-        alert('Successfully created an Account')
+        setUserExist(true)
+        setMessage('Successfully Logged In!')
       })
       .catch((error) => {
         const errorCode = error.code
-        //const errorMessage = error.message;
-        // ..
-        alert(errorCode)
+
+        setMessage('Account does not exist Sign Up!')
       })
   }
 
@@ -56,12 +56,11 @@ const LogIn: React.FC = () => {
         console.log(newUser)
         setUser(newUser)
         setUserExist(true) // Change to true
-        alert('Successfully created an Account')
+        setMessage('Successfully Logged In!')
       })
       .catch((error) => {
         const errorCode = error.code
-
-        alert(errorCode)
+        setMessage('Account does not exist Sign Up!')
       })
   }
 
@@ -72,13 +71,11 @@ const LogIn: React.FC = () => {
         console.log(newUser)
         setUser(newUser)
         setUserExist(true) // Change to true
-        alert('Successfully created an Account')
+        setMessage('Successfully Logged In!')
       })
       .catch((error) => {
         const errorCode = error.code
-        //const errorMessage = error.message;
-        // ..
-        alert(errorCode)
+        setMessage('Account does not exist Sign Up!')
       })
   }
 
@@ -97,12 +94,12 @@ const LogIn: React.FC = () => {
     signOut(auth)
       .then(() => {
         setUser(null)
-        setUserExist(false) // Change to false
-        alert('Successfully Signed Out!')
+        setUserExist(false)
+        setMessage('Successfully Signed Out!')
       })
       .catch((error) => {
         const errorCode = error.code
-        alert(errorCode)
+        setMessage(errorCode)
       })
 
   return (
@@ -206,13 +203,19 @@ const LogIn: React.FC = () => {
             </button>
           )}
 
-          <br />
-          <button
-            onClick={handleSignOut}
-            className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
-          >
-            Sign Up
-          </button>
+          {message && (
+            <p className="mt-[0.5rem] text-center text-[19px] font-semibold">
+              {message}
+            </p>
+          )}
+          <h2 className="mt-[1rem] text-center text-[17px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
+            Don&apos;t Have Account{' '}
+            <Link href={'/signUp'}>
+              <span className="font-bold text-[18px] hover:underline cursor-pointer font-Sora">
+                Sign Up
+              </span>
+            </Link>
+          </h2>
         </div>
       </div>
       <ToastContainer 

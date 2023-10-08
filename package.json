@@ -12,16 +12,10 @@
   },
   "dependencies": {
     "firebase": "^10.4.0",
-<<<<<<< HEAD
-    "next": "^13.5.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-toastify": "^9.1.3"
-=======
+    "react-toastify": "^9.1.3",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18"
->>>>>>> 53637ad33f759f10767b72b73bdbcbaa976b14d2
   },
   "devDependencies": {
     "@types/node": "^20",

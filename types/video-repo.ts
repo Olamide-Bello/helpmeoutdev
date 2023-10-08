@@ -1,3 +1,4 @@
 export interface VideoPageContentProps {
-  displayModal: () => void;
+  displayModal: () => void,
+  videoID?: string; // Add a videoID prop
 }

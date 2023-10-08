@@ -1,8 +1,26 @@
-import React from 'react'
+import React, { useRef, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image'
 import { VideoPageContentProps } from '@/types/video-repo'
 
-const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal }) => {
+const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) => {
+
+  // to get the videoID
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const currentVideoID = videoID || (router.query.videoID as string);
+    if (currentVideoID && videoRef.current) {
+      videoRef.current.src = `http://web-02.cofucan.tech/srce/api/video/stream/${currentVideoID}`;
+    }
+  }, [videoID, router.query.videoID]);
+
+  //custom file name
+  const [customFileName, setCustomFileName] = useState(`Untitled_Video_${videoID}`);
+
+
+
   return (
     <div className="hidden ss:flex flex-col items-start gap-[64px] w-full md:w-[550px]">
       {/* Header */}
@@ -15,7 +33,14 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal }) => {
           <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
           <div className="flex items-center gap-[24px]">
             <h3 className="text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]">
-              Untitled_Video_20232509
+            
+              <input
+                type="text"
+                placeholder={customFileName}
+                value={customFileName}
+                onChange={(e) => setCustomFileName(e.target.value)}
+                className="border border-gray-300 rounded-md p-2 mb-2"
+              />
             </h3>
             <Image
               className="w-[16px] h-auto xs:h-[32px] xs:w-[32px]"
@@ -29,7 +54,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal }) => {
       </div>
       {/* Email input and send button */}
       <div
-        onClick={displayModal}
+        
         className="py-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between"
       >
         <input
@@ -38,7 +63,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal }) => {
           placeholder="Enter email of receiver"
           className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
         />
-        <div className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
+        <div onClick={displayModal} className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
           Send
         </div>
       </div>

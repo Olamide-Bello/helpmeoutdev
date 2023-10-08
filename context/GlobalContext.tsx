@@ -1,11 +1,5 @@
 import React, { createContext, useState } from 'react'
-
-type ContextTypes = {
-    logged?: boolean,
-    setLogged: (logged: boolean) => void,
-    username?: string,
-    setUsername: (username: string) => void
-}
+import { ContextTypes } from '@/types/video-repo'
 
 export const GlobalContext = createContext({
     logged: false ,

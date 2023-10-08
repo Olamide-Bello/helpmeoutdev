@@ -42,23 +42,26 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
         Your browser does not support the video tag.
       </video>}
       {/* Email input and send button */}
-      <div
-        onClick={displayModal}
-        className="py-[12px] px-[8px] bg-primary-50 rounded-[12px] mb-[8px] h-[64px] w-full flex items-center justify-between"
-      >
+      <div className="py-[12px] px-[8px] bg-primary-50 rounded-[12px] mb-[8px] h-[64px] w-full flex items-center justify-between">
         <input
           type="email"
           name="receiverEmail"
           placeholder="Johnmark@gmail.com"
           className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
         />
-        <div className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
+        <div
+          onClick={displayModal}
+          className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans"
+        >
           Send
         </div>
       </div>
       <h2 className="font-Work-Sans text-[14px] font-[400] text-gray-400 text-center ss:mb-[64px]">
         Your video to johnmark@gmail.com is now ready.
-        <span className="text-primary-600 font-[500] underline"> Not the receiver?</span>
+        <span className="text-primary-600 font-[500] underline">
+          {' '}
+          Not the receiver?
+        </span>
       </h2>
       {/* Share options */}
       <div className="mt-[44px] flex flex-wrap gap-3 items-center">

@@ -53,17 +53,17 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
         </div>
       </div>
       {/* Email input and send button */}
-      <div
-        
-        className="py-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between"
-      >
+      <div className="py-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between">
         <input
           type="email"
           name="receiverEmail"
           placeholder="Enter email of receiver"
           className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
         />
-        <div onClick={displayModal} className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
+        <div
+          onClick={displayModal}
+          className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans"
+        >
           Send
         </div>
       </div>

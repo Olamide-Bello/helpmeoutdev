@@ -3,6 +3,8 @@ import Image from 'next/image'
 import Logo2 from '../public/assets/video-repo/logo-2.png'
 import { FiSearch } from 'react-icons/fi'
 import Navbar from '@/components/shared/Navbar'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'        
 // import { Spinner } from '../../components/shared/Loader'
 // import VideoCard from '../../components/shared/VideoCard'
 
@@ -110,7 +112,15 @@ function Videos() {
             ))}
           </div>
         </div>
-      </div>
+      </div><ToastContainer 
+  position="top-center" // Position the toast container at the bottom-center
+  autoClose={1500} // Close after 3 seconds (adjust as needed)
+  style={{
+    width: 'fit-content', // Adjust the width as needed
+    textAlign: 'center', // Center-align the container's content
+  }}
+  />
+
     </div>
   );
 }

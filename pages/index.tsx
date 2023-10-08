@@ -3,13 +3,13 @@ import Navbar from './../components/shared/Navbar'
 import Footer from './../components/shared/Footer'
 import Landingpage from '@/components/shared/Landingpage'
 
-const index = () => {
+const index: React.FC = () => {
   return (
-    <div>
+    <>
       <Navbar />
       <Landingpage/>
       <Footer />
-    </div>
+    </>
   )
 }
 

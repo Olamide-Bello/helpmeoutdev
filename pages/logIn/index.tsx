@@ -13,10 +13,10 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth'
 
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
-import { GlobalContext } from '@/context/GlobalContext'
+
 
 interface User {
   uid: string
@@ -30,7 +30,7 @@ const LogIn: React.FC = () => {
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
-  const { setLogged } = useContext(GlobalContext)
+  
   const history = useRouter()
 
   console.log(auth?.currentUser?.email)
@@ -304,6 +304,14 @@ const LogIn: React.FC = () => {
           </h2>
         </div>
       </div>
+      <ToastContainer 
+  position="top-center" // Position the toast container at the bottom-center
+  autoClose={1500} // Close after 3 seconds (adjust as needed)
+  style={{
+    width: 'fit-content', // Adjust the width as needed
+    textAlign: 'center', // Center-align the container's content
+  }}
+  />
     </section>
   )
 }

@@ -14,7 +14,7 @@ import {
 } from 'firebase/auth'
 
 import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+
 import { useRouter } from 'next/router'
 
 interface User {
@@ -44,8 +44,8 @@ const SignUp: React.FC = () => {
         setUserExist(true)
         toast.success('Successfully created an Account', {
           style: {
-            background: 'green', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed
@@ -59,8 +59,8 @@ const SignUp: React.FC = () => {
         const errorCode = error.code
         toast.error(`Error: ${errorCode}`, {
           style: {
-            background: 'red', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed
@@ -81,8 +81,8 @@ const SignUp: React.FC = () => {
         setUserExist(true) // Change to true
         toast.success('Successfully created an Account With Google', {
           style: {
-            background: 'green', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed
@@ -97,8 +97,8 @@ const SignUp: React.FC = () => {
 
         toast.error(`Error: ${errorCode}`, {
           style: {
-            background: 'red', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed
@@ -119,8 +119,8 @@ const SignUp: React.FC = () => {
         setUserExist(true)
         toast.success('Successfully created an Account With Facebook', {
           style: {
-            background: 'green', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed
@@ -135,8 +135,8 @@ const SignUp: React.FC = () => {
 
         toast.error(`Error: ${errorCode}`, {
           style: {
-            background: 'red', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed
@@ -168,8 +168,8 @@ const SignUp: React.FC = () => {
         setUserExist(false)
         toast.success('Successfully signed out', {
           style: {
-            background: 'green', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed
@@ -182,8 +182,8 @@ const SignUp: React.FC = () => {
         const errorCode = error.code
         toast.error(`Error: ${errorCode}`, {
           style: {
-            background: 'red', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed

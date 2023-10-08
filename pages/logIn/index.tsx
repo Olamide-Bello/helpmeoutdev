@@ -14,9 +14,9 @@ import {
 } from 'firebase/auth'
 
 import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+
 import { useRouter } from 'next/router'
-import { GlobalContext } from '@/context/GlobalContext'
+
 
 interface User {
   uid: string
@@ -30,7 +30,7 @@ const LogIn: React.FC = () => {
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
-  const { setUsername, setLogged } = useContext(GlobalContext)
+
   const history = useRouter()
 
   console.log(auth?.currentUser?.email)

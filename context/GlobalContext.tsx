@@ -1,5 +1,7 @@
 import React, { createContext, useState } from 'react'
 import { ContextTypes } from '@/types/video-repo'
+import 'react-toastify/dist/ReactToastify.css'
+
 
 export const GlobalContext = createContext({
     logged: false ,

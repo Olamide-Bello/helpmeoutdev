@@ -31,17 +31,14 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
         {/* Name container */}
         <div>
           <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
-          <div className="flex items-center gap-[24px]">
-            <h3 className="text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]">
-            
+          <div className="flex items-center gap-[24px] md:w-[550px] w-full">
               <input
                 type="text"
                 placeholder={customFileName}
                 value={customFileName}
                 onChange={(e) => setCustomFileName(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 mb-2"
+                className="border-none outline-none rounded-md p-2 mb-2 w-full text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
               />
-            </h3>
             <Image
               className="w-[16px] h-auto xs:h-[32px] xs:w-[32px]"
               src="/assets/video-repo/edit.svg"

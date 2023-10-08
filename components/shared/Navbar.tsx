@@ -3,6 +3,8 @@ import Image from "next/image";
 import MainLayout from "./MainLayout";
 import Link from 'next/link';
 import { GlobalContext } from '@/context/GlobalContext';
+import {auth} from '../Auth/firebase'
+import { signOut } from 'firebase/auth';
 
 const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
   const {logged, user, setLogged} = useContext(GlobalContext)
@@ -15,6 +17,7 @@ const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
 
   const handleLogout = () => {
     //call or put the logic for log out here
+    signOut(auth)
     setLogged(false)
     setShowLogout(false)
   }

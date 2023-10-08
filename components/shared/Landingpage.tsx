@@ -36,7 +36,7 @@ const Landingpage = () => {
         </div>
       </div>
 
-      <div className=" bg-slate-200 py-12">
+      <div id='features' className=" bg-slate-200 py-12">
         <div className=" bg-white min-h-[80%] ">
           <div className=" py-16">
             <h3 className=" font-sora font-bold text-[40px] text-center">
@@ -121,7 +121,7 @@ const Landingpage = () => {
         </div>
       </div>
 
-      <div className="px-[20px] md:px[50px] lg:px-[70px] xl:px-[100px] pb-20">
+      <div id='how' className="px-[20px] md:px[50px] lg:px-[70px] xl:px-[100px] pb-20">
         <h3 className=" font-sora font-bold text-[40px] text-center pt-16 pb-8">
           How it Works
         </h3>

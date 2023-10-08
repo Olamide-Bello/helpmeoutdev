@@ -7,7 +7,7 @@ import {
   googleProvider,
 } from '../../components/Auth/firebase'
 import {
-  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signInWithPopup,
   signOut,
   onAuthStateChanged,
@@ -23,86 +23,90 @@ interface User {
   displayName: string | null
 }
 
-const LogIn: React.FC = () => {
+const SignUp: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
+  const [message, setMessage] = useState<boolean | string>(false)
 
   console.log(auth?.currentUser?.email)
 
-  const login = () => {
-    signInWithEmailAndPassword(auth, email, password)
+  const signUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        // Signed in
         const newUser = userCredential.user
-
+        // ...
         console.log(newUser)
         setUser(newUser)
-        setUserExist(true) // Change to true
-        alert('Successfully created an Account')
+        setUserExist(true)
+        setMessage('Account Created Successfully!')
       })
       .catch((error) => {
         const errorCode = error.code
-        //const errorMessage = error.message;
-        // ..
-        alert(errorCode)
+        setMessage('Account already exists Log In!')
       })
   }
 
-  const loginWithGoogle = () => {
+  const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
+
         console.log(newUser)
         setUser(newUser)
         setUserExist(true) // Change to true
-        alert('Successfully created an Account')
+        setMessage('Account Created Successfully!')
       })
       .catch((error) => {
         const errorCode = error.code
 
-        alert(errorCode)
+        setMessage('Account already exist Log In!')
       })
   }
 
-  const logInWithFacebook = () => {
+  const signInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
+
         console.log(newUser)
         setUser(newUser)
-        setUserExist(true) // Change to true
-        alert('Successfully created an Account')
+        setUserExist(true)
+        setMessage('Account Created Successfully!')
       })
       .catch((error) => {
         const errorCode = error.code
-        //const errorMessage = error.message;
-        // ..
-        alert(errorCode)
+
+        setMessage('Account already exist Log In!')
       })
   }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        // User is signed in
         setUser(user)
       } else {
+        // User is signed out
         setUser(null)
       }
     })
 
     return () => unsubscribe()
   }, [])
+
   const handleSignOut = () =>
     signOut(auth)
       .then(() => {
         setUser(null)
-        setUserExist(false) // Change to false
-        alert('Successfully Signed Out!')
+        setUserExist(false)
+        setMessage('Successfully Signed Out!')
       })
       .catch((error) => {
         const errorCode = error.code
-        alert(errorCode)
+        setMessage(errorCode)
       })
 
   return (
@@ -120,7 +124,7 @@ const LogIn: React.FC = () => {
       <div className="flex flex-col justify-center items-center">
         <section className="mt-[2rem] flex flex-col items-center">
           <h1 className="text-primary-400 font-semibold font-Sora text-[32px] mb-[8px] tracking-wide">
-            Log in
+            Sign Up
           </h1>
           <p className="text-primary-300 text-center text-[15px] font-Work-Sans font-medium tracking-tight mb-[32px]">
             Join millions of others in sharing successful
@@ -128,7 +132,7 @@ const LogIn: React.FC = () => {
             <span className="text-primary-600 font-semibold">HelpMeOut</span>.
           </p>
           <div
-            onClick={loginWithGoogle}
+            onClick={signInWithGoogle}
             className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px] cursor-pointer"
           >
             <Image
@@ -143,7 +147,7 @@ const LogIn: React.FC = () => {
           </div>
 
           <div
-            onClick={logInWithFacebook}
+            onClick={signInWithFacebook}
             className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px]"
           >
             <div className="flex gap-[1rem] ml-[1.5rem] cursor-pointer">
@@ -199,32 +203,30 @@ const LogIn: React.FC = () => {
           )}
           {!userExist && (
             <button
-              onClick={login}
+              onClick={signUp}
               className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
             >
-              Log In
+              Sign Up
             </button>
           )}
 
-          <br />
-          <button
-            onClick={handleSignOut}
-            className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
-          >
-            Sign Up
-          </button>
+          {message && (
+            <p className="mt-[0.5rem] text-center text-[19px] font-semibold">
+              {message}
+            </p>
+          )}
+          <h2 className="mt-[1rem] text-center text-[17px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
+            Already Have Account{' '}
+            <Link href={'/logIn'}>
+              <span className="font-bold text-[18px] hover:underline cursor-pointer font-Sora">
+                Log In
+              </span>
+            </Link>
+          </h2>
         </div>
       </div>
-      <ToastContainer 
-      position="top-center" // Position the toast container at the bottom-center
-      autoClose={1500} // Close after 3 seconds (adjust as needed)
-      style={{
-        width: 'fit-content', // Adjust the width as needed
-        textAlign: 'center', // Center-align the container's content
-      }}
-      />
     </section>
   )
 }
 
-export default LogIn
+export default SignUp

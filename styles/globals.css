@@ -12,6 +12,11 @@
   }
 }
 
+/* ffor smooth scrolling to hash links*/
+html {
+  scroll-behavior: smooth;
+}
+
 /* CSS class for the transcript scrollbar styles */
 .custom-scrollbar {
   scrollbar-width: thin;

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const SaveToAccount: React.FC = () => {
@@ -12,7 +13,7 @@ const SaveToAccount: React.FC = () => {
       </button>
       <h2 className="font-Sora text-[16px] ss:text-[24px] font-[400] text-gray-400 text-center">
         Don’t have an account?{' '}
-        <span className="text-primary-600 font-[400]">Create account</span>
+        <Link href={'/logIn'} className="text-primary-600 font-[400]">Create account</Link>
       </h2>
     </div>
   )

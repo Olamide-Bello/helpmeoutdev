@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import { VideoPageContentProps } from '@/types/video-repo'
+import Link from 'next/link';
 
 const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) => {
 
@@ -22,7 +23,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
 
 
   return (
-    <div className="hidden ss:flex flex-col items-start gap-[64px] w-full md:w-[550px]">
+    <div className="hidden ss:flex flex-col items-start gap-[64px] w-full md:w-[1/2]">
       {/* Header */}
       <div>
         <h2 className="text-black-600 text-[32px] xs:text-[45px] font-[700] mb-[48px]">
@@ -31,7 +32,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
         {/* Name container */}
         <div>
           <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
-          <div className="flex items-center gap-[24px] md:w-[550px] w-full">
+          <div className="flex items-center gap-[24px] w-full">
               <input
                 type="text"
                 placeholder={customFileName}
@@ -90,7 +91,9 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
           Share your video
         </p>
         <div className="flex flex-wrap gap-[16px]">
-          <div className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]">
+          <a
+          href='https://www.facebook.com/sharer/sharer.php?u='
+          className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]">
             <Image
               src="/assets/login/Facebook.svg"
               alt="facebook"
@@ -100,8 +103,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
             <h3 className="text-black-600 font-Sora text-[16px] font-[500]">
               Facebook
             </h3>
-          </div>
-          <div className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]">
+          </a>
+          <a 
+          href="https://api.whatsapp.com/send?text="
+          className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]">
             <Image
               src="/assets/video-repo/whatsapp.svg"
               alt="Whatsapp"
@@ -111,8 +116,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
             <h3 className="text-black-600 font-Sora text-[16px] font-[500]">
               Whatsapp
             </h3>
-          </div>
-          <div className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]">
+          </a>
+          <a
+          href="https://t.me/share/url?url="
+          className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]">
             <Image
               src="/assets/video-repo/telegram.svg"
               alt="Telegram"
@@ -122,7 +129,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
             <h3 className="text-black-600 font-Sora text-[16px] font-[500]">
               Telegram
             </h3>
-          </div>
+          </a>
         </div>
       </div>
     </div>

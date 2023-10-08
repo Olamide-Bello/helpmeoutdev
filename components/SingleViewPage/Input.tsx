@@ -37,7 +37,7 @@ export const Input = ({
                 type={type}
                 name={name}
                 value={value}
-                className="w-full bg-transparent font-light h-full outline-none text-sm font-normal font-Work-Sans border-0"
+                className="w-full bg-transparent h-full outline-none text-sm font-normal font-Work-Sans border-0"
                 placeholder={placeholder}
                 onChange={onChange}
             />

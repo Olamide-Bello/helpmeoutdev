@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { GlobalContext } from '@/context/GlobalContext';
 
 const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
-  const {logged, username, setLogged} = useContext(GlobalContext)
+  const {logged, user, setLogged} = useContext(GlobalContext)
   const [showLogout, setShowLogout] = useState<boolean>(false)
 
   //function that toggles the show logout state
@@ -49,7 +49,7 @@ const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
             width={40}
             />
             <div onClick={handleShowLogout} className='flex gap-[10px] cursor-pointer'>
-            <p>{username}</p>
+            <p>{user?.displayName}</p>
             <Image
             src="/assets/video-repo/arrow-down.svg"
             height={20}

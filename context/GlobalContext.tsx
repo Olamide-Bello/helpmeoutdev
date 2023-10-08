@@ -2,9 +2,9 @@ import React, { createContext, useState } from 'react'
 
 type ContextTypes = {
     logged?: boolean,
-    setLogged?: (logged: boolean) => void,
+    setLogged: (logged: boolean) => void,
     username?: string,
-    setUsername?: (username: string) => void
+    setUsername: (username: string) => void
 }
 
 export const GlobalContext = createContext({
@@ -15,7 +15,7 @@ export const GlobalContext = createContext({
 } as ContextTypes)
 
 const GlobalState = ({ children }: { children: React.ReactNode }) => {
-    const [logged, setLogged]= useState<boolean>(true)
+    const [logged, setLogged]= useState<boolean>(false)
     const [username, setUsername]= useState<string>("John Mark")
 
     const contextValue:ContextTypes = {

@@ -30,7 +30,7 @@ const RecordingReadyPage: React.FC = () => {
 
   return (
     <div className="relative w-full h-full">
-      <Navbar />
+      <Navbar noNav={true}/>
       <MainLayout>
         {/* Recording is ready page main content */}
         <VideoPageContent displayModal={displayModal} />

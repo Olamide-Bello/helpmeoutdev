@@ -11,9 +11,10 @@
     "check-format": "prettier --check \"src/**/*.js\" || echo 'Prettier found formatting issues. Please run `npm run format`.'"
   },
   "dependencies": {
-    "next": "13.5.4",
-    "react": "^18",
-    "react-dom": "^18"
+    "firebase": "^10.4.0",
+    "next": "^13.5.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20",

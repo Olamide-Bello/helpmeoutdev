@@ -12,7 +12,7 @@
   }
 }
 
-/* ffor smooth scrolling to hash links*/
+/* for smooth scrolling to hash links*/
 html {
   scroll-behavior: smooth;
 }

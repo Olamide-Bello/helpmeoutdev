@@ -13,8 +13,8 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth'
 
-import { toast } from 'react-toastify'
-
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'                                        
 import { useRouter } from 'next/router'
 
 interface User {
@@ -309,6 +309,14 @@ const SignUp: React.FC = () => {
           </h2>
         </div>
       </div>
+      <ToastContainer 
+  position="top-center" // Position the toast container at the bottom-center
+  autoClose={1500} // Close after 3 seconds (adjust as needed)
+  style={{
+    width: 'fit-content', // Adjust the width as needed
+    textAlign: 'center', // Center-align the container's content
+  }}
+  />
     </section>
   )
 }

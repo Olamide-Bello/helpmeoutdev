@@ -1,6 +1,7 @@
 import { User } from "firebase/auth";
 export interface VideoPageContentProps {
-  displayModal: () => void;
+  displayModal: () => void,
+  videoID?: string | string[] | undefined; // Add a videoID prop
 }
 
 

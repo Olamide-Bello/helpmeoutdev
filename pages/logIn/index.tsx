@@ -18,7 +18,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 import { GlobalContext } from '@/context/GlobalContext'
 
-
 interface User {
   uid: string
   email: string | null
@@ -31,7 +30,7 @@ const LogIn: React.FC = () => {
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
-  const {setUsername, setLogged} = useContext(GlobalContext)
+  const { setUsername, setLogged } = useContext(GlobalContext)
   const history = useRouter()
 
   console.log(auth?.currentUser?.email)
@@ -54,7 +53,7 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/videos")
+        history.push('/videos')
       })
       .catch((error) => {
         const errorCode = error.code
@@ -91,7 +90,7 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/videos")
+        history.push('/videos')
       })
       .catch((error) => {
         const errorCode = error.code
@@ -127,7 +126,7 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/videos")
+        history.push('/videos')
       })
       .catch((error) => {
         const errorCode = error.code
@@ -189,7 +188,7 @@ const LogIn: React.FC = () => {
       })
 
   return (
-    <section className="px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem]">
+    <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem]">
       <Link href={'/'} className="flex items-center gap-[10px] cursor-pointer">
         <Image
           src={'/assets/shared/logo.svg'}
@@ -212,7 +211,8 @@ const LogIn: React.FC = () => {
           </p>
           <div
             onClick={loginWithGoogle}
-            className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px] cursor-pointer"
+            className="rounded-lg border-2 border-black-600 
+            w-[230px] xs:w-[300px] ss:w-[475px]  bg-white flex justify-center items-center gap-[0.5rem] xs:gap-[1rem] py-[0.8rem] px-[0] mb-[30px] cursor-pointer"
           >
             <Image
               src={'/assets/login/Google.svg'}
@@ -220,14 +220,14 @@ const LogIn: React.FC = () => {
               width={20}
               height={20}
             />
-            <p className="mb-[-0.2rem] font-Work-Sans text-[16px] font-medium tracking-tight">
+            <p className="mb-[-0.2rem] font-Work-Sans  text-[14px] xs:text-[16px] font-medium tracking-tight">
               Continue with Google
             </p>
           </div>
 
           <div
             onClick={logInWithFacebook}
-            className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px]"
+            className="rounded-lg border-2 border-black-600 w-[230px] xs:w-[300px] ss:w-[475px]  bg-white flex justify-center items-center gap-[0.5rem] xs:gap-[1rem] py-[0.8rem] px-[0] mb-[30px]"
           >
             <div className="flex gap-[1rem] ml-[1.5rem] cursor-pointer">
               <Image
@@ -236,19 +236,19 @@ const LogIn: React.FC = () => {
                 width={20}
                 height={20}
               />
-              <p className="mb-[-0.2rem] font-Work-Sans text-[16px] font-medium tracking-tight">
+              <p className="mb-[-0.2rem] font-Work-Sans  text-[14px] xs:text-[16px] font-medium tracking-tight">
                 Continue with Facebook
               </p>
             </div>
           </div>
 
           <div className="flex items-center justify-center gap-[1rem] mb-[1rem]">
-            <div className="w-[200px] h-[1px] bg-black-100 "></div>
+            <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
             <p className="font-medium text-primary-500 mt-[-10px]">or</p>
-            <div className="w-[200px] h-[1px] bg-black-100 "></div>
+            <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
           </div>
         </section>
-        <div className="flex flex-col w-[475px]">
+        <div className="flex flex-col w-full ss:w-[475px] ">
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">Email</p>
             <input
@@ -256,7 +256,7 @@ const LogIn: React.FC = () => {
               placeholder="Enter your email address"
               required
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[17px]"
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[17px]"
             />
           </div>
           <div>
@@ -269,13 +269,13 @@ const LogIn: React.FC = () => {
               required
               onChange={(e) => setPassword(e.target.value)}
               minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[17px]"
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[17px]"
             />
           </div>
           {userExist && (
             <button
               onClick={handleSignOut}
-              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
+              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[17px] bg-primary-600 text-white "
             >
               Sign Out
             </button>
@@ -283,7 +283,7 @@ const LogIn: React.FC = () => {
           {!userExist && (
             <button
               onClick={login}
-              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
+              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[17px] bg-primary-600 text-white "
             >
               Log In
             </button>
@@ -304,7 +304,6 @@ const LogIn: React.FC = () => {
           </h2>
         </div>
       </div>
-      
     </section>
   )
 }

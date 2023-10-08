@@ -30,7 +30,7 @@ const LogIn: React.FC = () => {
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
-  const { setUsername, setLogged } = useContext(GlobalContext)
+  const { setLogged } = useContext(GlobalContext)
   const history = useRouter()
 
   console.log(auth?.currentUser?.email)

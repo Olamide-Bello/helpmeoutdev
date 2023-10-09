@@ -7,7 +7,7 @@ import {auth} from '../Auth/firebase'
 import { signOut } from 'firebase/auth';
 
 const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
-  const {logged, user, setLogged} = useContext(GlobalContext)
+  const {logged, user, setLogged, setUser} = useContext(GlobalContext)
   const [showLogout, setShowLogout] = useState<boolean>(false)
 
   //function that toggles the show logout state
@@ -19,6 +19,8 @@ const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
     //call or put the logic for log out here
     signOut(auth)
     setLogged(false)
+    setShowLogout(false)
+    setUser(null)
   }
   return (
     <MainLayout>
@@ -43,7 +45,7 @@ const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
         }
         {/* Get Started */}
         {
-          logged?
+          logged && user &&
           <div className='flex items-center gap-[10px] relative font-Work-Sans font-[400]'>
             <Image
             src="/assets/shared/profile.svg"
@@ -61,11 +63,10 @@ const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
             alt='arrow-down'
             />
             </div>
-            {showLogout && <div onClick={handleLogout} className='absolute bottom-[-40px] cursor-pointer text-[#141414] font-Work-Sans font-[500] right-0 py-2 px-5 bg-white shadow'>Log Out</div>}
+            {logged && showLogout && <div onClick={handleLogout} className='absolute bottom-[-40px] cursor-pointer text-[#141414] font-Work-Sans font-[500] right-0 py-2 px-5 bg-white shadow'>Log Out</div>}
           </div>
-          :
-        <Link href='/logIn' className="text-h6 font-Work-Sans font-[500]">Get Started</Link>
         }
+        {!logged && <Link href='/logIn' className="text-h6 font-Work-Sans font-[500]">Get Started</Link>}
       </div>
     </MainLayout>
   );

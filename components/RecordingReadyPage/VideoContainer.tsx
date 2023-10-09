@@ -93,7 +93,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID }) => {
 
   return (
     <div className="hidden w-full h-auto aspect-[575/475] rounded-[8px] bg-gray-200 border-[1px] border-primary-400 ss:flex flex-col overflow-hidden">
-      <div className='w-full h-full bg-red-300'>
+      <div className='w-full h-full '>
       {videoID && <video ref={videoRef} controls className="w-full h-auto">
         <source type="video/mp4" />
         Your browser does not support the video tag.

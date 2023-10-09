@@ -15,6 +15,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID }) => {
     if (currentVideoID && videoRef.current) {
       console.log("videoREF:", videoRef);
       videoRef.current.src = `http://web-02.cofucan.tech/srce/api/recording/${currentVideoID}`;
+      // videoRef.current.src = `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`;
     }
   }, [videoID, router.query.videoID]);
 

@@ -7,7 +7,7 @@ import {auth} from '../Auth/firebase'
 import { signOut } from 'firebase/auth';
 
 const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
-  const {logged, user, setLogged} = useContext(GlobalContext)
+  const {logged, user, setLogged, setUser} = useContext(GlobalContext)
   const [showLogout, setShowLogout] = useState<boolean>(false)
 
   //function that toggles the show logout state
@@ -20,6 +20,7 @@ const Navbar: React.FC<{noNav?: boolean}> = ({noNav}) => {
     signOut(auth)
     setLogged(false)
     setShowLogout(false)
+    setUser(null)
   }
   return (
     <MainLayout>

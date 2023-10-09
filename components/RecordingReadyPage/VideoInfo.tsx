@@ -6,19 +6,37 @@ import { VideoPageContentProps } from '@/types/video-repo'
 const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) => {
 
   // to get the videoID
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const router = useRouter();
+  // const videoRef = useRef<HTMLVideoElement>(null);
+  // const router = useRouter();
 
-  useEffect(() => {
-    const currentVideoID = videoID || (router.query.videoID as string);
-    if (currentVideoID && videoRef.current) {
-      videoRef.current.src = `http://web-02.cofucan.tech/srce/api/video/stream/${currentVideoID}`;
-    }
-  }, [videoID, router.query.videoID]);
+  // useEffect(() => {
+  //   const currentVideoID = videoID || (router.query.videoID as string);
+  //   if (currentVideoID && videoRef.current) {
+  //     videoRef.current.src = `http://web-02.cofucan.tech/srce/api/video/stream/${currentVideoID}`;
+  //   }
+  // }, [videoID, router.query.videoID]);
 
   //custom file name
-  const [customFileName, setCustomFileName] = useState(`Untitled_Video_${videoID}`);
+  const [customFileName, setCustomFileName] = useState('');
+  const placeHolder = `Untitled_Video_${videoID}`;
 
+  //get currnet window/tab url
+  const [currentURL, setCurrentURL] = useState<string>('');
+
+  //copy the url using COPY btn
+  const [clicked, setClicked] = useState<boolean>(false);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(currentURL);
+    setClicked(true);
+  };
+
+  useEffect(() => {
+    setCurrentURL(window.location.href);
+  }, []);
+
+  //set email 
+  const [email, setEmail] = useState('');
 
 
   return (
@@ -36,10 +54,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
             
               <input
                 type="text"
-                placeholder={customFileName}
+                placeholder={placeHolder}
                 value={customFileName}
                 onChange={(e) => setCustomFileName(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 mb-2"
+                className="outline-none rounded-md p-2 mb-2"
               />
             </h3>
             <Image
@@ -58,6 +76,8 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
           type="email"
           name="receiverEmail"
           placeholder="Enter email of receiver"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
         />
         <div
@@ -74,9 +94,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
         </h2>
         <div className="py-[12px] md:px-[12px] px-[12px] border-[1px] border-primary-200 rounded-[16px] h-[64px] w-full flex items-center gap-2 justify-between">
           <p className="text-black-400 text-[14px] ss:w-full w-[150px] xs:w-[250px] ss:text-[16px] font-[400] leading-[24.8px] font-Work-Sans overflow-x-hidden">
-            https://www.helpmeout/Untitled_Video_20232509
+            {/* https://www.helpmeout/Untitled_Video_20232509 */}
+            {currentURL}
           </p>
-          <div className="w-[104px] py-[10px] rounded-[8px] border-[1px] border-primary-400 font-[500] flex justify-center items-center gap-[8px] text-primary-600 font-Work-Sans">
+          <div onClick={copyToClipboard} className={`w-[104px] py-[10px] rounded-[8px] border-[1px]  font-[500] flex justify-center items-center gap-[8px]  font-Work-Sans cursor-pointer ${clicked ? 'bg-primary-400 text-pastel-bg' : 'border-primary-400 text-primary-600 '} hover:border-[2px]`}>
             <Image
               src="/assets/video-repo/copy.svg"
               alt=""

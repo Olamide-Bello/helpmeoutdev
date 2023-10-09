@@ -13,7 +13,8 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID }) => {
   useEffect(() => {
     const currentVideoID = videoID || (router.query.videoID as string);
     if (currentVideoID && videoRef.current) {
-      videoRef.current.src = `http://web-02.cofucan.tech/srce/api/video/stream/${currentVideoID}`;
+      console.log("videoREF:", videoRef);
+      videoRef.current.src = `http://web-02.cofucan.tech/srce/api/recording/${currentVideoID}`;
     }
   }, [videoID, router.query.videoID]);
 
@@ -91,11 +92,13 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID }) => {
 
   return (
     <div className="hidden w-full h-auto aspect-[575/475] rounded-[8px] bg-gray-200 border-[1px] border-primary-400 ss:flex flex-col overflow-hidden">
-      {videoID && <video ref={videoRef} controls className="w-full h-full">
+      <div className='w-full h-full bg-red-300'>
+      {videoID && <video ref={videoRef} controls className="w-full h-auto">
         <source type="video/mp4" />
         Your browser does not support the video tag.
 
       </video>}
+      </div>
       <div className="w-full h-[80px] bg-white flex justify-between items-center  px-[12px] ss:px-[40px]">
         <h3 className="font-Inter text-primary-200 font-[500] text-[14px] ss:text-[24px]">
         {

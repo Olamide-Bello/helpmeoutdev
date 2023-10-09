@@ -17,6 +17,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID }) => {
       // videoRef.current.src = `http://web-02.cofucan.tech/srce/api/recording/${currentVideoID}`;  //API that is given by BE
       // videoRef.current.src = `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`; //API that i've taken from online
       videoRef.current.src = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4`; //new API from BE
+      
     }
   }, [videoID, router.query.videoID]);
 

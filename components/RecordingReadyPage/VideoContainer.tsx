@@ -13,7 +13,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID }) => {
   useEffect(() => {
     const currentVideoID = videoID || (router.query.videoID as string);
     if (currentVideoID && videoRef.current) {
-      videoRef.current.src = `http://web-02.cofucan.tech/srce/api/video/stream/${currentVideoID}`;
+      videoRef.current.src = `http://web-02.cofucan.tech/srce/api/recording/${currentVideoID}`;
     }
   }, [videoID, router.query.videoID]);
 

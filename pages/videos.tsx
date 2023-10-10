@@ -71,7 +71,13 @@ function Videos() {
             </div>
           </div>
 
-          <div className="w-full px-4 lg:px-12 mt-9 flex flex-col gap-4 overflow-y-scroll">
+          <div
+            style={{
+              borderTop: '1px solid lightgray',
+              paddingTop: '50px',
+            }}
+            className="w-full px-4 lg:px-12 mt-9 flex flex-col gap-4 overflow-y-scroll"
+          >
             <p className="text-gray-600 font-medium text-sm lg:text-base">
               Recent files
             </p>

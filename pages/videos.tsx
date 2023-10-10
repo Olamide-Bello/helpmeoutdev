@@ -1,15 +1,50 @@
-import React from 'react'
-import Image from 'next/image'
-import Logo2 from '../public/assets/video-repo/logo-2.png'
-import { FiSearch } from 'react-icons/fi'
-import Navbar from '@/components/shared/Navbar'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'        
-// import { Spinner } from '../../components/shared/Loader'
-// import VideoCard from '../../components/shared/VideoCard'
+import React, { useState, useEffect, useContext } from 'react';
+import Image from 'next/image';
+import { FiSearch } from 'react-icons/fi';
+import Navbar from '@/components/shared/Navbar';
+import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { GlobalContext } from '../context/GlobalContext';
+import Link from 'next/link';
+
 
 function Videos() {
-  const src =
+  const { user } = useContext(GlobalContext);
+  const displayName = user?.displayName || 'user13';
+
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const response = await axios.get(`https://www.cofucan.tech/srce/api/recording/user/${displayName}`);
+        const formattedVideos = response.data.map(video => ({
+          id: video.id,
+          username: video.title,
+          src: video.original_location, // Update this according to your API response
+          created_date: formatDate(video.created_date),
+        }));
+        setVideos(formattedVideos);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching videos:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchVideos();
+  }, [user]);
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+    return formattedDate.toUpperCase();
+  };
+
+
+/*   const src =
     'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4'
 
   const details = [
@@ -48,7 +83,7 @@ function Videos() {
       title: 'How to Create Facebook Ad Listing',
       date: '  SEPTEMBER 22, 2023',
     },
-  ]
+  ] */
   return (
  
     <div>
@@ -113,7 +148,8 @@ function Videos() {
         <div className="w-full px-[6em] min-h-[15em] mt-9 flex justify-start flex-col gap-4 mb-5 overflow-y-scroll">
           <p className="text-dark-200 font-ppReg text-[12px] ">Recent files</p>
           <div className="w-full flex items-center justify-start flex-wrap gap-7">
-            {details.map((item, index) => (
+            {videos.map((item, index) => (
+                <Link key={index} href={`/videos/${item.id}`} passHref>
               <div
                 key={index}
                 className="w-full p-4 max-w-[500px] max-h-[250px] h-full border-solid border-white-300 border-[2px] rounded-[10px] "
@@ -126,7 +162,7 @@ function Videos() {
                 </video>
                 <div className="flex justify-between mt-3">
                   <p className="text-dark-100 font-ppSB text-[15px] mt-1">
-                    {item.title}
+                    {item.username}
                   </p>
                   <div className="flex">
                     <Image
@@ -144,9 +180,11 @@ function Videos() {
                   </div>
                 </div>
                 <p className="text-white-400 opacity-[.5] font-ppReg text-[11px]">
-                  {item.date}
+                  {item.created_date}
                 </p>
               </div>
+             
+          </Link>
             ))}
           </div>
         </div>

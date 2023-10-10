@@ -8,7 +8,6 @@ import Icon3 from '../../public/assets/home/feature-icon3.svg'
 import Repo from '../../public/assets/home/video-repo.png'
 import Card from '../../public/assets/home/card-img.png'
 import Arrow from '../../public/assets/home/arrow-right.svg'
-import MainLayout from './MainLayout'
 
 const Landingpage = () => {
   return (

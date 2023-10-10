@@ -1,55 +1,108 @@
-import React, { useState } from 'react'
-import { useRouter } from 'next/router'
-import Navbar from '@/components/shared/Navbar'
-import Link from 'next/link'
-import MainLayout from '@/components/shared/MainLayout'
-import Image from 'next/image'
-import VideoPlayer from '@/components/SingleViewPage/VideoPlayer'
-import { Input } from '../../components/SingleViewPage/Input'
-import { Share } from '../../components/SingleViewPage/share'
-import Transcript from '../../components/SingleViewPage/transcript'
-import Demo from '@/components/SingleViewPage/Demo'
+import React, { useState, useEffect, useContext } from 'react';
+import { useRouter } from 'next/router';
+import Navbar from '@/components/shared/Navbar';
+import Link from 'next/link';
+import MainLayout from '@/components/shared/MainLayout';
+import Image from 'next/image';
+import VideoPlayer from '@/components/SingleViewPage/VideoPlayer';
+import { Input } from '../../components/SingleViewPage/Input';
+import { Share } from '../../components/SingleViewPage/share';
+import Transcript from '../../components/SingleViewPage/transcript';
+import Demo from '@/components/SingleViewPage/Demo';
+import { GlobalContext } from '../../context/GlobalContext';
+import axios from 'axios';
 
 
 
-// a place array for the transcript component
-const ts = [
-    {
-        time: 0.01,
-        msg: `First step. Open Facebook on your desktop or mobile device and
-        locate "Marketplace" in the left-hand menu or at the top of the
-        . Open Facebook on your desktop or mobile device and locate
-        "Marketplace" in the left-ha`
-    },
-    {
-        time: 0.15,
-        msg: `First step. Open Facebook on your desktop or mobile device and
-        locate "Marketplace" in the left-hand menu or at the top of the
-        . Open Facebook on your desktop or mobile device and locate
-        "Marketplace" in the left-ha`
-    }
-]
 const Single = () => {
-    const params = useRouter()
-    const [email, setEmail] = useState<string>("") // email to send the video link to
-    const [errMsg, setErrMsg] = useState<boolean>(false) // email validation state
-    const [videoName, setVideoName] = useState<string>("How To Create A Facebook Ad Listing") // name of the video
-    const [copied, setCopied] = useState<boolean>(false)
-    const [url, setUrl] = useState<string>("") // url of the video
-    const { id } = params.query // id for fetching the video from backend
-    console.log(id)
+  const router = useRouter();
+  const { id } = router.query;
+  const { user } = useContext(GlobalContext);
+  const displayName = user?.displayName || 'user13';
+  const TranscriptId = '5z7aWVvi8lE1SFh'
 
-    //function to copy url to the clipboard
-    const copy = (e: string) => {
-        setCopied(true);
-        navigator.clipboard.writeText(e);
-        setTimeout(() => {
-            //allow the user to be able to copy link again after 3 seconds 
-            setCopied(false);
-        }, 3000);
-        console.log(e);
+  const [email, setEmail] = useState('');
+  const [errMsg, setErrMsg] = useState(false);
+  const [videoName, setVideoName] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [url, setUrl] = useState('');
+  const [transcript, setTranscript] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const convertToUrlTranscript = (transcriptData) => {
+    const urlTranscript = [];
+    let currentTime = 0;
+    let message = '';
+  
+    transcriptData.forEach((word, index) => {
+      const startTime = word.start;
+      const endTime = word.end;
+      const wordText = word.punctuated_word;
+  
+      if (startTime > currentTime) {
+        // If there is a message, add it to urlTranscript
+        if (message !== '') {
+          urlTranscript.push({ time: parseFloat(currentTime.toFixed(2)), msg: message.trim() });
+        }
+        // Reset message and update current time
+        message = '';
+        currentTime = endTime;
+      }
+  
+      // Add the current word to the message
+      message += `${wordText} `;
+  
+      // Add the next 10 words to the message
+      for (let i = 1; i <= 10 && index + i < transcriptData.length; i++) {
+        message += `${transcriptData[index + i].punctuated_word} `;
+      }
+  
+      currentTime = endTime;
+    });
+  
+    // Push the remaining message to urlTranscript
+    if (message !== '') {
+      urlTranscript.push({ time: parseFloat(currentTime.toFixed(2)), msg: message.trim() });
+    }
+  
+    return urlTranscript;
+  };
+
+  
+  useEffect(() => {
+      const fetchVideoData = async () => {
+    try {
+      const response = await axios.get(`https://www.cofucan.tech/srce/api/recording/${id}`);
+      const data = response.data;
+      const videoUrl = `https://www.cofucan.tech/srce/api/video/${id}.mp4`;
+  
+      setVideoName(data.title);
+      setUrl(videoUrl);
+  
+      // Fetch transcript data if required
+      const transcriptResponse = await fetch(`https://www.cofucan.tech/srce/api/transcript/${id}.json`);
+        const transcriptData = await transcriptResponse.json();
+        const convertedTranscript = convertToUrlTranscript(transcriptData.words);
+        setTranscript(convertedTranscript);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching video data:', error);
+        setLoading(false);
+      }
     };
 
+    if (id) {
+      fetchVideoData();
+    }
+  }, [id]);
+
+  const copyToClipboard = (text) => {
+    setCopied(true);
+    navigator.clipboard.writeText(text);
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
+  };
     //function to handle email change
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
@@ -77,6 +130,7 @@ const Single = () => {
             console.log(email)
         }
     }
+    /*  */
 
     return (
         <div>
@@ -126,7 +180,7 @@ const Single = () => {
                 {/* share the video on social media */}
                 <Share text={url} />
                 {/* video transcript*/}
-                <Transcript data={ts} />
+                <Transcript data={transcript} />
             </MainLayout>
         </div>
     )

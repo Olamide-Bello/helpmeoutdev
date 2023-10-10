@@ -1,3 +1,4 @@
+import { User } from "firebase/auth";
 export interface VideoPageContentProps {
   displayModal: () => void,
   videoID?: string | string[] | undefined; // Add a videoID prop
@@ -7,6 +8,6 @@ export interface VideoPageContentProps {
 export type ContextTypes = {
   logged?: boolean,
   setLogged: (logged: boolean) => void,
-  username?: string,
-  setUsername: (username: string) => void
+  user: User | null,
+  setUser: (user: User | null) => void
 }

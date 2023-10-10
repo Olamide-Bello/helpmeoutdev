@@ -15,6 +15,7 @@ import axios from 'axios';
 
 
 const Single = () => {
+
   const router = useRouter();
   const { id } = router.query;
   const { user } = useContext(GlobalContext);
@@ -28,6 +29,7 @@ const Single = () => {
   const [url, setUrl] = useState('');
   const [transcript, setTranscript] = useState([]);
   const [loading, setLoading] = useState(true);
+
 
   const convertToUrlTranscript = (transcriptData) => {
     const urlTranscript = [];
@@ -158,7 +160,7 @@ const Single = () => {
                     <div className="flex flex-col gap-6 w-full my-10">
                         <div className="flex md:flex-row flex-col bg-opacity-40 justify-between items-center md:gap-20 gap-5">
                             <Input
-                                bg="bg-opacity-50 bg-purple-300 h-[60px] w-full md:w-1/2"
+                                bg="bg-opacity-50 bg-[#b6b3c680] h-[60px] w-full md:w-1/2"
                                 btStyles="bg-primary-200 text-white rounded-lg"
                                 text="Send"
                                 placeholder="Enter the email of the reciever"

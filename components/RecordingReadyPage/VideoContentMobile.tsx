@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { VideoPageContentProps } from '@/types/video-repo'
@@ -11,10 +11,32 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null)
   const router = useRouter()
 
+    //custom file name
+    const [customFileName, setCustomFileName] = useState('');
+    const placeHolder = `Untitled_Video_${videoID}`;
+  
+    //get currnet window/tab url
+    const [currentURL, setCurrentURL] = useState<string>('');
+  
+    //copy the url using COPY btn
+    const [clicked, setClicked] = useState<boolean>(false);
+  
+    const copyToClipboard = () => {
+      navigator.clipboard.writeText(currentURL);
+      setClicked(true);
+    };
+  
+    useEffect(() => {
+      setCurrentURL(window.location.href);
+    }, []);
+  
+    //set email 
+    const [email, setEmail] = useState('');
+
   useEffect(() => {
     const currentVideoID = videoID || (router.query.videoID as string)
     if (currentVideoID && videoRef.current) {
-      videoRef.current.src = `http://web-02.cofucan.tech/srce/api/video/stream/${currentVideoID}`
+      videoRef.current.src = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4`; //new API from BE
     }
   }, [videoID, router.query.videoID])
 
@@ -24,7 +46,15 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
       <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
       <div className="flex items-center w-full justify-between gap-[24px] mb-[12px]">
         <h3 className="text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]">
-          Untitled_Video_{videoID}
+        <input
+                type="text"
+                placeholder={placeHolder}
+                value={customFileName}
+                onChange={(e) => setCustomFileName(e.target.value)}
+
+                className="border-none outline-none rounded-md p-2 mb-2 w-full text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
+
+              />
         </h3>
         <Image
           className="w-[16px] h-auto xs:h-[24px] xs:w-[24px]"
@@ -58,10 +88,12 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
       )}
       {/* Email input and send button */}
       <div className="py-[12px] px-[8px] bg-primary-50 rounded-[12px] mb-[8px] h-[64px] w-full flex items-center justify-between">
-        <input
+      <input
           type="email"
           name="receiverEmail"
-          placeholder="Johnmark@gmail.com"
+          placeholder="Enter email of receiver"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
         />
         <div
@@ -80,7 +112,8 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
       </h2>
       {/* Share options */}
       <div className="mt-[44px] flex flex-wrap gap-3 items-center">
-        <div className="w-[177px] py-[10px] rounded-[8px] border-[1px] border-primary-400 font-[500] flex justify-center items-center gap-[8px] text-primary-600 font-Work-Sans">
+        <div onClick={copyToClipboard} className={`w-[177px] py-[10px] rounded-[8px] border-[1px] border-primary-400 font-[500] flex justify-center items-center gap-[8px] text-primary-600 font-Work-Sans cursor-pointer ${clicked ? 'bg-primary-400 text-pastel-bg' : 'border-primary-400 text-primary-600 '} hover:border-[2px]`}>
+
           <Image
             src="/assets/video-repo/copy.svg"
             alt=""

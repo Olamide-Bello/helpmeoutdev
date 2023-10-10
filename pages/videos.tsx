@@ -6,7 +6,7 @@
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 // import { GlobalContext } from '../context/GlobalContext';
-// import Link from 'next/link';
+// import Link from 'next/link'
 
 
 // function Videos() {

@@ -30,8 +30,8 @@ const Landingpage = () => {
             </button>
           </Link>
         </div>
-        <div className="w-full lg:w-1/2">
-          <div className="h-[500px] lg:h-[auto]">
+        <div className="w-full lg:w-1/2 mt-6 lg:mt-0">
+          <div className="h-auto lg:h-[500px]">
             <Image
               src={Hero}
               layout="responsive"
@@ -43,7 +43,7 @@ const Landingpage = () => {
         </div>
       </div>
 
-      <div className="bg-slate-200 py-8  lg:py-12">
+      <div className="bg-slate-200 py-8 lg:py-12">
         <div className="bg-white min-h-[80%]">
           <div className="py-8 lg:py-16">
             <h3 className="font-sora font-bold text-3xl md:text-4xl text-center">
@@ -64,7 +64,6 @@ const Landingpage = () => {
                   height={48}
                   alt="image"
                 />
-
                 <div>
                   <p className="font-inter font-semibold pb-1">
                     Simple Screen Recording
@@ -195,7 +194,7 @@ const Landingpage = () => {
             />
           </div>
         </div>
-      </div>
+        </div>
     </>
   )
 }

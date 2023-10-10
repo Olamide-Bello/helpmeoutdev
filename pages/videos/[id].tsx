@@ -31,7 +31,7 @@ const Single = () => {
   const [loading, setLoading] = useState(true);
 
 
-  const convertToUrlTranscript = (transcriptData) => {
+  const convertToUrlTranscript = (transcriptData:[]) => {
     const urlTranscript = [];
     let currentTime = 0;
     let message = '';

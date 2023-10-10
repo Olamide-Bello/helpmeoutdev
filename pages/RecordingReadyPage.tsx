@@ -4,9 +4,10 @@ import SaveToAccount from '@/components/RecordingReadyPage/SaveToAccount'
 import VideoPageContent from '@/components/RecordingReadyPage/VideoPageContent'
 import React, { useEffect } from 'react'
 import MainLayout from '@/components/shared/MainLayout'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Modal from '@/components/RecordingReadyPage/Modal'
 import { useRouter } from 'next/router';
+
 
 const RecordingReadyPage: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -29,20 +30,20 @@ const RecordingReadyPage: React.FC = () => {
     }
   }, [showModal])
 
-  // variable to get userID from router
   const router = useRouter();
+  const { videoID } = router.query;
 
-  useEffect(() => {
-    const videoID = router.query.videoID as string;
-    
-  }, [router.query.videoID]);
+  if (videoID) {
+    // Use videoID here
+    console.log('Video ID:', videoID);
+  }
 
   return (
     <div className="relative w-full h-full">
       <Navbar noNav={true}/>
       <MainLayout>
         {/* Recording is ready page main content */}
-        <VideoPageContent displayModal={displayModal} videoID={router.query.videoID}/>
+        <VideoPageContent displayModal={displayModal} videoID={videoID}/>
         {/* Save to account container */}
         <SaveToAccount />
       </MainLayout>

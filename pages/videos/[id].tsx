@@ -35,7 +35,7 @@ const Single = () => {
     const [errMsg, setErrMsg] = useState<boolean>(false) // email validation state
     const [videoName, setVideoName] = useState<string>("How To Create A Facebook Ad Listing") // name of the video
     const [copied, setCopied] = useState<boolean>(false)
-    const [url, setUrl] = useState<string>("") // url of the video
+    const [url, setUrl] = useState<string>("https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4") // url of the video
     const { id } = params.query // id for fetching the video from backend
     console.log(id)
 

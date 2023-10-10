@@ -12,7 +12,7 @@
   }
 }
 
-/* ffor smooth scrolling to hash links*/
+/* for smooth scrolling to hash links*/
 html {
   scroll-behavior: smooth;
 }
@@ -41,4 +41,4 @@ html {
 .custom-scrollbar {
   scrollbar-face-color: #888;
   scrollbar-track-color: #f1f1f1;
-  }
+}

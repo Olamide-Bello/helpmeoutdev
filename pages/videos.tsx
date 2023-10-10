@@ -13,7 +13,7 @@ function Videos() {
   const { user } = useContext(GlobalContext);
   const displayName = user?.displayName || 'user13';
 
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState<[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ function Videos() {
   ] */
   return (
  
-    <div>
+  <div>
       <div className="w-full h-screen overflow-y-hidden">
         <div className="w-full h-full mb-8 flex flex-col   justify-between">
           {/* <div className="w-full px-[4em] py-9 flex items-center justify-between">
@@ -94,7 +94,7 @@ function Videos() {
             <button className="px-3 flex items-center justify-center gap-2"></button>
           </div> */}
           <Navbar />
-          <div className="w-full px-[6em] py-5 flex items-start justify-between lg:flex-row md:flex-col sm:flex-col">
+          <div className="w-full px-[6em] py-5 flex items-start       justify-between lg:flex-row md:flex-col sm:flex-col">
             <div className="w-auto flex flex-col items-start justify-start">
               <h1 className="text-black-600   lg:text-[2em]  sm:text-sm font-bold mb-3 ">
                 Hello, John Mark
@@ -112,16 +112,17 @@ function Videos() {
               />
             </div>
           </div>
-
-          <div
+        </div>
+      </div>
+        <div
             style={{
               borderTop: '1px solid lightgray',
               paddingTop: '50px',
             }}
             className="  w-full px-[6em] min-h-[15em] mt-9 flex   justify-start flex-col gap-4 mb-5 overflow-y-scroll"
-          >
+          > 
             <p className="text-dark-200 font-ppReg text-[12px] ">
-              Recent files
+              Recent files </p>
     <div className="w-full h-screen overflow-y-hidden">
       <div className="w-full h-full mb-8 flex flex-col justify-between">
         <Navbar />
@@ -149,7 +150,7 @@ function Videos() {
           <p className="text-dark-200 font-ppReg text-[12px] ">Recent files</p>
           <div className="w-full flex items-center justify-start flex-wrap gap-7">
             {videos.map((item, index) => (
-                <Link key={index} href={`/videos/${item.id}`} passHref>
+                <Link key={index} href={`/videos/${item?.id}`} passHref>
               <div
                 key={index}
                 className="w-full p-4 max-w-[500px] max-h-[250px] h-full border-solid border-white-300 border-[2px] rounded-[10px] "
@@ -180,7 +181,7 @@ function Videos() {
                   </div>
                 </div>
                 <p className="text-white-400 opacity-[.5] font-ppReg text-[11px]">
-                  {item.created_date}
+                  {item?.created_date}
                 </p>
               </div>
              
@@ -188,17 +189,20 @@ function Videos() {
             ))}
           </div>
         </div>
-      </div><ToastContainer 
-  position="top-center" // Position the toast container at the bottom-center
-  autoClose={1500} // Close after 3 seconds (adjust as needed)
-  style={{
-    width: 'fit-content', // Adjust the width as needed
-    textAlign: 'center', // Center-align the container's content
-  }}
-  />
-
+      </div>
+      <ToastContainer 
+          position="top-center" // Position the toast container at the bottom-center
+          autoClose={1500} // Close after 3 seconds (adjust as needed)
+          style={{
+         width: 'fit-content', // Adjust the width as needed
+         textAlign: 'center', // Center-align the container's content
+         }}
+       />
+    </div>
+    </div>
     </div>
   );
+ 
 }
 
 export default Videos

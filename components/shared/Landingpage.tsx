@@ -42,7 +42,7 @@ const Landingpage = () => {
         </div>
       </div>
 
-      <div id='features' className=" bg-slate-200 py-12">
+      <div id="features" className=" bg-slate-200 py-12">
         <div className=" bg-white min-h-[80%] ">
           <div className=" py-16">
             <h3 className=" font-sora font-bold text-[40px] text-center">
@@ -193,7 +193,7 @@ const Landingpage = () => {
             />
           </div>
         </div>
-        </div>
+      </div>
     </>
   )
 }

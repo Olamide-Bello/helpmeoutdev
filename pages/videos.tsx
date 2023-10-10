@@ -1,91 +1,94 @@
-import React, { useState, useEffect, useContext } from 'react';
-import Image from 'next/image';
-import { FiSearch } from 'react-icons/fi';
-import Navbar from '@/components/shared/Navbar';
-import axios from 'axios';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { GlobalContext } from '../context/GlobalContext';
-import Link from 'next/link';
+// import React, { useState, useEffect, useContext } from 'react';
+// import Image from 'next/image';
+// import { FiSearch } from 'react-icons/fi';
+// import Navbar from '@/components/shared/Navbar';
+// import axios from 'axios';
+// import { ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+// import { GlobalContext } from '../context/GlobalContext';
+// import Link from 'next/link';
 
 
-function Videos() {
-  const { user } = useContext(GlobalContext);
-  const displayName = user?.displayName || 'user13';
+// function Videos() {
+//   const { user } = useContext(GlobalContext);
+//   const displayName = user?.displayName || 'user13';
+
 
   const [videos, setVideos] = useState<[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const response = await axios.get(`https://www.cofucan.tech/srce/api/recording/user/${displayName}`);
-        const formattedVideos = response.data.map(video => ({
-          id: video.id,
-          username: video.title,
-          src: video.original_location, // Update this according to your API response
-          created_date: formatDate(video.created_date),
-        }));
-        setVideos(formattedVideos);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching videos:', error);
-        setLoading(false);
-      }
-    };
 
-    fetchVideos();
-  }, [user]);
+//   useEffect(() => {
+//     const fetchVideos = async () => {
+//       try {
+//         const response = await axios.get(`https://www.cofucan.tech/srce/api/recording/user/${displayName}`);
+//         const formattedVideos = response.data.map(video => ({
+//           id: video.id,
+//           username: video.title,
+//           src: video.original_location, // Update this according to your API response
+//           created_date: formatDate(video.created_date),
+//         }));
+//         setVideos(formattedVideos);
+//         setLoading(false);
+//       } catch (error) {
+//         console.error('Error fetching videos:', error);
+//         setLoading(false);
+//       }
+//     };
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
-    return formattedDate.toUpperCase();
-  };
+//     fetchVideos();
+//   }, [user]);
+
+//   const formatDate = (dateString) => {
+//     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+//     const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+//     return formattedDate.toUpperCase();
+//   };
 
 
-/*   const src =
-    'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4'
+// /*   const src =
+//     'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4'
 
-  const details = [
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing',
-      date: '  SEPTEMBER 22, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing',
-      date: '  SEPTEMBER 22, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing',
-      date: '  SEPTEMBER 22, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing',
-      date: '  SEPTEMBER 22, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing',
-      date: '  SEPTEMBER 22, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing',
-      date: '  SEPTEMBER 22, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing',
-      date: '  SEPTEMBER 22, 2023',
-    },
-  ] */
+//   const details = [
+//     {
+//       src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
+//       title: 'How to Create Facebook Ad Listing',
+//       date: '  SEPTEMBER 22, 2023',
+//     },
+//     {
+//       src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
+//       title: 'How to Create Facebook Ad Listing',
+//       date: '  SEPTEMBER 22, 2023',
+//     },
+//     {
+//       src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
+//       title: 'How to Create Facebook Ad Listing',
+//       date: '  SEPTEMBER 22, 2023',
+//     },
+//     {
+//       src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
+//       title: 'How to Create Facebook Ad Listing',
+//       date: '  SEPTEMBER 22, 2023',
+//     },
+//     {
+//       src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
+//       title: 'How to Create Facebook Ad Listing',
+//       date: '  SEPTEMBER 22, 2023',
+//     },
+//     {
+//       src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
+//       title: 'How to Create Facebook Ad Listing',
+//       date: '  SEPTEMBER 22, 2023',
+//     },
+//     {
+//       src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
+//       title: 'How to Create Facebook Ad Listing',
+//       date: '  SEPTEMBER 22, 2023',
+//     },
+//   ] */
   return (
  
+
   <div>
       <div className="w-full h-screen overflow-y-hidden">
         <div className="w-full h-full mb-8 flex flex-col   justify-between">
@@ -204,5 +207,5 @@ function Videos() {
   );
  
 }
-
+        
 export default Videos

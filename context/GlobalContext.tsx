@@ -1,8 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
 import {onAuthStateChanged, User} from 'firebase/auth'
 import { ContextTypes } from '@/types/video-repo'
-
-
 import {auth} from '../components/Auth/firebase'
 
 export const GlobalContext = createContext({

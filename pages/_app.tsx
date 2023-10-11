@@ -5,5 +5,5 @@ import type { AppProps } from 'next/app'
 
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <GlobalState><Component {...pageProps}> </Component></GlobalState>
+  return <GlobalState><Component {...pageProps}></Component></GlobalState>
 }

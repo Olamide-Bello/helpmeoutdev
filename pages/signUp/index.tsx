@@ -257,7 +257,7 @@ const SignUp: React.FC = () => {
               required
               value={username}
               onChange={handleNameChange}
-              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[17px]"
+              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
             />
           </div>
           <div>
@@ -271,18 +271,18 @@ const SignUp: React.FC = () => {
               value={password}
               onChange={handlePassChange}
               minLength={5}
-              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[17px]"
+              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
             />
           </div>
 
           <button
             // onClick={signUp}
-            className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px]  text-[14px] xs:text-[17px] bg-primary-600 text-white "
+            className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
           >
             Sign Up
           </button>
 
-          <h2 className="mt-[1rem] text-center text-[17px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
+          <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Already Have Account{' '}
             <Link href={'/logIn'}>
               <span className="font-bold hover:underline cursor-pointer font-Work-Sans">

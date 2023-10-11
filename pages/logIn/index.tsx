@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -7,10 +7,7 @@ import {
   googleProvider,
 } from '../../components/Auth/firebase'
 import {
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
+  signInWithPopup
 } from 'firebase/auth'
 
 import { toast, ToastContainer } from 'react-toastify'
@@ -25,23 +22,45 @@ interface User {
 
 const LogIn: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
 
   const history = useRouter()
 
-  console.log(auth?.currentUser?.email)
+  const[username, setUsername] = useState<string>('')
+  const[password, setPassword] = useState<string>('')
+  
+  
+  const handleNameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setUsername(value);
+    console.log(value);
+  };
+ 
+  const handlePassChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setPassword(value);
+    console.log(value);
+  };
+ 
+  const handleSubmit:React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    const data = {username, password};
+    try {
+      const response = await fetch('https://www.cofucan.tech/srce/api/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-  const login = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const newUser = userCredential.user
-        console.log(newUser)
-        setUser(newUser)
-        setUserExist(true)
-        toast.success('Successfully Logged In', {
+      console.log(response);
+      const result = await response.json();
+      console.log(result);
+      if (result.status_code === 200) {
+        console.log('Sign-up successful!');
+        toast.success('Successfully created an Account', {
           style: {
             background: 'white', // Change the background color as needed
             color: 'green', // Change the text color as needed
@@ -53,14 +72,13 @@ const LogIn: React.FC = () => {
           },
         })
         history.push('/videos')
-      })
-      .catch((error) => {
-        const errorCode = error.code
-
-        toast.error(`Error: ${errorCode}`, {
+        // You can handle success here, e.g., redirect to a success page
+      } else {
+        console.error('Sign-up failed with status code', result.status_code);
+                       toast.error(`Error: ${result.status_code}`, {
           style: {
-            background: 'red', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed
@@ -68,8 +86,24 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-      })
+        // Handle the error, show an error message, etc.
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+      toast.error(`Error: ${error}`, {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+    } 
   }
+  
 
   const loginWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
@@ -143,48 +177,7 @@ const LogIn: React.FC = () => {
       })
   }
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user)
-      } else {
-        setUser(null)
-      }
-    })
-
-    return () => unsubscribe()
-  }, [])
-  const handleSignOut = () =>
-    signOut(auth)
-      .then(() => {
-        setUser(null)
-        setUserExist(false)
-        toast.success('Successfully signed out', {
-          style: {
-            background: 'white', // Change the background color as needed
-            color: 'green', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        toast.error(`Error: ${errorCode}`, {
-          style: {
-            background: 'red', // Change the background color as needed
-            color: 'white', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-      })
+  
 
   return (
     <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem] ">
@@ -250,15 +243,15 @@ const LogIn: React.FC = () => {
             <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
           </div>
         </section>
-        <div className="flex flex-col w-full ss:w-[475px] ">
-          <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">Email</p>
+        <form className="flex flex-col w-full ss:w-[475px]" onSubmit={handleSubmit}>
+        <div>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">Username</p>
             <input
-              type="email"
-              placeholder="Enter your email address"
+              type="username"
+              placeholder="Enter your username"
               required
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[17px]"
             />
           </div>
           <div>
@@ -269,20 +262,30 @@ const LogIn: React.FC = () => {
               type="password"
               placeholder="Enter your Password"
               required
-              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              onChange={handlePassChange}
+              
               minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[17px]"
             />
           </div>
-
+          {userExist && (
+            <button
+              onClick={handleSignOut}
+              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[17px] bg-primary-600 text-white "
+            >
+              Sign Out
+            </button>
+          )}
           {!userExist && (
             <button
               onClick={login}
-              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[16px] bg-primary-600 text-white "
+              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[17px] bg-primary-600 text-white "
             >
-              Log In
-            </button>
-          )}
+              Sign Out
+  </button> */ }
+          
+          
 
           {message && (
             <p className="mt-[0.5rem] text-center text-[19px] font-semibold">
@@ -297,7 +300,7 @@ const LogIn: React.FC = () => {
               </span>
             </Link>
           </h2>
-        </div>
+        </form>
       </div>
       <ToastContainer
         position="top-center" // Position the toast container at the bottom-center

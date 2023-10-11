@@ -17,7 +17,6 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 
-
 interface User {
   uid: string
   email: string | null
@@ -30,7 +29,7 @@ const LogIn: React.FC = () => {
   const [password, setPassword] = useState<string>('')
   const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
-  
+
   const history = useRouter()
 
   console.log(auth?.currentUser?.email)
@@ -188,8 +187,11 @@ const LogIn: React.FC = () => {
       })
 
   return (
-    <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem]">
-      <Link href={'/'} className="flex items-center gap-[10px] cursor-pointer">
+    <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem] ">
+      <Link
+        href={'/'}
+        className="flex items-center gap-[10px] cursor-pointer mb-[2rem]"
+      >
         <Image
           src={'/assets/shared/logo.svg'}
           alt="logo"
@@ -256,7 +258,7 @@ const LogIn: React.FC = () => {
               placeholder="Enter your email address"
               required
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[17px]"
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>
           <div>
@@ -269,21 +271,14 @@ const LogIn: React.FC = () => {
               required
               onChange={(e) => setPassword(e.target.value)}
               minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[17px]"
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>
-          {userExist && (
-            <button
-              onClick={handleSignOut}
-              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[17px] bg-primary-600 text-white "
-            >
-              Sign Out
-            </button>
-          )}
+
           {!userExist && (
             <button
               onClick={login}
-              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[17px] bg-primary-600 text-white "
+              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[16px] bg-primary-600 text-white "
             >
               Log In
             </button>
@@ -297,21 +292,21 @@ const LogIn: React.FC = () => {
           <h2 className="mt-[1rem] text-center text-[17px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Don&apos;t Have Account{' '}
             <Link href={'/signUp'}>
-              <span className="font-bold text-[18px] hover:underline cursor-pointer font-Sora">
+              <span className="font-bold hover:underline cursor-pointer font-Work-Sans">
                 Sign Up
               </span>
             </Link>
           </h2>
         </div>
       </div>
-      <ToastContainer 
-  position="top-center" // Position the toast container at the bottom-center
-  autoClose={1500} // Close after 3 seconds (adjust as needed)
-  style={{
-    width: 'fit-content', // Adjust the width as needed
-    textAlign: 'center', // Center-align the container's content
-  }}
-  />
+      <ToastContainer
+        position="top-center" // Position the toast container at the bottom-center
+        autoClose={1500} // Close after 3 seconds (adjust as needed)
+        style={{
+          width: 'fit-content', // Adjust the width as needed
+          textAlign: 'center', // Center-align the container's content
+        }}
+      />
     </section>
   )
 }

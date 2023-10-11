@@ -14,7 +14,7 @@ import {
 } from 'firebase/auth'
 
 import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'                                        
+import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 
 interface User {
@@ -195,7 +195,10 @@ const SignUp: React.FC = () => {
 
   return (
     <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem]">
-      <Link href={'/'} className="flex items-center gap-[10px] cursor-pointer">
+      <Link
+        href={'/'}
+        className="flex items-center gap-[10px] cursor-pointer mb-[2rem]"
+      >
         <Image
           src={'/assets/shared/logo.svg'}
           alt="logo"
@@ -277,18 +280,11 @@ const SignUp: React.FC = () => {
               className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[17px]"
             />
           </div>
-          {userExist && (
-            <button
-              onClick={handleSignOut}
-              className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[17px] bg-primary-600 text-white "
-            >
-              Sign Out
-            </button>
-          )}
+
           {!userExist && (
             <button
               onClick={signUp}
-              className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px]  text-[14px] xs:text-[17px] bg-primary-600 text-white "
+              className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
             >
               Sign Up
             </button>
@@ -302,21 +298,21 @@ const SignUp: React.FC = () => {
           <h2 className="mt-[1rem] text-center text-[17px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Already Have Account{' '}
             <Link href={'/logIn'}>
-              <span className="font-bold text-[18px] hover:underline cursor-pointer font-Sora">
+              <span className="font-bold hover:underline cursor-pointer font-Work-Sans">
                 Log In
               </span>
             </Link>
           </h2>
         </div>
       </div>
-      <ToastContainer 
-  position="top-center" // Position the toast container at the bottom-center
-  autoClose={1500} // Close after 3 seconds (adjust as needed)
-  style={{
-    width: 'fit-content', // Adjust the width as needed
-    textAlign: 'center', // Center-align the container's content
-  }}
-  />
+      <ToastContainer
+        position="top-center" // Position the toast container at the bottom-center
+        autoClose={1500} // Close after 3 seconds (adjust as needed)
+        style={{
+          width: 'fit-content', // Adjust the width as needed
+          textAlign: 'center', // Center-align the container's content
+        }}
+      />
     </section>
   )
 }

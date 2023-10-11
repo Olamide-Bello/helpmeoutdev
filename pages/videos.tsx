@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useContext } from 'react';
+
 import Image from 'next/image'
 import Logo2 from '../public/assets/video-repo/logo-2.png'
 import { FiSearch } from 'react-icons/fi'
@@ -139,6 +140,7 @@ function Videos() {
                   controls
                   className="w-full h-[150px] lg:h-[200px] rounded-md bg-gray-300 object-cover"
                 >
+
                   <source src={item.src} type="video/mp4" />
                 </video>
                 <div className="flex justify-between mt-2">
@@ -156,6 +158,7 @@ function Videos() {
                       src="/assets/video-repo/more.png"
                       alt="More"
                     />
+
                   </div>
                 </div>
                 <p className="text-gray-400 opacity-50 text-xs lg:text-sm">

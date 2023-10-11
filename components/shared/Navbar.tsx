@@ -46,15 +46,16 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
         {/* Get Started */}
         {
           (logged === true && user?.displayName) ?
-            <div className='flex items-center gap-[10px] relative font-Work-Sans font-[400]'>
+            <div className='flex items-center gap-1 md:gap-4 relative font-Work-Sans font-[400]'>
               <Image
                 src="/assets/shared/profile.svg"
                 alt='profile'
                 height={40}
                 width={40}
+                className='w-6 h-6 ss:w-10 ss:h-10'
               />
-              <div onClick={handleShowLogout} className='flex gap-[10px] cursor-pointer'>
-                <p>{user?.displayName}</p>
+              <div onClick={handleShowLogout} className='flex md:gap-[10px] cursor-pointer'>
+                <p className='text-[13px] ss:text-[18px]'>{user?.displayName}</p>
                 <Image
                   src="/assets/video-repo/arrow-down.svg"
                   height={20}

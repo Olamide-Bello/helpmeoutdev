@@ -38,6 +38,7 @@ function Videos() {
           src: video.original_location, // Update this according to your API response
           created_date: formatDate(video.created_date),
         }));
+        console.log(response.data)
         setVideos(formattedVideos);
         setLoading(false);
       } catch (error) {

@@ -172,7 +172,7 @@ const Single = () => {
                                 btStyles="rounded-lg  border-[1px] border-black bg-white text-indigo-900"
                                 text={copied ? "Copied!!!" : "Copy URL"}
                                 value={url}
-                                onClick={() => copy(url)}
+                                onClick={() => copyToClipboard(url)}
                                 icon={<Image alt='copy' src="/assets/video-repo/copy.svg" width={20} height={20} />}
                             />
                         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '@/components/shared/Navbar';
 import Link from 'next/link';
@@ -12,75 +12,86 @@ import Demo from '@/components/SingleViewPage/Demo';
 import { GlobalContext } from '../../context/GlobalContext';
 import axios from 'axios';
 
-
 interface TranscriptWord {
-    start: number;
-    end: number;
-    punctuated_word: string;
-  }
-  
-  const Single: React.FC = () => {
-    const router = useRouter();
-    const { id } = router.query;
-    const { user } = useContext(GlobalContext);
-    const displayName: string = user?.displayName || 'user13';
-    const TranscriptId: string = '5z7aWVvi8lE1SFh';
-  
-    const [email, setEmail] = useState<string>('');
-    const [errMsg, setErrMsg] = useState<boolean>(false);
-    const [videoName, setVideoName] = useState<string>('');
-    const [copied, setCopied] = useState<boolean>(false);
-    const [url, setUrl] = useState<string>('');
-    const [transcript, setTranscript] = useState<{ time: number; msg: string }[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+  start: number;
+  end: number;
+  punctuated_word: string;
+}
 
-  const convertToUrlTranscript = (transcriptData: TranscriptWord[]) => {
-    const urlTranscript: { time: number; msg: string }[] = [];
+const Single = () => {
+
+  const router = useRouter();
+  const { id } = router.query;
+  const { user } = useContext(GlobalContext);
+  const displayName = user?.displayName || 'user13';
+  const TranscriptId = '5z7aWVvi8lE1SFh'
+
+  const [email, setEmail] = useState('');
+  const [errMsg, setErrMsg] = useState(false);
+  const [videoName, setVideoName] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [url, setUrl] = useState('');
+  const [transcript, setTranscript] = useState<{ time: number; msg: string; }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+
+  const convertToUrlTranscript = (transcriptData: TranscriptWord[]): { time: number; msg: string }[] => {    const urlTranscript = [];
     let currentTime = 0;
     let message = '';
 
+    
+  
     transcriptData.forEach((word, index) => {
       const startTime = word.start;
       const endTime = word.end;
       const wordText = word.punctuated_word;
-
+  
       if (startTime > currentTime) {
+        // If there is a message, add it to urlTranscript
         if (message !== '') {
           urlTranscript.push({ time: parseFloat(currentTime.toFixed(2)), msg: message.trim() });
         }
+        // Reset message and update current time
         message = '';
         currentTime = endTime;
       }
-
+  
+      // Add the current word to the message
       message += `${wordText} `;
-
+  
+      // Add the next 10 words to the message
       for (let i = 1; i <= 10 && index + i < transcriptData.length; i++) {
         message += `${transcriptData[index + i].punctuated_word} `;
       }
-
+  
       currentTime = endTime;
     });
-
+  
+    // Push the remaining message to urlTranscript
     if (message !== '') {
       urlTranscript.push({ time: parseFloat(currentTime.toFixed(2)), msg: message.trim() });
     }
-
+  
     return urlTranscript;
   };
 
+  
   useEffect(() => {
-    const fetchVideoData = async () => {
-      try {
-        const response = await axios.get(`https://www.cofucan.tech/srce/api/recording/${id}`);
-        const data = response.data;
-        const videoUrl = `https://www.cofucan.tech/srce/api/video/${id}.mp4`;
+      const fetchVideoData = async () => {
+    try {
+      const response = await axios.get(`https://www.cofucan.tech/srce/api/recording/${id}`);
+      const data = response.data;
+      const videoUrl = `https://www.cofucan.tech/srce/api/video/${id}.mp4`;
+  
+      setVideoName(data.title);
+      setUrl(videoUrl);
+  
+      // Fetch transcript data if required
+      const transcriptResponse = await fetch(`https://www.cofucan.tech/srce/api/transcript/${id}.json`);
+        const transcriptData = await transcriptResponse.json();
+        const convertedTranscript = convertToUrlTranscript(transcriptData.words);
+        //const [transcript, setTranscript] = useState<{ time: number; msg: string; }[]>([]);
 
-        setVideoName(data.title);
-        setUrl(videoUrl);
-
-        const transcriptResponse = await fetch(`https://www.cofucan.tech/srce/api/transcript/${id}.json`);
-        const transcriptData: TranscriptWord[] = await transcriptResponse.json();
-        const convertedTranscript = convertToUrlTranscript(transcriptData);
         setTranscript(convertedTranscript);
         setLoading(false);
       } catch (error) {
@@ -101,33 +112,33 @@ interface TranscriptWord {
       setCopied(false);
     }, 3000);
   };
-
     //function to handle email change
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setEmail(value);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target
+        setEmail(value)
         if (!email) {
-          setErrMsg(false);
+            // to clear the error message when the input field has been cleared
+            setErrMsg(false)
         }
-      };
+    }
 
     //function to validate the entered email
-    const isEmailValid = (mail: string): boolean => {
-        const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return emailRegex.test(mail);
-      };
+    const isEmailValid = (mail: string) => {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        return emailRegex.test(mail)
+    }
 
     // function to send the video url to the entered email
-    const sendEmail = (): void => {
-        // Validate the email before taking action
-        const valid: boolean = isEmailValid(email);
+    const sendEmail = () => {
+        //validate the email before taking action
+        const valid = isEmailValid(email)
         if (!valid) {
-          setErrMsg(true);
+            setErrMsg(true)
         } else {
-          // Send the URL here
-          console.log(email);
+            //send the url here
+            console.log(email)
         }
-      };
+    }
     /*  */
 
     return (

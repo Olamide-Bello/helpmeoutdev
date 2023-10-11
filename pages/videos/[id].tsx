@@ -12,7 +12,11 @@ import Demo from '@/components/SingleViewPage/Demo';
 import { GlobalContext } from '../../context/GlobalContext';
 import axios from 'axios';
 
-
+interface TranscriptWord {
+  start: number;
+  end: number;
+  punctuated_word: string;
+}
 
 const Single = () => {
 
@@ -27,14 +31,15 @@ const Single = () => {
   const [videoName, setVideoName] = useState('');
   const [copied, setCopied] = useState(false);
   const [url, setUrl] = useState('');
-  const [transcript, setTranscript] = useState([]);
+  const [transcript, setTranscript] = useState<{ time: number; msg: string; }[]>([]);
   const [loading, setLoading] = useState(true);
 
 
-  const convertToUrlTranscript = (transcriptData:[]) => {
-    const urlTranscript = [];
+  const convertToUrlTranscript = (transcriptData: TranscriptWord[]): { time: number; msg: string }[] => {    const urlTranscript = [];
     let currentTime = 0;
     let message = '';
+
+    
   
     transcriptData.forEach((word, index) => {
       const startTime = word.start;
@@ -85,6 +90,8 @@ const Single = () => {
       const transcriptResponse = await fetch(`https://www.cofucan.tech/srce/api/transcript/${id}.json`);
         const transcriptData = await transcriptResponse.json();
         const convertedTranscript = convertToUrlTranscript(transcriptData.words);
+        //const [transcript, setTranscript] = useState<{ time: number; msg: string; }[]>([]);
+
         setTranscript(convertedTranscript);
         setLoading(false);
       } catch (error) {
@@ -98,7 +105,7 @@ const Single = () => {
     }
   }, [id]);
 
-  const copyToClipboard = (text) => {
+  const copyToClipboard = (text: string) => {
     setCopied(true);
     navigator.clipboard.writeText(text);
     setTimeout(() => {

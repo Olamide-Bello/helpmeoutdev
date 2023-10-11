@@ -1,4 +1,3 @@
- 
 import React from 'react'
 import Image from 'next/image'
 import Logo2 from '../public/assets/video-repo/logo-2.png'
@@ -99,15 +98,19 @@ function Videos() {
                       {item.title}
                     </p>
                     <div className="flex">
-                      <img
+                      <Image
                         className="w-4 h-4 object-contain mr-2"
                         src="/assets/video-repo/link.png"
                         alt="Link"
+                        width={16}
+                        height={16}
                       />
-                      <img
-                        className="w-4 h-4 object-contain"
+                      <Image
+                        className="w-4 h-4 object-contain mr-2"
                         src="/assets/video-repo/more.png"
-                        alt="More"
+                        alt="more"
+                        width={16}
+                        height={16}
                       />
                     </div>
                   </div>
@@ -136,15 +139,12 @@ export default Videos
 // import { GlobalContext } from '../context/GlobalContext';
 // import Link from 'next/link'
 
-
 // function Videos() {
 //   const { user } = useContext(GlobalContext);
 //   const displayName = user?.displayName || 'user13';
 
-
 //   const [videos, setVideos] = useState<[]>([]);
 //   const [loading, setLoading] = useState(true);
-
 
 //   useEffect(() => {
 //     const fetchVideos = async () => {
@@ -173,10 +173,9 @@ export default Videos
 //     return formattedDate.toUpperCase();
 //   };
 
-
 //   /*   const src =
 //       'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4'
-  
+
 //     const details = [
 //       {
 //         src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
@@ -215,7 +214,6 @@ export default Videos
 //       },
 //     ] */
 //   return (
-
 
 //     <div>
 //         <div className="w-full h-screen overflow-y-hidden">

@@ -4,7 +4,7 @@ import Image from 'next/image'
 const Features = () => {
   return (
     <div id='features'
-    className="h-auto md:h-[766px] w-full md:px-[100px] px-4 xs:px-5 ss:px-8 xl:w-[1440px] mx-auto font-Sora gap-[10px] flex flex-col items-center justify-center py-[80px]">
+    className="h-auto md:h-[766px] container font-Sora gap-[10px] flex flex-col items-center justify-center py-[80px]">
       <h1 className="text-black-600 text-[40px] font-[700] text-center mb-[8px]">
         Features
       </h1>

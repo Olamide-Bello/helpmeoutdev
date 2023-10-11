@@ -4,7 +4,7 @@ import { howItWorks } from "@/data";
 const HowItWorks = () => {
   return (
     <div id='how'
-    className="h-auto md:h-[897px] w-full md:px-[100px] px-4 xs:px-5 ss:px-8 xl:w-[1440px] py-10 mx-auto font-Sora gap-[10px] flex flex-col items-center justify-center pt-[103px]">
+    className="h-auto md:h-[897px] container py-10 font-Sora gap-[10px] flex flex-col items-center justify-center pt-[103px]">
       <h1 className="text-black-600 text-[40px] font-[700] text-center mb-[58px]">
         How it works
       </h1>

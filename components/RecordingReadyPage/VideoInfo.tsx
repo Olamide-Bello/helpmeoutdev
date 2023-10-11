@@ -93,7 +93,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
           Video Url
         </h2>
         <div className="py-[12px] md:px-[12px] px-[12px] border-[1px] border-primary-200 rounded-[16px] h-[64px] w-full flex items-center gap-2 justify-between">
-          <p className="text-black-400 text-[14px] ss:w-full w-[150px] xs:w-[250px] ss:text-[16px] font-[400] leading-[24.8px] font-Work-Sans overflow-x-hidden">
+          <p className="text-black-400 text-[14px] ss:w-full w-[150px]  xs:w-[250px] ss:text-[16px] font-[400] leading-[24.8px] font-Work-Sans overflow-x-hidden">
             {/* https://www.helpmeout/Untitled_Video_20232509 */}
             {currentURL}
           </p>

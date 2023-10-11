@@ -3,7 +3,7 @@ import Image from 'next/image'
 const Hero = () => {
   return (
     <div
-      className="h-auto md:h-[677px] w-full md:px-[100px] px-4 xs:px-5 ss:px-8 xl:w-[1440px] mx-auto font-Sora md:justify-between 
+      className="h-auto md:h-[677px] container font-Sora md:justify-between 
      flex flex-col md:my-0 py-40 md:flex-row items-center justify-center  gap-20 md:gap-16"
     >
       <div className="sm:w-auto sm:[448px] lg:w-[548px] flex justify-start">
@@ -32,7 +32,7 @@ const Hero = () => {
         </div>
       </div>
       <div className="w-full h-auto flex flex-row gap-3 md:gap-[20px] md:px-[40px] relative">
-        <div className="hidden lg:flex">
+        <div className="hidden md:flex">
           <Image
             src="/assets/home/grey-grid.svg"
             alt=""

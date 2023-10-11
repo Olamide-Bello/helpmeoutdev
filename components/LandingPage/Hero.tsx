@@ -16,7 +16,9 @@ const Hero = () => {
             how to get things done on a website.
           </p>
           <div className="w-full flex justify-center md:justify-start">
-            <button className="px-[24px] py-[22px] bg-primary-600 rounded-[8px] flex items-center gap-[10px] text-pastel-bg text-[18px]">
+            <a 
+            href='https://drive.google.com/file/d/1t2mgIO4mYdZwI2Ex41Sqz-iWuWUPKUnc/view?usp=drive_link'
+            className="px-[24px] py-[22px] bg-primary-600 rounded-[8px] flex items-center gap-[10px] text-pastel-bg text-[18px]">
               <p>Install HelpMeOut</p>
               <Image
                 src="/assets/home/arrow-right.svg"
@@ -24,7 +26,7 @@ const Hero = () => {
                 width={20}
                 height={20}
               />
-            </button>
+            </a>
           </div>
         </div>
       </div>

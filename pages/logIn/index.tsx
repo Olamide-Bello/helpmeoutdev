@@ -6,14 +6,11 @@ import {
   facebookProvider,
   googleProvider,
 } from '../../components/Auth/firebase'
-import {
-  signInWithPopup
-} from 'firebase/auth'
+import { signInWithPopup } from 'firebase/auth'
 
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
-
 
 interface User {
   uid: string
@@ -25,28 +22,27 @@ const LogIn: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
-  
+
   const history = useRouter()
 
-  const[username, setUsername] = useState<string>('')
-  const[password, setPassword] = useState<string>('')
-  
-  
-  const handleNameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setUsername(value);
-    console.log(value);
-  };
- 
-  const handlePassChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setPassword(value);
-    console.log(value);
-  };
- 
-  const handleSubmit:React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    const data = {username, password};
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setUsername(value)
+    console.log(value)
+  }
+
+  const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setPassword(value)
+    console.log(value)
+  }
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault()
+    const data = { username, password }
     try {
       const response = await fetch('https://www.cofucan.tech/srce/api/login/', {
         method: 'POST',
@@ -54,13 +50,13 @@ const LogIn: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
+      })
 
-      console.log(response);
-      const result = await response.json();
-      console.log(result);
+      console.log(response)
+      const result = await response.json()
+      console.log(result)
       if (result.status_code === 200) {
-        console.log('Sign-up successful!');
+        console.log('Sign-up successful!')
         toast.success('Successfully created an Account', {
           style: {
             background: 'white', // Change the background color as needed
@@ -75,8 +71,8 @@ const LogIn: React.FC = () => {
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
       } else {
-        console.error('Sign-up failed with status code', result.status_code);
-                       toast.error(`Error: ${result.status_code}`, {
+        console.error('Sign-up failed with status code', result.status_code)
+        toast.error(`Error: ${result.status_code}`, {
           style: {
             background: 'white', // Change the background color as needed
             color: 'red', // Change the text color as needed
@@ -90,21 +86,20 @@ const LogIn: React.FC = () => {
         // Handle the error, show an error message, etc.
       }
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error('An error occurred:', error)
       toast.error(`Error: ${error}`, {
-          style: {
-            background: 'white', // Change the background color as needed
-            color: 'red', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-    } 
+        style: {
+          background: 'white', // Change the background color as needed
+          color: 'red', // Change the text color as needed
+          borderRadius: '8px', // Rounded corners for the toast
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          padding: '12px 24px', // Adjust padding as needed
+          fontSize: '16px', // Adjust font size as needed
+          textAlign: 'center',
+        },
+      })
+    }
   }
-  
 
   const loginWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
@@ -178,11 +173,12 @@ const LogIn: React.FC = () => {
       })
   }
 
-  
-
   return (
-    <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem]">
-      <Link href={'/'} className="flex items-center gap-[10px] cursor-pointer">
+    <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem] ">
+      <Link
+        href={'/'}
+        className="flex items-center gap-[10px] cursor-pointer mb-[2rem]"
+      >
         <Image
           src={'/assets/shared/logo.svg'}
           alt="logo"
@@ -241,16 +237,20 @@ const LogIn: React.FC = () => {
             <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
           </div>
         </section>
-        <form className="flex flex-col w-full ss:w-[475px]" onSubmit={handleSubmit}>
-        <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">Username</p>
+        <form
+          className="flex flex-col w-full ss:w-[475px]"
+          onSubmit={handleSubmit}
+        >
+          <div>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
+              Username
+            </p>
             <input
-              type="username"
+              type="text"
               placeholder="Enter your username"
               required
-              value={username}
-              onChange={handleNameChange}
-              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[17px]"
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>
           <div>
@@ -263,51 +263,41 @@ const LogIn: React.FC = () => {
               required
               value={password}
               onChange={handlePassChange}
-              
               minLength={5}
-              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[17px]"
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>
-            
-        
-            <button
-              type="submit"
-              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[17px] bg-primary-600 text-white "
-            >
-              Log In
-            </button>
 
-           { /*<button
-              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora  text-[14px] xs:text-[17px] bg-primary-600 text-white "
-            >
-              Sign Out
-  </button> */ }
-          
-          
+          <button
+            // onClick={login}
+            className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
+          >
+            Log In
+          </button>
 
           {message && (
             <p className="mt-[0.5rem] text-center text-[19px] font-semibold">
               {message}
             </p>
           )}
-          <h2 className="mt-[1rem] text-center text-[17px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
+          <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Don&apos;t Have Account{' '}
             <Link href={'/signUp'}>
-              <span className="font-bold text-[18px] hover:underline cursor-pointer font-Sora">
+              <span className="font-bold hover:underline cursor-pointer font-Work-Sans">
                 Sign Up
               </span>
             </Link>
           </h2>
         </form>
       </div>
-      <ToastContainer 
-  position="top-center" // Position the toast container at the bottom-center
-  autoClose={1500} // Close after 3 seconds (adjust as needed)
-  style={{
-    width: 'fit-content', // Adjust the width as needed
-    textAlign: 'center', // Center-align the container's content
-  }}
-  />
+      <ToastContainer
+        position="top-center" // Position the toast container at the bottom-center
+        autoClose={1500} // Close after 3 seconds (adjust as needed)
+        style={{
+          width: 'fit-content', // Adjust the width as needed
+          textAlign: 'center', // Center-align the container's content
+        }}
+      />
     </section>
   )
 }

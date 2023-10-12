@@ -9,6 +9,7 @@ type Props = {
     value?: string,
     type?: string,
     name?: string,
+    readOnly?: boolean,
     onClick?: React.MouseEventHandler<HTMLElement>
     onChange?: React.ChangeEventHandler<HTMLInputElement>
 }
@@ -23,6 +24,7 @@ export const Input = ({
     value,
     type,
     name,
+    readOnly,
     onClick,
     onChange
 }: Props) => {
@@ -40,6 +42,7 @@ export const Input = ({
                 className="w-full bg-transparent h-full outline-none text-sm font-normal font-Work-Sans border-0"
                 placeholder={placeholder}
                 onChange={onChange}
+                readOnly={readOnly}
             />
 
             <button

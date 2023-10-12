@@ -1,11 +1,15 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useRef, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { VideoPageContentProps } from '@/types/video-repo'
-import Link from 'next/link';
+import Link from 'next/link'
 
-const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) => {
-
+const VideoInfo: React.FC<VideoPageContentProps> = ({
+  displayModal,
+  videoID,
+  setEmail,
+  email,
+}) => {
   // to get the videoID
   // const videoRef = useRef<HTMLVideoElement>(null);
   // const router = useRouter();
@@ -18,48 +22,58 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
   // }, [videoID, router.query.videoID]);
 
   //custom file name
-  const [customFileName, setCustomFileName] = useState('');
-  const placeHolder = `Untitled_Video_${videoID}`;
+  const [customFileName, setCustomFileName] = useState('')
+  const placeHolder = `Untitled_Video_${videoID}`
 
-  //get currnet window/tab url
-  const [currentURL, setCurrentURL] = useState<string>('');
+  //get current window/tab url
+  const [currentURL, setCurrentURL] = useState<string>('')
 
   //copy the url using COPY btn
-  const [clicked, setClicked] = useState<boolean>(false);
+  const [clicked, setClicked] = useState<boolean>(false)
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(currentURL);
-    setClicked(true);
-  };
+    navigator.clipboard.writeText(currentURL)
+    setClicked(true)
+    setTimeout(() => {
+      setClicked(false)
+    }, 3000)
+  }
 
   useEffect(() => {
-    setCurrentURL(window.location.href);
-  }, []);
+    setCurrentURL(window.location.href)
+  }, [])
 
-  //set email 
-  const [email, setEmail] = useState('');
+  const [error, setError] = useState<boolean>(false)
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    displayModal()
+    if (!email) {
+      setError(true)
+      setTimeout(() => {
+        setError(false)
+      }, 3000)
+    }
+  }
 
   return (
     <div className="hidden ss:flex flex-col items-start gap-[64px] w-full md:w-[1/2]">
       {/* Header */}
-      <div>
+      <div className="w-full">
         <h2 className="text-black-600 text-[32px] xs:text-[45px] font-[700] mb-[48px]">
           Your video is ready!
         </h2>
         {/* Name container */}
-        <div>
+        <div className="w-full">
           <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
-          <div className="flex items-center gap-[24px] w-full">
-              <input
-                type="text"
-                placeholder={placeHolder}
-                value={customFileName}
-                onChange={(e) => setCustomFileName(e.target.value)}
-
-                className="border-none outline-none rounded-md p-2 mb-2 w-full text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
-
-              />
+          <div className="flex items-center justify-between w-full">
+            <input
+              type="text"
+              placeholder={placeHolder}
+              value={customFileName}
+              onChange={(e) => setCustomFileName(e.target.value)}
+              className="border-none outline-none rounded-md p-2 mb-2 w-full text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
+            />
             <Image
               className="w-[16px] h-auto xs:h-[32px] xs:w-[32px]"
               src="/assets/video-repo/edit.svg"
@@ -71,40 +85,64 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
         </div>
       </div>
       {/* Email input and send button */}
-      <div className="py-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between">
-        <input
-          type="email"
-          name="receiverEmail"
-          placeholder="Enter email of receiver"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
-        />
-        <div
-          onClick={displayModal}
-          className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans"
+      <div className="w-full">
+        <form
+          onSubmit={handleSubmit}
+          className="py-[12px] mb-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between"
         >
-          Send
+          <input
+            type="email"
+            name="receiverEmail"
+            placeholder="Enter email of receiver"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
+          />
+          <button className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
+            Send
+          </button>
+        </form>
+        <div className="h-[20px]">
+          <p
+            className={`${error ? 'flex' : 'hidden'} text-[#FF0000] font-[500]`}
+          >
+            Email form cannot be empty!
+          </p>
         </div>
       </div>
       {/* Video URL */}
-      <div className="w-full">
+      <div className="w-full pt-[12px]">
         <h2 className="text-black-600 font-Sora text-[20px] mb-[16px] font-[600] ">
           Video Url
         </h2>
-        <div className="py-[12px] md:px-[12px] px-[12px] border-[1px] border-primary-200 rounded-[16px] h-[64px] w-full flex items-center gap-2 justify-between">
-          <p className="text-black-400 text-[14px] ss:w-full w-[150px]  xs:w-[250px] ss:text-[16px] font-[400] leading-[24.8px] font-Work-Sans overflow-x-hidden">
-            {/* https://www.helpmeout/Untitled_Video_20232509 */}
-            {currentURL}
-          </p>
-          <div onClick={copyToClipboard} className={`w-[104px] py-[10px] rounded-[8px] border-[1px]  font-[500] flex justify-center items-center gap-[8px]  font-Work-Sans cursor-pointer ${clicked ? 'bg-primary-400 text-pastel-bg' : 'border-primary-400 text-primary-600 '} hover:border-[2px]`}>
-            <Image
-              src="/assets/video-repo/copy.svg"
-              alt=""
-              width="20"
-              height="20"
-            />
-            <h3>Copy</h3>
+        <div className="w-full">
+          <div className="py-[12px] mb-[12px] md:px-[12px] px-[12px] border-[1px] border-primary-200 rounded-[16px] h-[64px] w-full flex items-center gap-2 justify-between">
+            <p className="text-black-400 text-[14px] ss:w-full w-[150px]  xs:w-[250px] ss:text-[16px] font-[400] leading-[24.8px] font-Work-Sans overflow-x-hidden">
+              {currentURL}
+            </p>
+            <div
+              onClick={copyToClipboard}
+              className={`w-[104px] py-[10px] rounded-[8px] border-[1px]  font-[500] flex justify-center 
+            items-center gap-[8px]  font-Work-Sans cursor-pointer 
+                border-primary-400 text-primary-600 `}
+            >
+              <Image
+                src="/assets/video-repo/copy.svg"
+                alt=""
+                width="20"
+                height="20"
+              />
+              <h3>Copy</h3>
+            </div>
+          </div>
+          <div className="h-[20px]">
+            <p
+              className={`${
+                clicked ? 'flex' : 'hidden'
+              } font-[500] text-primary-600`}
+            >
+              Copied!
+            </p>
           </div>
         </div>
       </div>
@@ -115,8 +153,9 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
         </p>
         <div className="flex flex-wrap gap-[16px]">
           <a
-          href='https://www.facebook.com/sharer/sharer.php?u='
-          className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]">
+            href="https://www.facebook.com/sharer/sharer.php?u="
+            className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]"
+          >
             <Image
               src="/assets/login/Facebook.svg"
               alt="facebook"
@@ -127,9 +166,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
               Facebook
             </h3>
           </a>
-          <a 
-          href="https://api.whatsapp.com/send?text="
-          className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]">
+          <a
+            href="https://api.whatsapp.com/send?text="
+            className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]"
+          >
             <Image
               src="/assets/video-repo/whatsapp.svg"
               alt="Whatsapp"
@@ -141,8 +181,9 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({ displayModal, videoID  }) 
             </h3>
           </a>
           <a
-          href="https://t.me/share/url?url="
-          className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]">
+            href="https://t.me/share/url?url="
+            className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]"
+          >
             <Image
               src="/assets/video-repo/telegram.svg"
               alt="Telegram"

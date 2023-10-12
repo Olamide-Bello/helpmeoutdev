@@ -24,7 +24,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
   }
   return (
     // <MainLayout>
-    <div className='bg-white'>
+    <div className='bg-white px-3 xs:px-5 md:px-0'>
       <div className="container text-primary-600 h-[84px] flex justify-between items-center">
         {/* Logo container */}
         <Link href="/" className="flex gap-1 items-center">

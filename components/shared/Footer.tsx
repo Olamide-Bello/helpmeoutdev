@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const Footer:React.FC = () => {
   return (
-    <div className="md:h-[347px] py-[98px] px-4  ss:px-8 md:px-0 w-full bg-primary-600">
-      <div className="xl:w-[1440px] mx-auto w-full md:px-[100px]  gap-8 md:gap-0 flex flex-col md:flex-row justify-between items-start">
+    <div className="md:h-[347px] py-[98px] w-full bg-primary-600">
+      <div className="container gap-8 md:gap-0 flex flex-col md:flex-row justify-between items-start">
         <Link href='/' className="flex gap-1 items-center">
           <Image src="/assets/shared/white-logo.svg" alt="Logo" width={40} height={40}/>
           <h1 className=" text-h6 font-[700] font-Inter text-white">

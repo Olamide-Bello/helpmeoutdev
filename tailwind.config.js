@@ -9,6 +9,9 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      center: true,
+    },
     extend: {
       colors: {
         primary: {
@@ -39,14 +42,12 @@ module.exports = {
         'screen-16': 'calc(100vh - 84px)',
       },
       fontSize: {
- 
         h6: '16px',
         h2: '64px',
- 
-        h6: "16px",
-        h5: "24px",
-        h2: "64px",
- 
+
+        h6: '16px',
+        h5: '24px',
+        h2: '64px',
       },
     },
     screens: {

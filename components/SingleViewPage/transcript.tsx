@@ -2,7 +2,7 @@ import React from 'react'
 
 const Transcript = ({ data }: { data: any }) => {
   return (
-    <div className="mt-10 mb-20">
+    <div className="mt-5 mb-5">
       <h3 className="font-Work-Sans text-[20px] font-[500] ">Transcript</h3>
       <div className="my-4">
         {/* language options */}
@@ -20,7 +20,7 @@ const Transcript = ({ data }: { data: any }) => {
         </select>
       </div>
       {/* this maps the transcript array recieved from the backend */}
-      <div className="h-[450px] overflow-y-scroll custom-scrollbar md:pr-20 mt-10 font-Work-Sans">
+      <div className="h-[360px] overflow-y-scroll custom-scrollbar md:pr-[80px] mt-10 font-Work-Sans">
         {data?.map((el: any, i: number) => {
           const lastItem = data.length - 1
           return (

@@ -38,10 +38,12 @@ function Videos() {
           username: video.title,
           src: video.thumbnail_location,
           created_date: formatDate(video.created_date),
+
           Videosrc: video.original_location,
         }))
         setVideos(formattedVideos)
         setLoading(false)
+
       } catch (error) {
         console.error('Error fetching videos:', error)
         setLoading(false)

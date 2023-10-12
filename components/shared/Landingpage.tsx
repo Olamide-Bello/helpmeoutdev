@@ -144,13 +144,15 @@ const Landingpage = () => {
               choose which part of your screen to capture and who you want to
               send it to.
             </p>
-            <Image
-              className="pt-4"
-              src={Card}
-              width={500}
-              height={200}
-              alt="image"
-            />
+            <div className="flex justify-center">
+              <Image
+                className="pt-4"
+                src={Card}
+                width={500}
+                height={200}
+                alt="image"
+              />
+            </div>
           </div>
 
           <div className="w-full md:w-[358px]">
@@ -164,13 +166,15 @@ const Landingpage = () => {
               We generate a shareable link for your video. Simply send it to
               your audience via email or copy the link to send via any platform.
             </p>
-            <Image
-              className="pt-4"
-              src={Card}
-              width={500}
-              height={200}
-              alt="image"
-            />
+            <div className="flex justify-center">
+              <Image
+                className="pt-4"
+                src={Card}
+                width={500}
+                height={200}
+                alt="image"
+              />
+            </div>
           </div>
 
           <div className="w-full md:w-[358px]">
@@ -184,13 +188,15 @@ const Landingpage = () => {
               Recipients can access your video effortlessly through the provided
               link, with our user-friendly interface suitable for everyone.
             </p>
-            <Image
-              className="pt-4"
-              src={Card}
-              width={500}
-              height={200}
-              alt="image"
-            />
+            <div className="flex justify-center">
+              <Image
+                className="pt-4"
+                src={Card}
+                width={500}
+                height={200}
+                alt="image"
+              />
+            </div>
           </div>
         </div>
       </div>

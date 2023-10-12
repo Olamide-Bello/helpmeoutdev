@@ -249,7 +249,8 @@ const LogIn: React.FC = () => {
               type="text"
               placeholder="Enter your username"
               required
-              onChange={(e) => setUsername(e.target.value)}
+              value={username}
+              onChange={handleNameChange}
               className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { VideoPageContentProps } from '@/types/video-repo'
-import Link from 'next/link'
+import { Share } from '../SingleViewPage/share'
 
 const VideoInfo: React.FC<VideoPageContentProps> = ({
   displayModal,
@@ -57,7 +57,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   }
 
   return (
-    <div className="hidden ss:flex flex-col items-start gap-[64px] w-full md:w-[1/2]">
+    <div className="hidden ss:flex flex-col items-start ss:gap-[36px] md:gap-[64px] w-full md:w-[1/2]">
       {/* Header */}
       <div className="w-full">
         <h2 className="text-black-600 text-[32px] xs:text-[45px] font-[700] mb-[48px]">
@@ -147,55 +147,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         </div>
       </div>
       {/* Share options */}
-      <div className="">
-        <p className="text-black-600 font-Sora text-[16px] mb-[16px] font-[600]">
-          Share your video
-        </p>
-        <div className="flex flex-wrap gap-[16px]">
-          <a
-            href="https://www.facebook.com/sharer/sharer.php?u="
-            className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]"
-          >
-            <Image
-              src="/assets/login/Facebook.svg"
-              alt="facebook"
-              width="20"
-              height="20"
-            />
-            <h3 className="text-black-600 font-Sora text-[16px] font-[500]">
-              Facebook
-            </h3>
-          </a>
-          <a
-            href="https://api.whatsapp.com/send?text="
-            className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]"
-          >
-            <Image
-              src="/assets/video-repo/whatsapp.svg"
-              alt="Whatsapp"
-              width="20"
-              height="20"
-            />
-            <h3 className="text-black-600 font-Sora text-[16px] font-[500]">
-              Whatsapp
-            </h3>
-          </a>
-          <a
-            href="https://t.me/share/url?url="
-            className="flex gap-[8px] px-[16px] py-[12px] items-center border-[1px] border-black-600 rounded-[8px]"
-          >
-            <Image
-              src="/assets/video-repo/telegram.svg"
-              alt="Telegram"
-              width="20"
-              height="20"
-            />
-            <h3 className="text-black-600 font-Sora text-[16px] font-[500]">
-              Telegram
-            </h3>
-          </a>
-        </div>
-      </div>
+      <Share text='#'/>
     </div>
   )
 }

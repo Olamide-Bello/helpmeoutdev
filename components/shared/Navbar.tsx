@@ -23,9 +23,8 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
     setUser(null)
   }
   return (
-    // <MainLayout>
-    <div className='bg-white px-3 xs:px-5 md:px-0'>
-      <div className="container text-primary-600 h-[84px] flex justify-between items-center">
+    <div className='bg-white  '>
+      <div className="container text-primary-600 h-[84px] px-3 xs:px-5 ss:px-16 md:px-[100px] flex justify-between items-center">
         {/* Logo container */}
         <Link href="/" className="flex gap-1 items-center">
           <Image
@@ -86,7 +85,6 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
         )}
       </div>
     </div>
-    // </MainLayout>
   )
 }
 

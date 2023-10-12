@@ -55,10 +55,10 @@ const SignUp: React.FC = () => {
       )
 
       console.log(response)
+      const result = await response.json()
+      console.log(result)
 
       if (response.status === 200) {
-        const result = await response.json()
-        console.log(result)
         console.log('Sign-up successful!')
         toast.success('Successfully created an Account', {
           style: {
@@ -74,8 +74,8 @@ const SignUp: React.FC = () => {
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
       } else {
-        console.error('Sign-up failed with status code', response.status)
-        toast.error(`Error: ${response.status}`, {
+        console.error('Sign-up failed with status code', result.message)
+        toast.error(`Error: ${result.message}`, {
           style: {
             background: 'white', // Change the background color as needed
             color: 'red', // Change the text color as needed

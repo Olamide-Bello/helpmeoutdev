@@ -71,8 +71,8 @@ const LogIn: React.FC = () => {
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
       } else {
-        console.error('Sign-up failed with status code', result.status_code)
-        toast.error(`Error: ${result.status_code}`, {
+        console.error('Sign-up failed with status code', result.message)
+        toast.error(`Error: ${result.message}`, {
           style: {
             background: 'white', // Change the background color as needed
             color: 'red', // Change the text color as needed

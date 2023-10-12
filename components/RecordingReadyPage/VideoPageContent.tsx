@@ -8,7 +8,8 @@ const VideoPageContent: React.FC<VideoPageContentProps> = ({
   displayModal, videoID, setEmail, email
 }) => {
   return (
-    <div className="px-3 xs:px-5 font-Sora w-full h-auto md:h-[970px] ss:pt-[40px] md:px-0 flex md:justify-between flex-col md:flex-row items-start gap-[84px] my-[32px] xs:my-[64px]">
+    <div className="px-3 xs:px-5 font-Sora w-full h-auto md:h-[970px] ss:pt-[40px] ss:px-16 md:px-[100px] flex md:justify-between 
+    flex-col md:flex-row items-start gap-[84px] my-[32px] xs:my-[64px]">
       {/* Video information for tablet and Desktop view */}
       <VideoInfo displayModal={displayModal} videoID={videoID} setEmail={setEmail} email={email}/>
       {/* Video & information for mobile view */}

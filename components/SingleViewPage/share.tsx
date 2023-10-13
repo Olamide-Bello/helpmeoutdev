@@ -25,7 +25,7 @@ export const Share = ({ text }:{text:string}) => {
     ];
   
     return (
-      <div>
+      <div className='mt-10 mb-20'>
         <h6 className="mb-1 font-Work-Sans text-[20px] font-[500] text-primary-600">Share your video</h6>
         <div className={`flex flex-wrap gap-4 justify-start items-center`}>
           {share.map((el) => (

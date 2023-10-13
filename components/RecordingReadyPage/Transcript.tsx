@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import React, { useRef, useEffect, useState } from 'react';
 
-import { VideoAndTranscriptProps } from '@/types/video-transcribe'
+import { TranscriptProps } from '@/types/transcript'
 import { TranscriptData } from '@/types/transcript-data'
 
 // interface TranscriptData {
@@ -11,7 +11,7 @@ import { TranscriptData } from '@/types/transcript-data'
 //   punctuated_word: string;
 // }
 
-const Transcript: React.FC<VideoAndTranscriptProps> = ({ videoID }) => {
+const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime }) => {
   const [transcriptionData, setTranscriptionData] = useState<{
     transcript: string;
     words: TranscriptData[];
@@ -36,6 +36,34 @@ const Transcript: React.FC<VideoAndTranscriptProps> = ({ videoID }) => {
     }
   }, [videoID]);
 
+  // to format time
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = Math.floor(seconds % 60)
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds
+      .toString()
+      .padStart(2, '0')}`
+  }
+
+  //to show current word
+  useEffect(() => {
+    const transcriptContainer = transcriptContainerRef.current as HTMLElement;
+    // transcriptContainer.style.backgroundColor = 'blue';
+    if (transcriptContainer) {
+      const currentTranscript = transcriptionData.words.find((item) => item.start <= currentVideoTime && item.end >= currentVideoTime);
+      if (currentTranscript) {
+        const transcriptElement = document.getElementById(`transcript-${currentTranscript.start}`) as HTMLElement;
+        transcriptElement.style.color = '#000';
+        if (transcriptElement) {
+          transcriptContainer.scrollTo({
+            top: transcriptElement.offsetTop - transcriptContainer.offsetTop - 50,
+            behavior: 'smooth',
+          });
+        }
+      }
+    }
+  }, [currentVideoTime, transcriptionData]);
+
 
 
   return (
@@ -57,7 +85,7 @@ const Transcript: React.FC<VideoAndTranscriptProps> = ({ videoID }) => {
           <div className='p-2 overflow-y-scroll custom-scrollbar flex flex-col h-full'>
             <div className="flex gap-4">
               <h5 className="font-[400] font-Work-Sans text-[14px] xs:text-[16px] text-black">
-                0:01
+                {formatTime(currentVideoTime)}
               </h5>
               <div
                 id="transcript-container"
@@ -66,7 +94,7 @@ const Transcript: React.FC<VideoAndTranscriptProps> = ({ videoID }) => {
               >
                 {transcriptionData.words.map((item, index) => {
                   return (
-                    <p key={index} id={`transcript-${item.start}`} className="mr-1">
+                    <p key={index} id={`transcript-${item.start}`} className="mr-1 text-gray-400">
                       <strong>{item.punctuated_word}</strong>
                     </p>
                   );

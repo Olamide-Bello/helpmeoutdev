@@ -106,9 +106,9 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
               {formatTime(currentVideoTime)}
             </h5>
             <div id="transcript-container" ref={transcriptContainerRef} className="custom-scrollbar  overflow-x-auto flex flex-wrap" >
-              {transcriptionData.words?.map((item) => {
+              {transcriptionData.words?.map((item, index) => {
                 return (
-                  <p id={`transcript-${item.start}`} className="mr-1 text-gray-400">
+                  <p id={`transcript-${item.start}`} key={index} className="mr-1 text-gray-400">
                     <strong>{item.punctuated_word}</strong>
                   </p>
                 );

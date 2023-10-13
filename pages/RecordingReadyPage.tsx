@@ -50,7 +50,7 @@ const RecordingReadyPage: React.FC = () => {
           email={email}
         />
         {/* Save to account container */}
-        <SaveToAccount />
+        <SaveToAccount videoID= {videoID} />
       </MainLayout>
       <Footer />
       {showModal && email ? (

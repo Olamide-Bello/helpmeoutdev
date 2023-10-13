@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { VideoPageContentProps } from '@/types/video-repo'
 import { Share } from '../SingleViewPage/share'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const VideoInfo: React.FC<VideoPageContentProps> = ({
   displayModal,
@@ -44,15 +46,70 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   }, [])
 
   const [error, setError] = useState<boolean>(false)
+  const isEmailValid = (mail: string) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return emailRegex.test(mail)
+  }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    displayModal()
-    if (!email) {
+    const valid = isEmailValid(email)
+    if (!valid) {
+      setError(true)
       setError(true)
       setTimeout(() => {
         setError(false)
       }, 3000)
+    } else {
+      try {
+        const response = await fetch(`https://www.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        if (response.status === 200) {
+          const result = await response.json()
+          console.log(response)
+          console.log(result.message)
+          toast.success(`${result.message}`, {
+            style: {
+              background: 'white', // Change the background color as needed
+              color: 'green', // Change the text color as needed
+              borderRadius: '8px', // Rounded corners for the toast
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+              padding: '12px 24px', // Adjust padding as needed
+              fontSize: '16px', // Adjust font size as needed
+              textAlign: 'center',
+            },
+          })
+          displayModal()
+        } else {
+          toast.error(`Unable to send to Email!`, {
+            style: {
+              background: 'white', // Change the background color as needed
+              color: 'red', // Change the text color as needed
+              borderRadius: '8px', // Rounded corners for the toast
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+              padding: '12px 24px', // Adjust padding as needed
+              fontSize: '16px', // Adjust font size as needed
+              textAlign: 'center',
+            },
+          })
+        }
+      } catch (error) {
+        toast.error(`${error}`, {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+      }
     }
   }
 
@@ -137,9 +194,8 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
           </div>
           <div className="h-[20px]">
             <p
-              className={`${
-                clicked ? 'flex' : 'hidden'
-              } font-[500] text-primary-600`}
+              className={`${clicked ? 'flex' : 'hidden'
+                } font-[500] text-primary-600`}
             >
               Copied!
             </p>
@@ -147,7 +203,15 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         </div>
       </div>
       {/* Share options */}
-      <Share text='#'/>
+      <Share text='#' />
+      <ToastContainer
+        position="top-center" // Position the toast container at the bottom-center
+        autoClose={1500} // Close after 3 seconds (adjust as needed)
+        style={{
+          width: 'fit-content', // Adjust the width as needed
+          textAlign: 'center', // Center-align the container's content
+        }}
+      />
     </div>
   )
 }

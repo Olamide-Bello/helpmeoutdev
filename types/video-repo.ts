@@ -8,6 +8,6 @@ export interface VideoPageContentProps {
 export type ContextTypes = {
   logged?: boolean,
   setLogged: (logged: boolean) => void,
-  user: User | null,
-  setUser: (user: User | null) => void
+  user: string,
+  setUser: (user: string) => void
 }

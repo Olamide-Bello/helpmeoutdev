@@ -3,25 +3,58 @@ import Image from 'next/image'
 import MainLayout from './MainLayout'
 import Link from 'next/link'
 import { GlobalContext } from '@/context/GlobalContext'
-import { auth } from '../Auth/firebase'
-import { signOut } from 'firebase/auth'
+import fetch from 'isomorphic-unfetch'
+import { useRouter } from 'next/router'
 
 const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
   const { logged, user, setLogged, setUser } = useContext(GlobalContext)
   const [showLogout, setShowLogout] = useState<boolean>(false)
+  const history = useRouter()
 
   //function that toggles the show logout state
   const handleShowLogout = () => {
     setShowLogout(!showLogout)
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      // Send a POST request to the logout endpoint without a request body
+      const response = await fetch("https://www.cofucan.tech/srce/api/logout/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add any necessary authentication headers here, such as tokens or cookies
+        },
+      });
+  
+      // Check if the request was successful (status code 200)
+      if (response.status === 200) {
+        // Logout was successful, so update your local state
+        history.push('/logIn');
+        setLogged(false);
+        setShowLogout(false);
+        setUser('');
+      } else {
+        // Handle error cases, e.g., if the API returns an error message
+        console.error("Logout failed. Status code: " + response.status);
+        // You can also handle the error in a user-friendly way here
+      }
+    } catch (error) {
+      // Handle network errors
+      console.error("Network error: ");
+      // You can also provide a user-friendly message for network errors
+    }
+  };
+  
+
+  /*const handleLogout = () => {
     //call or put the logic for log out here
     signOut(auth)
     setLogged(false)
     setShowLogout(false)
     setUser(null)
-  }
+  }*/
+
   return (
     // <MainLayout>
     <div className='bg-white'>
@@ -48,7 +81,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
           </div>
         )}
         {/* Get Started */}
-        {logged === true && user?.displayName ? (
+        {logged === true && user ? (
           <div className="flex items-center gap-1 md:gap-4 relative font-Work-Sans font-[400]">
             <Image
               src="/assets/shared/profile.svg"
@@ -61,7 +94,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
               onClick={handleShowLogout}
               className="flex md:gap-[10px] cursor-pointer"
             >
-              <p className="text-[13px] ss:text-[18px]">{user?.displayName}</p>
+              <p className="text-[13px] ss:text-[18px]">{user}</p>
               <Image
                 src="/assets/video-repo/arrow-down.svg"
                 height={20}

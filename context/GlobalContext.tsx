@@ -6,23 +6,21 @@ import {auth} from '../components/Auth/firebase'
 export const GlobalContext = createContext({
     logged: false ,
     setLogged: () => { },
-    user: null,
+    user: '',
     setUser: () => { }
 } as ContextTypes)
 
 const GlobalState = ({ children }: { children: React.ReactNode }) => {
     const [logged, setLogged]= useState<boolean>(false)
-    const [user, setUser]= useState<User | null>(null)
+    const [user, setUser]= useState<string>('')
 
 
     useEffect(() => {
-        const manageUserState = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser)
-            setLogged(true)
-        })
-        return () => {
-            manageUserState();
-        }
+        localStorage.setItem("logged", logged.toString())
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem("user", user)
     }, [])
 
     const contextValue:ContextTypes = {

@@ -1,7 +1,9 @@
 import { User } from "firebase/auth";
 export interface VideoPageContentProps {
   displayModal: () => void,
+  setEmail: (parameter: string) => void,
   videoID?: string | string[] | undefined; // Add a videoID prop
+  email: string
 }
 
 

@@ -266,7 +266,7 @@ const LogIn: React.FC = () => {
           >
             Log In
           </button>
-          <Link href={'/forgotPassword'}>
+          <Link href={'/ForgotPassword'}>
           <p className="text-[16px] font-Sora mt-2 font-medium mb-[14px]">
               Forgot Password?
           </p>

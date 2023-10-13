@@ -12,7 +12,7 @@ interface User {
   displayName: string | null
 }
 
-const forgotPassword: React.FC = () => {
+const ForgotPassword: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
@@ -228,4 +228,4 @@ const forgotPassword: React.FC = () => {
   )
 }
 
-export default forgotPassword
+export default ForgotPassword

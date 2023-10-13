@@ -14,8 +14,6 @@ import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 
-
-
 const LogIn: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const { setUser, setLogged } = useContext(GlobalContext)
@@ -67,9 +65,9 @@ const LogIn: React.FC = () => {
           },
         })
         setLogged(true)
-        localStorage.setItem("user", result.username)
+        localStorage.setItem('user', result.username)
         const num = Number(true)
-        localStorage.setItem("logged", JSON.stringify(num))
+        localStorage.setItem('logged', JSON.stringify(num))
         setUser(result.username)
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
@@ -107,15 +105,16 @@ const LogIn: React.FC = () => {
   const loginWithGoogle = async () => {
     try {
       // Send a POST request to the logout endpoint without a request body
-      const response = await fetch("https://www.cofucan.tech/srce/api/google/login/", {
-        method: "GET",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-          // Add any necessary authentication headers here, such as tokens or cookies
-        },
-      });
-      console.log(response)
+      const response = await fetch(
+        'https://www.cofucan.tech/srce/api/google/login/',
+        {
+          method: 'GET',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any necessary authentication headers here, such as tokens or cookies
+          },
+        },)
 
       // Check if the request was successful (status code 200)
       if (response.status === 200) {
@@ -130,12 +129,12 @@ const LogIn: React.FC = () => {
 
       } else {
         // Handle error cases, e.g., if the API returns an error message
-        console.error("Logout failed. Status code: " + response.status);
+        console.error('Logout failed. Status code: ' + response.status)
         // You can also handle the error in a user-friendly way here
       }
     } catch (error) {
       // Handle network errors
-      console.error("Network error: ");
+      console.error('Network error: ')
       // You can also provide a user-friendly message for network errors
     }
   }
@@ -293,7 +292,7 @@ const LogIn: React.FC = () => {
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Don&apos;t Have Account?{' '}
             <Link href={'/signUp'}>
-              <span className="font-bold hover:underline cursor-pointer font-Work-Sans">
+              <span className="font-bold hover:underline cursor-pointer font-Sora">
                 Sign Up
               </span>
             </Link>

@@ -12,7 +12,7 @@ const VideoAndTranscript: React.FC<VideoAndTranscriptProps> = ({ videoID }) => {
         {/* Video container for tablet and desktop screen */}
         <VideoContainer videoID={videoID} />
         {/* Transcript for all screens */}
-        <Transcript />
+        <Transcript videoID={videoID}/>
       </div>
     </div>
   )

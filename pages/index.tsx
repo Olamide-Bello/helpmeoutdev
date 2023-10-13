@@ -1,10 +1,17 @@
-import LandingPage from '@/components/LandingPage'
+import LandingPage from '@/components/LandingPage/LandingPage'
+import Footer from '@/components/shared/Footer'
+import Navbar from '@/components/shared/Navbar'
 import React from 'react'
 
 const index = () => {
   return (
-    <LandingPage/>
+    <div>
+      <Navbar />
+      <LandingPage />
+      <Footer/>
+    </div>
   )
+  
 }
 
 export default index

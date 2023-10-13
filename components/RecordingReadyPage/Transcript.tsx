@@ -29,7 +29,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
     if (videoID) {
       fetchTranscription();
     }
-  }, []);
+  }, [videoID]);
 
   // to format time
   const formatTime = (seconds: number) => {

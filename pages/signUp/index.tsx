@@ -14,14 +14,13 @@ import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 
-
 const SignUp: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const [message, setMessage] = useState<boolean | string>(false)
   const history = useRouter()
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const {setLogged, setUser} = useContext(GlobalContext)
+  const { setLogged, setUser } = useContext(GlobalContext)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -103,36 +102,38 @@ const SignUp: React.FC = () => {
   }
 
   const signInWithGoogle = async () => {
-      try {
-        // Send a POST request to the logout endpoint without a request body
-        const response = await fetch("https://www.cofucan.tech/srce/api/google/login/", {
-          method: "GET",
+    try {
+      // Send a POST request to the logout endpoint without a request body
+      const response = await fetch(
+        'https://www.cofucan.tech/srce/api/google/login/',
+        {
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow": "http://localhost:3000"
+            'Content-Type': 'application/json',
+            'Access-Control-Allow': 'http://localhost:3000',
             // Add any necessary authentication headers here, such as tokens or cookies
           },
-        });
+        },
+      )
 
-        const result = await response.json()
-    
-        // Check if the request was successful (status code 200)
-        if (response.status === 200) {
-          // Logout was successful, so update your local state
-          setLogged(true)
-          setUser(result.username)
-          history.push('/videos');
+      const result = await response.json()
 
-        } else {
-          // Handle error cases, e.g., if the API returns an error message
-          console.error("Logout failed. Status code: " + response.status);
-          // You can also handle the error in a user-friendly way here
-        }
-      } catch (error) {
-        // Handle network errors
-        console.error("Network error: ");
-        // You can also provide a user-friendly message for network errors
+      // Check if the request was successful (status code 200)
+      if (response.status === 200) {
+        // Logout was successful, so update your local state
+        setLogged(true)
+        setUser(result.username)
+        history.push('/videos')
+      } else {
+        // Handle error cases, e.g., if the API returns an error message
+        console.error('Logout failed. Status code: ' + response.status)
+        // You can also handle the error in a user-friendly way here
       }
+    } catch (error) {
+      // Handle network errors
+      console.error('Network error: ')
+      // You can also provide a user-friendly message for network errors
+    }
   }
 
   const signInWithFacebook = () => {
@@ -277,7 +278,7 @@ const SignUp: React.FC = () => {
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Already Have Account?{' '}
             <Link href={'/logIn'}>
-              <span className="font-bold hover:underline cursor-pointer font-Work-Sans">
+              <span className="font-bold hover:underline cursor-pointer font-Sora">
                 Log In
               </span>
             </Link>

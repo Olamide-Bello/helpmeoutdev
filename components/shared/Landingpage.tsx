@@ -11,11 +11,11 @@ import Arrow from '../../public/assets/home/arrow-right.svg'
 
 const Landingpage = () => {
   return (
-    <>
+    <div className='px-3 md:pt-[50px] md:px-[100px] xs:px-5 ss:px-16'>
       <div className="lg:flex px-4 md:px-8 lg:px-12 xl:px-16 min-h-[80vh] items-center">
         <div className="w-full lg:w-1/2 pl-10 pt-10">
           <h1 className="md:text-h2 text-[40px] text-black-600 leading-[100%] font-[700] mb-[20px]">
-            Show Them Don’t <br /> Just Tell
+            Show Them Don't <br /> Just Tell
           </h1>
           <p className="text-black-100 text-[19px] font-Inter mb-[48px]">
             Help your friends and loved ones by creating and sending videos on
@@ -200,7 +200,7 @@ const Landingpage = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

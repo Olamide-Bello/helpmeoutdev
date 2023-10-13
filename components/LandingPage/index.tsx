@@ -15,7 +15,7 @@ const LandingPage = () => {
     <>
       <Navbar />
       <main>
-        <div className="container lg:flex min-h-[80vh] items-center">
+        <div className="container lg:flex min-h-[80vh] items-center px-3 md:pt-[50px] md:px-[100px] xs:px-5 ss:px-16">
           <div className="w-full lg:w-1/2 pt-10">
             <h1 className="md:text-h2 text-[40px] text-black-600 leading-[100%] font-[700] mb-[20px]">
               Show Them Don&apos;t <br /> Just Tell
@@ -45,7 +45,7 @@ const LandingPage = () => {
           </div>
         </div>
 
-        <div id="features" className="w-full bg-slate-200  py-12">
+        <div id="features" className="w-full border-y-[50px] border-slate-200 py-12 px-3 md:pt-[40px] md:px-[100px]">
           <div className=" bg-white">
             <div className="container min-h-[80%]">
               <div className=" py-16">
@@ -131,7 +131,7 @@ const LandingPage = () => {
           </div>
         </div>
 
-        <div className="container pb-20">
+        <div id='how' className="container pb-20 px-3 md:pt-[50px] md:px-[100px] xs:px-5 ss:px-16">
           <h3 className=" font-sora font-bold text-[40px] text-center pt-16 pb-8">
             How it Works
           </h3>

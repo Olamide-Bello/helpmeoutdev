@@ -7,7 +7,7 @@ import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
 
 const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
-  const { logged, user, setLogged, setUser } = useContext(GlobalContext)
+  const { logged, user, setLogged, setUser, titleCase } = useContext(GlobalContext)
   const [showLogout, setShowLogout] = useState<boolean>(false)
   const history = useRouter()
 
@@ -17,33 +17,41 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
   }
 
   const handleLogout = async () => {
-    try {
-      // Send a POST request to the logout endpoint without a request body
-      const response = await fetch("https://www.cofucan.tech/srce/api/logout/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Add any necessary authentication headers here, such as tokens or cookies
-        },
-      });
-  
-      // Check if the request was successful (status code 200)
-      if (response.status === 200) {
-        // Logout was successful, so update your local state
-        history.push('/logIn');
-        setLogged(false);
+    setLogged(false);
         setShowLogout(false);
         setUser('');
-      } else {
-        // Handle error cases, e.g., if the API returns an error message
-        console.error("Logout failed. Status code: " + response.status);
-        // You can also handle the error in a user-friendly way here
-      }
-    } catch (error) {
-      // Handle network errors
-      console.error("Network error: ");
-      // You can also provide a user-friendly message for network errors
-    }
+        localStorage.removeItem("user")
+        localStorage.removeItem("logged")
+        history.push('/logIn');
+    // try {
+    //   // Send a POST request to the logout endpoint without a request body
+    //   const response = await fetch("https://www.cofucan.tech/srce/api/logout/", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       // Add any necessary authentication headers here, such as tokens or cookies
+    //     },
+    //   });
+  
+    //   // Check if the request was successful (status code 200)
+    //   if (response.status === 200) {
+    //     // Logout was successful, so update your local state
+    //     setLogged(false);
+    //     setShowLogout(false);
+    //     setUser('');
+    //     localStorage.removeItem("user")
+    //     localStorage.removeItem("logged")
+    //     history.push('/logIn');
+    //   } else {
+    //     // Handle error cases, e.g., if the API returns an error message
+    //     console.error("Logout failed. Status code: " + response.status);
+    //     // You can also handle the error in a user-friendly way here
+    //   }
+    // } catch (error) {
+    //   // Handle network errors
+    //   console.error("Network error: ");
+    //   // You can also provide a user-friendly message for network errors
+    // }
   };
   
 
@@ -93,7 +101,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
               onClick={handleShowLogout}
               className="flex md:gap-[10px] cursor-pointer"
             >
-              <p className="text-[13px] ss:text-[18px]">{user}</p>
+              <p className="text-[13px] ss:text-[18px]">{titleCase(user)}</p>
               <Image
                 src="/assets/video-repo/arrow-down.svg"
                 height={20}
@@ -105,9 +113,14 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
             {logged && showLogout && (
               <div
                 onClick={handleLogout}
-                className="absolute bottom-[-40px] cursor-pointer text-[#141414] font-Work-Sans font-[500] right-0 py-2 px-5 bg-white shadow"
+                className="flex gap-[10px] absolute bottom-[-40px] cursor-pointer text-[#141414] font-Work-Sans font-[500] right-0 py-2 px-5 bg-white shadow-lg"
               >
-                Log Out
+               <Image
+                src="/assets/shared/logout.svg"
+                height={20}
+                width={20}
+                alt="logout"
+              /> Logout
               </div>
             )}
           </div>

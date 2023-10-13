@@ -23,16 +23,16 @@ const Single = () => {
     const router = useRouter();
     const { id } = router.query;
     const { user } = useContext(GlobalContext);
-    const displayName = user?.displayName || 'user13';
     const TranscriptId = '5z7aWVvi8lE1SFh'
 
-    const [email, setEmail] = useState('');
-    const [errMsg, setErrMsg] = useState(false);
-    const [videoName, setVideoName] = useState('');
-    const [copied, setCopied] = useState(false);
-    const [url, setUrl] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [errMsg, setErrMsg] = useState<boolean>(false);
+    const [videoName, setVideoName] = useState<string>('');
+    const [newName, setNewName] = useState<string>('')
+    const [copied, setCopied] = useState<boolean>(false);
+    const [url, setUrl] = useState<string>('');
     const [transcript, setTranscript] = useState<{ time: number; msg: string; }[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
 
     const convertToUrlTranscript = (transcriptData: TranscriptWord[]): { time: number; msg: string }[] => {
@@ -140,14 +140,27 @@ const Single = () => {
             console.log(email)
         }
     }
-    /*  */
+    const updateName = async () => {
+        try {
+            const response = await fetch(`https://www.cofucan.tech/srce/api/video/videos%2FomDZqSgXHdq7n4V?title=${newName}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+
+            console.log(response)
+        } catch(err) {
+
+        }
+    }
     const changeName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         const { value } = e.target
-        setVideoName(value)
+        setNewName(value)
     }
 
     return (
-        <div className='px-3 xs:px-5 ss:px-0'>
+        <div className='px-3 md:px-[100px] xs:px-5 ss:px-16'>
             <Navbar noNav={true} />
             <MainLayout>
                 <div className='text-gray-200 mb-3 mt-2'>
@@ -156,10 +169,11 @@ const Single = () => {
                     <span className='text-primary-400 font-[500]'>{videoName}</span>
                 </div>
                 <div className="flex font-2xl font-[600] text-lg text-black font-Sora  items-center mb-5">
-                    <input type="text" value={videoName} onChange={changeName}
+                    <input type="text" value={newName} placeholder={videoName} onChange={changeName}
                         className="border-none outline-none rounded-md p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
                     />
                     <Image
+                        onClick={updateName}
                         src="/assets/video-repo/edit.svg"
                         alt="Logo"
                         width={20}
@@ -181,7 +195,7 @@ const Single = () => {
                                 placeholder="Enter the email of the reciever"
                                 onChange={(e) => handleChange(e)}
                                 onClick={sendEmail}
-                                readOnly= {false}
+                                readOnly={false}
                             />
                             <Input
                                 bg="border-[1px] border-black bg-gray-100 h-[60px] w-full md:w-1/2"

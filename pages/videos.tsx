@@ -171,6 +171,7 @@ function Videos() {
             Recent files
           </div>
           {loading ? (
+
         <Spinner />
       ) : (
           <div
@@ -198,11 +199,11 @@ function Videos() {
                       margin: '1rem',
                     }}
                   >
+
                     <div
-                      className="VideoFrame  relative rounded-xl border border-gray-200"
+                      className="WebCard px-1 pt-4 pb-6 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify-center items-center gap-0 inline-flex lg:w-[557px] lg:h-[322px]  md:w-[557px] md:h-[322px]  sm:w-[400px] sm:h-[322px] ss:w-[557px] ss:h-[322px] xs:w-[340px] xs:h-[280px]"
                       style={{
-                        margin: '0.5rem',
-                        position: 'relative',
+                        margin: '1rem',
                       }}
                     >
 
@@ -212,6 +213,7 @@ function Videos() {
                         src={item.src}
                         alt= "icon"
                       />
+
 
 <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
     <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
@@ -226,31 +228,28 @@ function Videos() {
                           style={{ fontSize: '1rem' }}
                         >
                           {item.name}
+
                         </div>
-                        <div className="Date text-gray-400 text-base font-normal font-['Work Sans'] uppercase">
-                          {item?.created_date}
+                        <div className="Icons justify-start items-start gap-6 flex">
+                          <Image
+                            src="/assets/video-repo/link.png"
+                            alt="stuff"
+                            width={20}
+                            height={20}
+                          />
+                          <Image
+                            src="/assets/video-repo/more.png"
+                            alt="stuff"
+                            width={20}
+                            height={20}
+                          />
                         </div>
-                      </div>
-                      <div className="Icons justify-start items-start gap-6 flex">
-                        <Image
-                          src="/assets/video-repo/link.png"
-                          alt="stuff"
-                          width={20}
-                          height={20}
-                        />
-                        <Image
-                          src="/assets/video-repo/more.png"
-                          alt="stuff"
-                          width={20}
-                          height={20}
-                        />
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))
-            )}
-          </div>
+                  </Link>
+                ))
+              )}
+            </div>
           )}
         </div>
         <ToastContainer

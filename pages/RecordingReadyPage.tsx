@@ -39,17 +39,19 @@ const RecordingReadyPage: React.FC = () => {
   const [email, setEmail] = useState<string>('')
 
   return (
-    <div className="relative w-full h-full">
+    <div className='w-full relative'>
       <Navbar noNav={true} />
-      {/* Recording is ready page main content */}
-      <VideoPageContent
-        displayModal={displayModal}
-        videoID={videoID}
-        setEmail={setEmail}
-        email={email}
-      />
-      {/* Save to account container */}
-      <SaveToAccount />
+      <MainLayout>
+        {/* Recording is ready page main content */}
+        <VideoPageContent
+          displayModal={displayModal}
+          videoID={videoID}
+          setEmail={setEmail}
+          email={email}
+        />
+        {/* Save to account container */}
+        <SaveToAccount />
+      </MainLayout>
       <Footer />
       {showModal && email ? (
         <Modal setShowModal={setShowModal} email={email} />

@@ -13,7 +13,7 @@ const VideoAndTranscript: React.FC<VideoAndTranscriptProps> = ({ videoID }) => {
   return (
     <div className='flex w-full h-full '>
       <Border />
-      <div className="md:pl-[40px] h-full flex flex-col gap-[80px] w-[1/2]">
+      <div className="md:pl-[40px] w-full h-full flex flex-col gap-[80px] ">
         {/* Video container for tablet and desktop screen */}
         <VideoContainer videoID={videoID} setCurrentVideoTime={setCurrentTime} setCurrentVidDuration={setCurrentVidDuration}/>
         {/* Transcript for all screens */}

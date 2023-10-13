@@ -1,11 +1,12 @@
 import React from 'react'
 import Image from 'next/image'
 
-const Modal = ({
-  setShowModal,
-}: {
+interface ModalProps {
   setShowModal: (showModal: boolean) => void
-}) => {
+  email: string
+}
+
+const Modal: React.FC<ModalProps> = ({ setShowModal, email }) => {
   return (
     <div className="w-full h-full absolute top-0">
       <div className="w-full h-full relative flex justify-center items-center md:py-16 px-3 ss:px-0">
@@ -31,10 +32,7 @@ const Modal = ({
             />
             <h2 className="font-Work-Sans text-[18px] font-[400] text-gray-400 text-center ss:mb-[64px]">
               Your video link has been sent to
-              <span className="text-primary-600 font-[500]">
-                {' '}
-                johnmark@gmail.com
-              </span>
+              <span className="text-primary-600 font-[500]"> {email}</span>
             </h2>
             <h3 className="font-Sora font-[400] text-[18px] text-black-600 w-full text-center">
               Would you need to view this video later? Save to your account now!

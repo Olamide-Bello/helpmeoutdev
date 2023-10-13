@@ -21,8 +21,8 @@ interface Video {
 
 
 function Videos() {
-  const { user } = useContext(GlobalContext)
-  const displayName: string = user?.displayName || 'user13'
+  const { user, titleCase } = useContext(GlobalContext)
+  const displayName: string = user || 'user13'
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
@@ -114,7 +114,7 @@ function Videos() {
           <div className="w-full px-4 sm:px-8 lg:px-20 py-0 flex flex-col xs:flex-col sm:flex-row items-center justify-between mb-5">
             <div className="w-full lg:w-auto flex flex-col">
               <div className="HelloJohnMark text-neutral-900 lg:text-[32px] font-bold font-['Sora'] md:text-[28px] sm:text-[24px] xs:text-[20px] hidden ss:block">
-                Hello, John Mark
+                Hello, {titleCase(user)}
               </div>
               <div className="HereAreYourRecordedVideos text-neutral-900 text-opacity-70 lg:text-[28px] font-bold font-['Sora'] md:text-[24px] sm:text-[20px] xs:text-[16x] font-normal font-['Work Sans'] hidden ss:block">
                 Here are your recorded videos

@@ -42,7 +42,7 @@ const VideoPlayer: React.FC<{ url: string }> = ({ url }) => {
       onClick={playPause}
         ref={recRef}
         autoPlay
-        className="w-full max-h-[500px] b rounded-[16px] border border-gray-200 border-opacity-60 bg-opacity-50 object-cover aspect-video"
+        className="w-full md:max-h-[500px] b rounded-[16px] border border-gray-200 border-opacity-60 bg-opacity-50 object-cover aspect-video"
       >
         <source src={url} type="video/mp4" />
       </video>

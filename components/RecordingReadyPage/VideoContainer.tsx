@@ -118,7 +118,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVide
     };
 
     fetchVideo();
-  }, [videoID, setCurrentVidDuration]);
+  }, [videoID]);
 
   return (
     <div className="hidden w-full h-auto rounded-[8px] bg-gray-200 border-[1px] border-primary-400 ss:flex flex-col overflow-hidden">

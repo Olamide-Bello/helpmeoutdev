@@ -38,7 +38,7 @@ function Videos() {
   const fetchVideos = async () => {
     try {
       const response = await axios.get(
-        `https://www.cofucan.tech/srce/api/recording/user/${displayName}`
+        `https://www.cofucan.tech/srce/api/recording/user/${user}`
       );
       const formattedVideos: Video[] = await Promise.all(
         response.data.map(async (video: any) => {

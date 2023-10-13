@@ -115,9 +115,9 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
                   {/* <p>{startTime} - {endTime}</p> */}
                   <div className="w-11/12 flex flex-wrap py-2">
                   {wordsInInterval.map((item, wordIndex) => (
-                      <div id="transcript-container" ref={transcriptContainerRef} className="custom-scrollbar  overflow-x-auto flex flex-wrap" >
+                      <div key={wordIndex} id="transcript-container" ref={transcriptContainerRef} className="custom-scrollbar  overflow-x-auto flex flex-wrap" >
 
-                        <p key={wordIndex} id={`transcript-${item.start}`} className="mr-1 text-gray-400">
+                        <p  id={`transcript-${item.start}`} className="mr-1 text-gray-400">
                           <strong>{item.punctuated_word}</strong>
                         </p>
                       </div>

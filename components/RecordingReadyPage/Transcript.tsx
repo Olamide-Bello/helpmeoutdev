@@ -29,7 +29,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
     if (videoID) {
       fetchTranscription();
     }
-  }, [videoID]);
+  }, []);
 
   // to format time
   const formatTime = (seconds: number) => {
@@ -77,11 +77,11 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
 
   // set interval to show the transcript in different div with interval of 'intervalDuration'
   const intervalDuration = 6; // 6 seconds
-  const duration = currentVidDuration;
-  const intervals = [];
-  for (let i = 0; i < duration; i += intervalDuration) {
-    intervals.push(i);
-  }
+  // const duration = currentVidDuration;
+  // const intervals = [];
+  // for (let i = 0; i < duration; i += intervalDuration) {
+  //   intervals.push(i);
+  // }
 
   return (
     <div className='w-full'>
@@ -97,13 +97,27 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
           height="16"
         />
       </div>
-      
+
       <div className="w-full h-auto relative">
         <div className="font-Inter w-full h-[164px] border-[1px] rounded-[12px]  ss:border-none p-3 ss:h-[255px]   gap-4 relative ">
-          <div className='p-2 overflow-y-scroll custom-scrollbar  gap-4 h-full pt-10 ' id='org-transcipt-container'>
-            
+          <div className='p-2 overflow-y-scroll custom-scrollbar flex gap-4 h-full pt-10 ' id='org-transcipt-container'>
+            <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3">
+              {formatTime(currentVideoTime)}
+            </h5>
+            <div id="transcript-container" ref={transcriptContainerRef} className="custom-scrollbar  overflow-x-auto flex flex-wrap" >
+              {transcriptionData.words?.map((item) => {
+                return (
+                  <p id={`transcript-${item.start}`} className="mr-1 text-gray-400">
+                    <strong>{item.punctuated_word}</strong>
+                  </p>
+                );
+              })}
 
-            {intervals.map((startTime, index) => {
+            </div>
+
+
+            
+            {/* {intervals.map((startTime, index) => {
               const endTime = startTime + intervalDuration;
               const wordsInInterval = transcriptionData.words.filter(item => item.start >= startTime && item.start < endTime);
 
@@ -112,7 +126,6 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
                   <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3">
                   {formatTime(startTime)}
                   </h5>
-                  {/* <p>{startTime} - {endTime}</p> */}
                   <div className="w-11/12 flex flex-wrap py-2">
                   {wordsInInterval.map((item, wordIndex) => (
                       //mapping with key 'wordIndex'
@@ -125,9 +138,9 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
                   </div>
                 </div>
               );
-            })}
+            })} */}
 
-            
+
           </div>
         </div>
       </div>

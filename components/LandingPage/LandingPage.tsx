@@ -9,9 +9,9 @@ const LandingPage = () => {
     <div>
       <Hero />
       <Border />
-      <HowItWorks />
-      <Border/>
       <Features />
+      <Border/>
+      <HowItWorks />
     </div>
   )
 }

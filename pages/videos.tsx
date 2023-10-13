@@ -169,6 +169,7 @@ function Videos() {
                         margin: '1rem',
                       }}
                     >
+
                       <div
                         className="VideoFrame  relative rounded-xl border border-gray-200"
                         style={{
@@ -176,10 +177,14 @@ function Videos() {
                           position: 'relative',
                         }}
                       >
-                        <img
-                          className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[525px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
-                          src={item.src}
-                        />
+                        
+
+                      <Image
+                        className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[525px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
+                        src={item.src}
+                        alt= "icon"
+                      />
+
 
                         <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
                           <div className="34 text-slate-950 text-sm font-medium font-['Work Sans']">

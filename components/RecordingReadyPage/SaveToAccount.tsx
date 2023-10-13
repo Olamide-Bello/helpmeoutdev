@@ -19,7 +19,7 @@ const SaveToAccount: React.FC<idProps> = ({videoID}) => {
         Save Video
       </button></Link>
       <h2 className="font-Sora text-[16px] ss:text-[24px] font-[400] text-gray-400 text-center">
-        Don't have an account?{' '}
+        {`Don't have an account?`} &nbsp;
         <Link href={'/signUp'} className="text-primary-600 font-[400]">Create account</Link>
       </h2>
     </div>

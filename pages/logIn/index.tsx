@@ -112,16 +112,20 @@ const LogIn: React.FC = () => {
           mode: 'no-cors',
           headers: {
             'Content-Type': 'application/json',
-            // Add any necessary authentication headers here, such as tokens or cookies
           },
-        },
-      )
+        },)
 
       // Check if the request was successful (status code 200)
       if (response.status === 200) {
         // Logout was successful, so update your local state
+        const result = await response.json()
         setLogged(true)
-        history.push('/videos')
+        localStorage.setItem("user", result.username)
+        const num = Number(true)
+        localStorage.setItem("logged", JSON.stringify(num))
+        setUser(result.username)
+        history.push('/videos');
+
       } else {
         // Handle error cases, e.g., if the API returns an error message
         console.error('Logout failed. Status code: ' + response.status)

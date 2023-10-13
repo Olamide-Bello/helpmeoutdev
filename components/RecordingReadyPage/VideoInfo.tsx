@@ -72,43 +72,43 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
           const result = await response.json()
           console.log(response)
           console.log(result.message)
-          toast.success(`${result.message}`, {
-            style: {
-              background: 'white', // Change the background color as needed
-              color: 'green', // Change the text color as needed
-              borderRadius: '8px', // Rounded corners for the toast
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-              padding: '12px 24px', // Adjust padding as needed
-              fontSize: '16px', // Adjust font size as needed
-              textAlign: 'center',
-            },
-          })
+          // toast.success(`${result.message}`, {
+          //   style: {
+          //     background: 'white', // Change the background color as needed
+          //     color: 'green', // Change the text color as needed
+          //     borderRadius: '8px', // Rounded corners for the toast
+          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          //     padding: '12px 24px', // Adjust padding as needed
+          //     fontSize: '16px', // Adjust font size as needed
+          //     textAlign: 'center',
+          //   },
+          // })
           displayModal()
         } else {
-          toast.error(`Unable to send to Email!`, {
-            style: {
-              background: 'white', // Change the background color as needed
-              color: 'red', // Change the text color as needed
-              borderRadius: '8px', // Rounded corners for the toast
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-              padding: '12px 24px', // Adjust padding as needed
-              fontSize: '16px', // Adjust font size as needed
-              textAlign: 'center',
-            },
-          })
+          // toast.error(`Unable to send to Email!`, {
+          //   style: {
+          //     background: 'white', // Change the background color as needed
+          //     color: 'red', // Change the text color as needed
+          //     borderRadius: '8px', // Rounded corners for the toast
+          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          //     padding: '12px 24px', // Adjust padding as needed
+          //     fontSize: '16px', // Adjust font size as needed
+          //     textAlign: 'center',
+          //   },
+          // })
         }
       } catch (error) {
-        toast.error(`${error}`, {
-          style: {
-            background: 'white', // Change the background color as needed
-            color: 'red', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
+        // toast.error(`${error}`, {
+        //   style: {
+        //     background: 'white', // Change the background color as needed
+        //     color: 'red', // Change the text color as needed
+        //     borderRadius: '8px', // Rounded corners for the toast
+        //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+        //     padding: '12px 24px', // Adjust padding as needed
+        //     fontSize: '16px', // Adjust font size as needed
+        //     textAlign: 'center',
+        //   },
+        // })
       }
     }
   }
@@ -204,14 +204,14 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
       </div>
       {/* Share options */}
       <Share text='#' />
-      <ToastContainer
+      {/* <ToastContainer
         position="top-center" // Position the toast container at the bottom-center
         autoClose={1500} // Close after 3 seconds (adjust as needed)
         style={{
           width: 'fit-content', // Adjust the width as needed
           textAlign: 'center', // Center-align the container's content
         }}
-      />
+      /> */}
     </div>
   )
 }

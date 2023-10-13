@@ -112,7 +112,6 @@ const LogIn: React.FC = () => {
           mode: 'no-cors',
           headers: {
             'Content-Type': 'application/json',
-            // Add any necessary authentication headers here, such as tokens or cookies
           },
         },
       )

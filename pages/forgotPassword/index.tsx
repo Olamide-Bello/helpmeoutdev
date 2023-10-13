@@ -23,43 +23,42 @@ const ForgotPassword: React.FC = () => {
   const [password, setPassword] = useState<string>('')
   const [password2, setPassword2] = useState<string>('')
   const [err, setErr] = useState<boolean>(false)
-  const errMsg = "Passwords do not match"
+  const errMsg = 'Passwords do not match'
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
-    console.log(value)
   }
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
-    console.log(value)
   }
 
   const handlePassChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword2(value)
-    if(password !== value){
-        setErr(true)
-    } else{
-        setErr(false)
+    if (password !== value) {
+      setErr(true)
+    } else {
+      setErr(false)
     }
-    console.log(value)
   }
-
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     const data = { username, password }
     try {
-      const response = await fetch('https://www.cofucan.tech/srce/api/change_password/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://www.cofucan.tech/srce/api/change_password/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      })
+      )
 
       console.log(response)
       const result = await response.json()
@@ -110,8 +109,6 @@ const ForgotPassword: React.FC = () => {
     }
   }
 
-  
-
   return (
     <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem] ">
       <Link
@@ -128,20 +125,13 @@ const ForgotPassword: React.FC = () => {
       </Link>
 
       <div className="flex flex-col justify-center items-center">
-        <section className="mt-[2rem] flex flex-col items-center">
+        <section className="mt-[2rem] flex flex-col items-center mb-[2rem]">
           <h1 className="text-primary-400 font-semibold font-Sora text-[32px] mb-[8px] tracking-wide">
             Forgot Password?
           </h1>
           <p className="text-primary-300 text-center text-[15px] font-Work-Sans font-medium tracking-tight mb-[32px]">
             Enter a new password to continue
           </p>
-        
-
-          <div className="flex items-center justify-center gap-[1rem] mb-[1rem]">
-            <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
-            
-            <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
-          </div>
         </section>
         <form
           className="flex flex-col w-full ss:w-[475px]"
@@ -162,7 +152,7 @@ const ForgotPassword: React.FC = () => {
           </div>
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
-             New Password
+              New Password
             </p>
             <input
               type="password"
@@ -189,11 +179,11 @@ const ForgotPassword: React.FC = () => {
               className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>
-          { err &&
-          <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+          {err && (
+            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
               {errMsg}
             </p>
-            }
+          )}
           <button
             // onClick={login}
             className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
@@ -209,7 +199,7 @@ const ForgotPassword: React.FC = () => {
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Don&apos;t Have Account?{' '}
             <Link href={'/signUp'}>
-              <span className="font-bold hover:underline cursor-pointer font-Work-Sans">
+              <span className="font-bold hover:underline cursor-pointer font-Sora">
                 Sign Up
               </span>
             </Link>

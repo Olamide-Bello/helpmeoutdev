@@ -16,7 +16,6 @@ import { GlobalContext } from '@/context/GlobalContext'
 
 const SignUp: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const [message, setMessage] = useState<boolean | string>(false)
   const history = useRouter()
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -25,13 +24,11 @@ const SignUp: React.FC = () => {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
-    console.log(value)
   }
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
-    console.log(value)
   }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -49,9 +46,7 @@ const SignUp: React.FC = () => {
         },
       )
 
-      console.log(response)
       const result = await response.json()
-      console.log(result)
 
       if (response.status === 200) {
         console.log('Sign-up successful!')
@@ -103,36 +98,32 @@ const SignUp: React.FC = () => {
 
   const signInWithGoogle = async () => {
     try {
-      // Send a POST request to the logout endpoint without a request body
+      // Send a GET request to the Google login endpoint
       const response = await fetch(
-        'https://www.cofucan.tech/srce/api/google/login/',
+        'https://screen-recorder-476l.onrender.com/srce/api/google/login/',
+
         {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow': 'http://localhost:3000',
-            // Add any necessary authentication headers here, such as tokens or cookies
+            'Access-Control-Allow-Origin': 'https://localhost:3000',
           },
         },
       )
 
-      const result = await response.json()
-
-      // Check if the request was successful (status code 200)
       if (response.status === 200) {
-        // Logout was successful, so update your local state
+        // Convert the response to JSON
+        const result = await response.json()
+
+        // Assuming you have these functions defined
         setLogged(true)
         setUser(result.username)
         history.push('/videos')
       } else {
-        // Handle error cases, e.g., if the API returns an error message
-        console.error('Logout failed. Status code: ' + response.status)
-        // You can also handle the error in a user-friendly way here
+        console.error('Login failed. Status code: ' + response.status)
       }
     } catch (error) {
-      // Handle network errors
-      console.error('Network error: ')
-      // You can also provide a user-friendly message for network errors
+      console.error('Network error: ', error)
     }
   }
 

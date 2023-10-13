@@ -115,11 +115,17 @@ const LogIn: React.FC = () => {
           // Add any necessary authentication headers here, such as tokens or cookies
         },
       });
+      console.log(response)
 
       // Check if the request was successful (status code 200)
       if (response.status === 200) {
         // Logout was successful, so update your local state
+        const result = await response.json()
         setLogged(true)
+        localStorage.setItem("user", result.username)
+        const num = Number(true)
+        localStorage.setItem("logged", JSON.stringify(num))
+        setUser(result.username)
         history.push('/videos');
 
       } else {

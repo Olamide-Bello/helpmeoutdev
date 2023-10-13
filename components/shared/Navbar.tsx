@@ -3,29 +3,69 @@ import Image from 'next/image'
 import MainLayout from './MainLayout'
 import Link from 'next/link'
 import { GlobalContext } from '@/context/GlobalContext'
-import { auth } from '../Auth/firebase'
-import { signOut } from 'firebase/auth'
+import fetch from 'isomorphic-unfetch'
+import { useRouter } from 'next/router'
 
 const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
-  const { logged, user, setLogged, setUser } = useContext(GlobalContext)
+  const { logged, user, setLogged, setUser, titleCase } = useContext(GlobalContext)
   const [showLogout, setShowLogout] = useState<boolean>(false)
+  const history = useRouter()
 
   //function that toggles the show logout state
   const handleShowLogout = () => {
     setShowLogout(!showLogout)
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    setLogged(false);
+        setShowLogout(false);
+        setUser('');
+        localStorage.removeItem("user")
+        localStorage.removeItem("logged")
+        history.push('/logIn');
+    // try {
+    //   // Send a POST request to the logout endpoint without a request body
+    //   const response = await fetch("https://www.cofucan.tech/srce/api/logout/", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       // Add any necessary authentication headers here, such as tokens or cookies
+    //     },
+    //   });
+  
+    //   // Check if the request was successful (status code 200)
+    //   if (response.status === 200) {
+    //     // Logout was successful, so update your local state
+    //     setLogged(false);
+    //     setShowLogout(false);
+    //     setUser('');
+    //     localStorage.removeItem("user")
+    //     localStorage.removeItem("logged")
+    //     history.push('/logIn');
+    //   } else {
+    //     // Handle error cases, e.g., if the API returns an error message
+    //     console.error("Logout failed. Status code: " + response.status);
+    //     // You can also handle the error in a user-friendly way here
+    //   }
+    // } catch (error) {
+    //   // Handle network errors
+    //   console.error("Network error: ");
+    //   // You can also provide a user-friendly message for network errors
+    // }
+  };
+  
+
+  /*const handleLogout = () => {
     //call or put the logic for log out here
     signOut(auth)
     setLogged(false)
     setShowLogout(false)
     setUser(null)
-  }
+  }*/
+
   return (
-    // <MainLayout>
-    <div className='bg-white'>
-      <div className="container text-primary-600 h-[84px] flex justify-between items-center">
+    <div className='bg-white  '>
+      <div className="container text-primary-600 h-[84px] px-3 xs:px-5 ss:px-12 md:px-[80px] flex justify-between items-center">
         {/* Logo container */}
         <Link href="/" className="flex gap-1 items-center">
           <Image
@@ -48,7 +88,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
           </div>
         )}
         {/* Get Started */}
-        {logged === true && user?.displayName ? (
+        {logged === true && user ? (
           <div className="flex items-center gap-1 md:gap-4 relative font-Work-Sans font-[400]">
             <Image
               src="/assets/shared/profile.svg"
@@ -61,7 +101,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
               onClick={handleShowLogout}
               className="flex md:gap-[10px] cursor-pointer"
             >
-              <p className="text-[13px] ss:text-[18px]">{user?.displayName}</p>
+              <p className="text-[13px] ss:text-[18px]">{titleCase(user)}</p>
               <Image
                 src="/assets/video-repo/arrow-down.svg"
                 height={20}
@@ -73,9 +113,14 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
             {logged && showLogout && (
               <div
                 onClick={handleLogout}
-                className="absolute bottom-[-40px] cursor-pointer text-[#141414] font-Work-Sans font-[500] right-0 py-2 px-5 bg-white shadow"
+                className="flex gap-[10px] absolute bottom-[-40px] cursor-pointer text-[#141414] font-Work-Sans font-[500] right-0 py-2 px-5 bg-white shadow-lg"
               >
-                Log Out
+               <Image
+                src="/assets/shared/logout.svg"
+                height={20}
+                width={20}
+                alt="logout"
+              /> Logout
               </div>
             )}
           </div>
@@ -86,7 +131,6 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
         )}
       </div>
     </div>
-    // </MainLayout>
   )
 }
 

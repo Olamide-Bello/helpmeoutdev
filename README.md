@@ -97,7 +97,7 @@ import MainLayout from '../components/shared/MainLayout';
 
 function Home() {
   return (
-    <MainLayout className="xl:w-[1440px] mx-auto w-full md:px-[100px] px-3 xs:px-5">
+    <MainLayout className="xl:w-[1440px] mx-auto w-full md:px-[80px] px-3 xs:px-5">
       <p className="text-dark-100">Home Page</p>
     </MainLayout>
   );

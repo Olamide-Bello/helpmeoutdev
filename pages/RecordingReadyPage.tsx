@@ -6,12 +6,10 @@ import React, { useEffect } from 'react'
 import MainLayout from '@/components/shared/MainLayout'
 import { useState } from 'react'
 import Modal from '@/components/RecordingReadyPage/Modal'
-import { useRouter } from 'next/router';
-
+import { useRouter } from 'next/router'
 
 const RecordingReadyPage: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
-
 
   // Function to displayModal
   const displayModal = () => {
@@ -24,31 +22,40 @@ const RecordingReadyPage: React.FC = () => {
       if (modalElement) {
         window.scrollTo({
           top: modalElement.offsetTop,
-          behavior: 'smooth', 
+          behavior: 'smooth',
         })
       }
     }
   }, [showModal])
 
-  const router = useRouter();
-  const { videoID } = router.query;
+  const router = useRouter()
+  const { videoID } = router.query
 
   if (videoID) {
     // Use videoID here
-    console.log('Video ID:', videoID);
+    console.log('Video ID:', videoID)
   }
 
+  const [email, setEmail] = useState<string>('')
+
   return (
-    <div className="relative w-full h-full">
-      <Navbar noNav={true}/>
+    <div className='w-full relative'>
+      <Navbar noNav={true} />
       <MainLayout>
         {/* Recording is ready page main content */}
-        <VideoPageContent displayModal={displayModal} videoID={videoID}/>
+        <VideoPageContent
+          displayModal={displayModal}
+          videoID={videoID}
+          setEmail={setEmail}
+          email={email}
+        />
         {/* Save to account container */}
-        <SaveToAccount />
+        <SaveToAccount videoID= {videoID} />
       </MainLayout>
       <Footer />
-      {showModal && <Modal setShowModal={setShowModal} />}
+      {showModal && email ? (
+        <Modal setShowModal={setShowModal} email={email} />
+      ) : null}
     </div>
   )
 }

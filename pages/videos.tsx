@@ -22,13 +22,16 @@ interface Video {
 
 
 function Videos() {
-  const { user } = useContext(GlobalContext)
-  const displayName: string = user?.displayName || 'user13'
+  const { user, titleCase } = useContext(GlobalContext)
+  // const displayName: string = user || 'user13'
+  // console.log(user)
+  // console.log(displayName)
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('');
  // const [filteredVideos, setFilteredVideos] = useState<Video[]>(videos);
+
 
 
  useEffect(() => {
@@ -57,6 +60,7 @@ function Videos() {
     } catch (error) {
       console.error('Error fetching videos:', error);
       setLoading(false);
+
     }
   };
 
@@ -138,7 +142,7 @@ function Videos() {
           <div className="w-full px-4 sm:px-8 lg:px-20 py-0 flex flex-col xs:flex-col sm:flex-row items-center justify-between mb-5">
             <div className="w-full lg:w-auto flex flex-col">
               <div className="HelloJohnMark text-neutral-900 lg:text-[32px] font-bold font-['Sora'] md:text-[28px] sm:text-[24px] xs:text-[20px] hidden ss:block">
-                Hello, John Mark
+                Hello, {titleCase(user)}
               </div>
               <div className="HereAreYourRecordedVideos text-neutral-900 text-opacity-70 lg:text-[28px] font-bold font-['Sora'] md:text-[24px] sm:text-[20px] xs:text-[16x] font-normal font-['Work Sans'] hidden ss:block">
                 Here are your recorded videos
@@ -201,9 +205,12 @@ function Videos() {
                         position: 'relative',
                       }}
                     >
-                      <img
-                        className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[380px] sm:h-[220px] ss:w-[520px] ss:h-[220px] xs:w-[320px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
+
+                      <Image
+                        className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[525px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
+
                         src={item.src}
+                        alt= "icon"
                       />
 
 <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -12,31 +12,23 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
-
-interface User {
-  uid: string
-  email: string | null
-  displayName: string | null
-}
+import { GlobalContext } from '@/context/GlobalContext'
 
 const SignUp: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const [user, setUser] = useState<User | null>(null)
-  const [message, setMessage] = useState<boolean | string>(false)
   const history = useRouter()
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const { setLogged, setUser } = useContext(GlobalContext)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
-    console.log(value)
   }
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
-    console.log(value)
   }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -54,9 +46,7 @@ const SignUp: React.FC = () => {
         },
       )
 
-      console.log(response)
       const result = await response.json()
-      console.log(result)
 
       if (response.status === 200) {
         console.log('Sign-up successful!')
@@ -71,11 +61,13 @@ const SignUp: React.FC = () => {
             textAlign: 'center',
           },
         })
+        setLogged(true)
+        setUser(result.username)
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Sign-up failed with status code', result.message)
-        toast.error(`Error: ${result.message}`, {
+        toast.error(`Sign-up failed`, {
           style: {
             background: 'white', // Change the background color as needed
             color: 'red', // Change the text color as needed
@@ -104,42 +96,35 @@ const SignUp: React.FC = () => {
     }
   }
 
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((userCredential) => {
-        const newUser = userCredential.user
+  const signInWithGoogle = async () => {
+    try {
+      // Send a GET request to the Google login endpoint
+      const response = await fetch(
+        'https://screen-recorder-476l.onrender.com/srce/api/google/login/',
 
-        console.log(newUser)
-        setUser(newUser)
-        setUserExist(true) // Change to true
-        toast.success('Successfully created an Account With Google', {
-          style: {
-            background: 'white', // Change the background color as needed
-            color: 'green', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': 'https://localhost:3000',
           },
-        })
+        },
+      )
+
+      if (response.status === 200) {
+        // Convert the response to JSON
+        const result = await response.json()
+
+        // Assuming you have these functions defined
+        setLogged(true)
+        setUser(result.username)
         history.push('/videos')
-      })
-      .catch((error) => {
-        const errorCode = error.code
-
-        toast.error(`Error: ${errorCode}`, {
-          style: {
-            background: 'white', // Change the background color as needed
-            color: 'red', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-      })
+      } else {
+        console.error('Login failed. Status code: ' + response.status)
+      }
+    } catch (error) {
+      console.error('Network error: ', error)
+    }
   }
 
   const signInWithFacebook = () => {
@@ -148,7 +133,6 @@ const SignUp: React.FC = () => {
         const newUser = userCredential.user
 
         console.log(newUser)
-        setUser(newUser)
         setUserExist(true)
         toast.success('Successfully created an Account With Facebook', {
           style: {
@@ -283,9 +267,9 @@ const SignUp: React.FC = () => {
           </button>
 
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
-            Already Have Account{' '}
+            Already Have Account?{' '}
             <Link href={'/logIn'}>
-              <span className="font-bold hover:underline cursor-pointer font-Work-Sans">
+              <span className="font-bold hover:underline cursor-pointer font-Sora">
                 Log In
               </span>
             </Link>

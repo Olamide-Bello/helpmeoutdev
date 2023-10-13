@@ -11,7 +11,7 @@ import { TranscriptData } from '@/types/transcript-data'
 //   punctuated_word: string;
 // }
 
-const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime }) => {
+const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, currentVidDuration }) => {
   const [transcriptionData, setTranscriptionData] = useState<{
     transcript: string;
     words: TranscriptData[];
@@ -64,6 +64,20 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime }) =>
     }
   }, [currentVideoTime, transcriptionData]);
 
+  useEffect(() => {
+    // Making sure videoDuration is greater than 0 to avoid division by zero
+    if (currentVidDuration > 0 && currentVideoTime > 0) {
+      // console.log("curentVidDur:", currentVidDuration, " & currVidTime:", currentVideoTime);
+      // Calculate the progress percentage
+      const progress = (currentVideoTime / currentVidDuration) * 100;
+      console.log("Progresses:", progress);
+      // Scroll your transcript container here
+      const transcriptContainer = document.getElementById('org-transcipt-container');
+      if (transcriptContainer) {
+        transcriptContainer.scrollTop = (progress / 100) * transcriptContainer.scrollHeight;  //adjust the scroll speed
+      }
+    }
+  }, [currentVidDuration, currentVideoTime]);
 
 
   return (
@@ -82,15 +96,16 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime }) =>
       </div>
       <div className="w-full h-auto relative">
         <div className="font-Inter h-[164px] border-[1px] rounded-[12px]  ss:border-none p-3 ss:h-[255px]   gap-4 relative">
-          <div className='p-2 overflow-y-scroll custom-scrollbar flex flex-col h-full'>
-            <div className="flex gap-4">
-              <h5 className="font-[400] font-Work-Sans text-[14px] xs:text-[16px] text-black">
-                {formatTime(currentVideoTime)}
-              </h5>
+          <div className='p-2 overflow-hidden custom-scrollbar flex gap-4 h-full '  id='org-transcipt-container'>
+            <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black ">
+              {formatTime(currentVideoTime)}
+            </h5>
+            <div className="flex w-full">
+
               <div
                 id="transcript-container"
                 ref={transcriptContainerRef}
-                className=" w-11/12 max-w-lg ss:max-w-5xl overflow-x-auto flex flex-wrap"
+                className="  max-w-lg ss:max-w-5xl custom-scrollbar overflow-x-auto flex flex-wrap "
               >
                 {transcriptionData.words.map((item, index) => {
                   return (
@@ -99,24 +114,6 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime }) =>
                     </p>
                   );
                 })}
-
-                {/* {Array.from({ length: numIntervals }, (_, i) => renderInterval(i))} */}
-
-                {/* {intervals.map((startTime, index) => {
-                  const endTime = startTime + intervalDuration;
-                  const wordsInInterval = transcriptionData.words.filter(item => item.start >= startTime && item.start < endTime);
-
-                  return (
-                    <div key={index}>
-                      <p>Interval {index + 1}: {startTime}s - {endTime}s</p>
-                      {wordsInInterval.map((item, wordIndex) => (
-                        <p key={wordIndex} id={`transcript-${item.start}`} className="mr-1">
-                          <strong>{item.punctuated_word}</strong>
-                        </p>
-                      ))}
-                    </div>
-                  );
-                })} */}
 
               </div>
             </div>

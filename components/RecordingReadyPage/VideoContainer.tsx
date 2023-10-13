@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { VideoContainerProps } from '@/types/video-container'
 
-const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVideoTime }) => {
+const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVideoTime, setCurrentVidDuration }) => {
   //to get the videoID
   const videoRef = useRef<HTMLVideoElement>(null)
   const router = useRouter()
@@ -100,6 +100,25 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVide
     // console.log("event.target.currentTime:", event.target.currentTime);
     setCurrentVideoTime(event.target.currentTime);
   };
+
+  // to set current video duration - overall duration of the video
+  useEffect(() => {
+    const fetchVideo = async () => {
+      const videoUrl = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4`;
+      const video = document.createElement('video');
+      
+      video.src = videoUrl;
+      video.preload = 'metadata'; // Preload metadata to get duration
+      
+      video.addEventListener('loadedmetadata', function() {
+        const duration = video.duration;
+        setCurrentVidDuration(duration);
+        console.log(`The video duration is ${duration} seconds.`);
+      });
+    };
+
+    fetchVideo();
+  }, [videoID]);
 
   return (
     <div className="hidden w-full h-auto rounded-[8px] bg-gray-200 border-[1px] border-primary-400 ss:flex flex-col overflow-hidden">

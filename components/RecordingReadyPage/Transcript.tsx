@@ -103,7 +103,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
           <div className='p-2 overflow-y-scroll custom-scrollbar  gap-4 h-full pt-10 ' id='org-transcipt-container'>
 
 
-            {intervals.map((startTime, index) => {
+            {intervals.map((startTime, index:React.Key) => {
               const endTime = startTime + intervalDuration;
               const wordsInInterval = transcriptionData.words.filter(item => item.start >= startTime && item.start < endTime);
 

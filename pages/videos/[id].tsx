@@ -147,7 +147,7 @@ const Single = () => {
     }
 
     return (
-        <div>
+        <div className='px-3 xs:px-5 ss:px-0'>
             <Navbar noNav={true} />
             <MainLayout>
                 <div className='text-gray-200 mb-3 mt-2'>

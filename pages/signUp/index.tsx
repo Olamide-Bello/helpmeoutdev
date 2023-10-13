@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -12,20 +12,16 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
+import { GlobalContext } from '@/context/GlobalContext'
 
-interface User {
-  uid: string
-  email: string | null
-  displayName: string | null
-}
 
 const SignUp: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
   const history = useRouter()
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const {setLogged, setUser} = useContext(GlobalContext)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -71,6 +67,8 @@ const SignUp: React.FC = () => {
             textAlign: 'center',
           },
         })
+        setLogged(true)
+        setUser(result.username)
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
       } else {
@@ -115,10 +113,14 @@ const SignUp: React.FC = () => {
             // Add any necessary authentication headers here, such as tokens or cookies
           },
         });
+
+        const result = await response.json()
     
         // Check if the request was successful (status code 200)
         if (response.status === 200) {
           // Logout was successful, so update your local state
+          setLogged(true)
+          setUser(result.username)
           history.push('/videos');
 
         } else {
@@ -139,7 +141,6 @@ const SignUp: React.FC = () => {
         const newUser = userCredential.user
 
         console.log(newUser)
-        setUser(newUser)
         setUserExist(true)
         toast.success('Successfully created an Account With Facebook', {
           style: {

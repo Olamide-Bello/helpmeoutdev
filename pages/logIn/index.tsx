@@ -18,9 +18,9 @@ import { GlobalContext } from '@/context/GlobalContext'
 
 const LogIn: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const {setUser, setLogged} = useContext(GlobalContext)
+  const { setUser, setLogged } = useContext(GlobalContext)
   const [message, setMessage] = useState<boolean | string>(false)
-  
+
   const history = useRouter()
 
   const [username, setUsername] = useState<string>('')
@@ -66,6 +66,11 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
+        setLogged(true)
+        localStorage.setItem("user", result.username)
+        const num = Number(true)
+        localStorage.setItem("logged", JSON.stringify(num))
+        setUser(result.username)
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
       } else {
@@ -110,10 +115,11 @@ const LogIn: React.FC = () => {
           // Add any necessary authentication headers here, such as tokens or cookies
         },
       });
-  
+
       // Check if the request was successful (status code 200)
       if (response.status === 200) {
         // Logout was successful, so update your local state
+        setLogged(true)
         history.push('/videos');
 
       } else {
@@ -133,7 +139,7 @@ const LogIn: React.FC = () => {
       .then((userCredential) => {
         const newUser = userCredential.user
         console.log(newUser)
-        
+
         setUserExist(true) // Change to true
         toast.success('Successfully Logged In Facebook Account', {
           style: {
@@ -146,6 +152,7 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
+        setLogged(true)
         history.push('/videos')
       })
       .catch((error) => {
@@ -266,10 +273,10 @@ const LogIn: React.FC = () => {
           >
             Log In
           </button>
-          <Link href={'/ForgotPassword'}>
-          <p className="text-[16px] font-Sora mt-2 font-medium mb-[14px]">
+          <Link href={'/forgotPassword'}>
+            <p className="text-[16px] font-Sora mt-2 font-medium mb-[14px]">
               Forgot Password?
-          </p>
+            </p>
           </Link>
 
           {message && (

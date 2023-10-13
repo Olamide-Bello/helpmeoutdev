@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '@/components/shared/Navbar';
 import Link from 'next/link';
-import MainLayout from '@/components/shared/MainLayout';
 import Image from 'next/image';
 import VideoPlayer from '@/components/SingleViewPage/VideoPlayer';
 import { Input } from '../../components/SingleViewPage/Input';
@@ -11,6 +10,8 @@ import Transcript from '../../components/SingleViewPage/transcript';
 import Demo from '@/components/SingleViewPage/Demo';
 import { GlobalContext } from '../../context/GlobalContext';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 interface TranscriptWord {
     start: number;
@@ -142,15 +143,28 @@ const Single = () => {
     }
     const updateName = async () => {
         try {
-            const response = await fetch(`https://www.cofucan.tech/srce/api/video/videos%2FomDZqSgXHdq7n4V?title=${newName}`, {
+            const response = await fetch(`https://www.cofucan.tech/srce/api/video/${id}?title=${newName}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             })
 
-            console.log(response)
-        } catch(err) {
+            if (response.status === 200) {
+                toast.success('Name change successful!', {
+                    style: {
+                        background: 'white', // Change the background color as needed
+                        color: 'green', // Change the text color as needed
+                      borderRadius: '8px', // Rounded corners for the toast
+                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+                      padding: '12px 24px', // Adjust padding as needed
+                      fontSize: '16px', // Adjust font size as needed
+                      textAlign: 'center',
+                    },
+                })
+                window.location.reload()
+            }
+        } catch (err) {
 
         }
     }
@@ -160,9 +174,9 @@ const Single = () => {
     }
 
     return (
-        <div className='px-3 md:px-[100px] xs:px-5 ss:px-16'>
+        <div>
             <Navbar noNav={true} />
-            <MainLayout>
+            <div className='px-3 md:px-[80px] xs:px-5 ss:px-16'>
                 <div className='text-gray-200 mb-3 mt-2'>
                     <Link href='/'><span className='text-gray-200  text-lg font-normal font-Work-Sans '>Home</span></Link>&nbsp;/&nbsp;
                     <Link href='/videos'><span className='text-gray-200  text-lg font-normal font-Work-Sans'>Recent Videos</span></Link>&nbsp;/&nbsp;
@@ -173,6 +187,7 @@ const Single = () => {
                         className="border-none outline-none rounded-md p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
                     />
                     <Image
+                        className='cursor-pointer'
                         onClick={updateName}
                         src="/assets/video-repo/edit.svg"
                         alt="Logo"
@@ -212,7 +227,15 @@ const Single = () => {
                 </div>
                 {/* share the video on social media */}
                 <Share text={url} />
-            </MainLayout>
+            </div>
+            <ToastContainer
+                position="top-center" // Position the toast container at the bottom-center
+                autoClose={1500} // Close after 3 seconds (adjust as needed)
+                style={{
+                    width: 'fit-content', // Adjust the width as needed
+                    textAlign: 'center', // Center-align the container's content
+                }}
+            />
         </div>
     )
 }

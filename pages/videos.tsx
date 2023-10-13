@@ -30,42 +30,42 @@ function Videos() {
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('');
- // const [filteredVideos, setFilteredVideos] = useState<Video[]>(videos);
+  // const [filteredVideos, setFilteredVideos] = useState<Video[]>(videos);
 
 
 
- useEffect(() => {
-  const fetchVideos = async () => {
-    try {
-      const response = await axios.get(
-        `https://www.cofucan.tech/srce/api/recording/user/${user}`
-      );
-      const formattedVideos: Video[] = await Promise.all(
-        response.data.map(async (video: any) => {
-          const videoElement = document.createElement('video');
-          videoElement.src = video.original_location;
-          await videoElement.load();
-          const duration = videoElement.duration; // Duration in seconds
-          return {
-            id: video.id,
-            name: video.title,
-            src: video.thumbnail_location,
-            created_date: formatDate(video.created_date),
-            duration: duration,
-          };
-        })
-      );
-      setVideos(formattedVideos);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching videos:', error);
-      setLoading(false);
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const response = await axios.get(
+          `https://www.cofucan.tech/srce/api/recording/user/${user}`
+        );
+        const formattedVideos: Video[] = await Promise.all(
+          response.data.map(async (video: any) => {
+            const videoElement = document.createElement('video');
+            videoElement.src = video.original_location;
+            await videoElement.load();
+            const duration = videoElement.duration; // Duration in seconds
+            return {
+              id: video.id,
+              name: video.title,
+              src: video.thumbnail_location,
+              created_date: formatDate(video.created_date),
+              duration: duration,
+            };
+          })
+        );
+        setVideos(formattedVideos);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching videos:', error);
+        setLoading(false);
 
-    }
-  };
+      }
+    };
 
-  fetchVideos();
-}, [user]);
+    fetchVideos();
+  }, [user]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -92,7 +92,7 @@ function Videos() {
     const seconds = duration % 60;
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
-  
+
 
   const src =
     'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4'
@@ -134,7 +134,7 @@ function Videos() {
       date: '  SEPTEMBER 26, 2023',
     },
   ]
-    return (
+  return (
     <div>
       <div className="w-full min-h-screen overflow-y-hidden">
         <div className="w-full min-h-full flex flex-col justify-between">
@@ -149,17 +149,17 @@ function Videos() {
               </div>
             </div>
 
-           
+
             <div className="SearchBar w-[90vw] h-[30px] lg:w-[30rem] lg:h-[48px] md:w-[30rem] md:h-[48px] ss:w-[30rem] ss:h-[48px] xs:w-[90vw] xs:h-[30px] bg-stone-300 px-4 flex items-center justify-start border rounded-lg">
-        <FiSearch size={15} color="#ccc" />
-        <input
-          type="text"
-          className="w-full py-3 bg-transparent outline-none border-none px-3 text-[14px] text-white font-ppReg placeholder-white"
-          placeholder="Search for a video"
-          value={searchQuery}
-          onChange={handleSearch}
-        />
-      </div>
+              <FiSearch size={15} color="#ccc" />
+              <input
+                type="text"
+                className="w-full py-3 bg-transparent outline-none border-none px-3 text-[14px] text-white font-ppReg placeholder-white"
+                placeholder="Search for a video"
+                value={searchQuery}
+                onChange={handleSearch}
+              />
+            </div>
           </div>
 
           <div
@@ -172,34 +172,27 @@ function Videos() {
           </div>
           {loading ? (
 
-        <Spinner />
-      ) : (
-          <div
-            className="lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full"
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-              margin: '0 auto',
-              // overflowY: 'scroll',
-              // maxHeight: '100%',
-            }}
-          >
-            {filteredVideos.length === 0 ? (
-              <div className="NoRecentVideosMessage text-xl text-neutral-900 font-medium">
-                You have no recent videos
-              </div>
-            ) : (
-              filteredVideos.map((item, index) => (
-                <Link key={index} href={`/videos/${item?.id}`} passHref>
-                  <div
-                    className="WebCard px-1 pt-4 pb-6 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify-center items-center gap-0 inline-flex lg:w-[557px] lg:h-[322px]  md:w-[557px] md:h-[322px]  sm:w-[400px] sm:h-[322px] ss:w-[557px] ss:h-[322px] xs:w-[340px] xs:h-[280px]"
-                    style={{
-                      margin: '1rem',
-                    }}
-                  >
-
+            <Spinner />
+          ) : (
+            <div
+              className="lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full"
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                margin: '0 auto',
+                // overflowY: 'scroll',
+                // maxHeight: '100%',
+              }}
+            >
+              {filteredVideos.length === 0 ? (
+                <div className="NoRecentVideosMessage text-xl text-neutral-900 font-medium">
+                  You have no recent videos
+                </div>
+              ) : (
+                filteredVideos.map((item, index) => (
+                  <Link key={index} href={`/videos/${item?.id}`} passHref>
                     <div
                       className="WebCard px-1 pt-4 pb-6 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify-center items-center gap-0 inline-flex lg:w-[557px] lg:h-[322px]  md:w-[557px] md:h-[322px]  sm:w-[400px] sm:h-[322px] ss:w-[557px] ss:h-[322px] xs:w-[340px] xs:h-[280px]"
                       style={{
@@ -207,19 +200,27 @@ function Videos() {
                       }}
                     >
 
-                      <Image
-                        className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[525px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
+                      <div
+                        className="WebCard px-1 pt-4 pb-6 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify-center items-center gap-0 inline-flex lg:w-[557px] lg:h-[322px]  md:w-[557px] md:h-[322px]  sm:w-[400px] sm:h-[322px] ss:w-[557px] ss:h-[322px] xs:w-[340px] xs:h-[280px]"
+                        style={{
+                          margin: '1rem',
+                        }}
+                      >
 
-                        src={item.src}
-                        alt= "icon"
-                      />
+                        <Image
+                          className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[525px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
+
+                          src={item.src}
+                          alt="icon"
+                        />
+                      </div>
 
 
-<div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
-    <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
-      {item.duration ? formatDuration(item.duration) : 'Loading...'}
-    </div>
-  </div>
+                      <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
+                        <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
+                          {item.duration ? formatDuration(item.duration) : 'Loading...'}
+                        </div>
+                      </div>
                     </div>
                     <div className="Details self-stretch justify-between items-start inline-flex">
                       <div className="TitleDate grow shrink basis-0 flex-col justify-center items-start gap-0 inline-flex px-4">

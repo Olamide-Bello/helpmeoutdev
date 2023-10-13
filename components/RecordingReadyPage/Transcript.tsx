@@ -5,11 +5,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import { TranscriptProps } from '@/types/transcript'
 import { TranscriptData } from '@/types/transcript-data'
 
-// interface TranscriptData {
-//   start: number;
-//   end: number;
-//   punctuated_word: string;
-// }
 
 const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, currentVidDuration }) => {
   const [transcriptionData, setTranscriptionData] = useState<{
@@ -74,11 +69,19 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
       // Scroll your transcript container here
       const transcriptContainer = document.getElementById('org-transcipt-container');
       if (transcriptContainer) {
-        transcriptContainer.scrollTop = (progress / 100) * transcriptContainer.scrollHeight;  //adjust the scroll speed
+        transcriptContainer.scrollTop = (progress / 100) * transcriptContainer.scrollHeight * 0.9;  //adjust the scroll speed
       }
     }
   }, [currentVidDuration, currentVideoTime]);
 
+
+  // set interval to show the transcript in different div with interval of 'intervalDuration'
+  const intervalDuration = 6; // 6 seconds
+  const duration = currentVidDuration;
+  const intervals = [];
+  for (let i = 0; i < duration; i += intervalDuration) {
+    intervals.push(i);
+  }
 
   return (
     <div className='w-full'>
@@ -94,29 +97,37 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
           height="16"
         />
       </div>
+      
       <div className="w-full h-auto relative">
-        <div className="font-Inter h-[164px] border-[1px] rounded-[12px]  ss:border-none p-3 ss:h-[255px]   gap-4 relative">
-          <div className='p-2 overflow-hidden custom-scrollbar flex gap-4 h-full '  id='org-transcipt-container'>
-            <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black ">
-              {formatTime(currentVideoTime)}
-            </h5>
-            <div className="flex w-full">
+        <div className="font-Inter w-full h-[164px] border-[1px] rounded-[12px]  ss:border-none p-3 ss:h-[255px]   gap-4 relative ">
+          <div className='p-2 overflow-y-scroll custom-scrollbar  gap-4 h-full pt-10 ' id='org-transcipt-container'>
+            
 
-              <div
-                id="transcript-container"
-                ref={transcriptContainerRef}
-                className="  max-w-lg ss:max-w-5xl custom-scrollbar overflow-x-auto flex flex-wrap "
-              >
-                {transcriptionData.words.map((item, index) => {
-                  return (
-                    <p key={index} id={`transcript-${item.start}`} className="mr-1 text-gray-400">
-                      <strong>{item.punctuated_word}</strong>
-                    </p>
-                  );
-                })}
+            {intervals.map((startTime, index) => {
+              const endTime = startTime + intervalDuration;
+              const wordsInInterval = transcriptionData.words.filter(item => item.start >= startTime && item.start < endTime);
 
-              </div>
-            </div>
+              return (
+                <div key={index} className='flex'>
+                  <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3">
+                  {formatTime(startTime)}
+                  </h5>
+                  {/* <p>{startTime} - {endTime}</p> */}
+                  <div className="w-11/12 flex flex-wrap py-2">
+                  {wordsInInterval.map((item, wordIndex) => (
+                      <div id="transcript-container" ref={transcriptContainerRef} className="custom-scrollbar  overflow-x-auto flex flex-wrap" >
+
+                        <p key={wordIndex} id={`transcript-${item.start}`} className="mr-1 text-gray-400">
+                          <strong>{item.punctuated_word}</strong>
+                        </p>
+                      </div>
+                  ))}
+                  </div>
+                </div>
+              );
+            })}
+
+            
           </div>
         </div>
       </div>

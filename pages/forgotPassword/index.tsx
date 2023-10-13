@@ -1,30 +1,29 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  auth,
-  facebookProvider,
-  googleProvider,
-} from '../../components/Auth/firebase'
-import { signInWithPopup } from 'firebase/auth'
-
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
-import { GlobalContext } from '@/context/GlobalContext'
 
+interface User {
+  uid: string
+  email: string | null
+  displayName: string | null
+}
 
-
-const LogIn: React.FC = () => {
+const forgotPassword: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const {setUser, setLogged} = useContext(GlobalContext)
+  const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
-  
+
   const history = useRouter()
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [password2, setPassword2] = useState<string>('')
+  const [err, setErr] = useState<boolean>(false)
+  const errMsg = "Passwords do not match"
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -38,11 +37,23 @@ const LogIn: React.FC = () => {
     console.log(value)
   }
 
+  const handlePassChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setPassword2(value)
+    if(password !== value){
+        setErr(true)
+    } else{
+        setErr(false)
+    }
+    console.log(value)
+  }
+
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     const data = { username, password }
     try {
-      const response = await fetch('https://www.cofucan.tech/srce/api/login/', {
+      const response = await fetch('https://www.cofucan.tech/srce/api/change_password/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,8 +65,8 @@ const LogIn: React.FC = () => {
       const result = await response.json()
       console.log(result)
       if (result.status_code === 200) {
-        console.log('Login Successful!')
-        toast.success('Welcome Back', {
+        console.log('Password Changed Successfully!')
+        toast.success('Password Changed Successfully', {
           style: {
             background: 'white', // Change the background color as needed
             color: 'green', // Change the text color as needed
@@ -69,8 +80,8 @@ const LogIn: React.FC = () => {
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
       } else {
-        console.error('Sign-up failed with status code', result.message)
-        toast.error(`Login failed`, {
+        console.error('Password Change failed', result.message)
+        toast.error(`Password Change failed`, {
           style: {
             background: 'white', // Change the background color as needed
             color: 'red', // Change the text color as needed
@@ -99,70 +110,7 @@ const LogIn: React.FC = () => {
     }
   }
 
-  const loginWithGoogle = async () => {
-    try {
-      // Send a POST request to the logout endpoint without a request body
-      const response = await fetch("https://www.cofucan.tech/srce/api/google/login/", {
-        method: "GET",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-          // Add any necessary authentication headers here, such as tokens or cookies
-        },
-      });
   
-      // Check if the request was successful (status code 200)
-      if (response.status === 200) {
-        // Logout was successful, so update your local state
-        history.push('/videos');
-
-      } else {
-        // Handle error cases, e.g., if the API returns an error message
-        console.error("Logout failed. Status code: " + response.status);
-        // You can also handle the error in a user-friendly way here
-      }
-    } catch (error) {
-      // Handle network errors
-      console.error("Network error: ");
-      // You can also provide a user-friendly message for network errors
-    }
-  }
-
-  const logInWithFacebook = () => {
-    signInWithPopup(auth, facebookProvider)
-      .then((userCredential) => {
-        const newUser = userCredential.user
-        console.log(newUser)
-        
-        setUserExist(true) // Change to true
-        toast.success('Successfully Logged In Facebook Account', {
-          style: {
-            background: 'white', // Change the background color as needed
-            color: 'green', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-        history.push('/videos')
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        toast.error(`Error: ${errorCode}`, {
-          style: {
-            background: 'red', // Change the background color as needed
-            color: 'white', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-      })
-  }
 
   return (
     <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem] ">
@@ -182,49 +130,16 @@ const LogIn: React.FC = () => {
       <div className="flex flex-col justify-center items-center">
         <section className="mt-[2rem] flex flex-col items-center">
           <h1 className="text-primary-400 font-semibold font-Sora text-[32px] mb-[8px] tracking-wide">
-            Log in
+            Forgot Password?
           </h1>
           <p className="text-primary-300 text-center text-[15px] font-Work-Sans font-medium tracking-tight mb-[32px]">
-            Join millions of others in sharing successful
-            <br /> moves on{' '}
-            <span className="text-primary-600 font-semibold">HelpMeOut</span>.
+            Enter a new password to continue
           </p>
-          <div
-            onClick={loginWithGoogle}
-            className="rounded-lg border-2 border-black-600 
-            w-[230px] xs:w-[300px] ss:w-[475px]  bg-white flex justify-center items-center gap-[0.5rem] xs:gap-[1rem] py-[0.8rem] px-[0] mb-[30px] cursor-pointer"
-          >
-            <Image
-              src={'/assets/login/Google.svg'}
-              alt="google__logo"
-              width={20}
-              height={20}
-            />
-            <p className="mb-[-0.2rem] font-Work-Sans  text-[14px] xs:text-[16px] font-medium tracking-tight">
-              Continue with Google
-            </p>
-          </div>
-
-          <div
-            onClick={logInWithFacebook}
-            className="rounded-lg border-2 border-black-600 w-[230px] xs:w-[300px] ss:w-[475px]  bg-white flex justify-center items-center gap-[0.5rem] xs:gap-[1rem] py-[0.8rem] px-[0] mb-[30px]"
-          >
-            <div className="flex gap-[1rem] ml-[1.5rem] cursor-pointer">
-              <Image
-                src={'/assets/login/Facebook.svg'}
-                alt="facebook__logo"
-                width={20}
-                height={20}
-              />
-              <p className="mb-[-0.2rem] font-Work-Sans  text-[14px] xs:text-[16px] font-medium tracking-tight">
-                Continue with Facebook
-              </p>
-            </div>
-          </div>
+        
 
           <div className="flex items-center justify-center gap-[1rem] mb-[1rem]">
             <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
-            <p className="font-medium text-primary-500 mt-[-10px]">or</p>
+            
             <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
           </div>
         </section>
@@ -247,7 +162,7 @@ const LogIn: React.FC = () => {
           </div>
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
-              Password
+             New Password
             </p>
             <input
               type="password"
@@ -260,17 +175,31 @@ const LogIn: React.FC = () => {
             />
           </div>
 
+          <div>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
+              Confirm Password
+            </p>
+            <input
+              type="password"
+              placeholder="Enter your Password"
+              required
+              value={password2}
+              onChange={handlePassChange2}
+              minLength={5}
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
+            />
+          </div>
+          { err &&
+          <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+              {errMsg}
+            </p>
+            }
           <button
             // onClick={login}
             className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
           >
-            Log In
+            Update Password
           </button>
-          <Link href={'/forgotPassword'}>
-          <p className="text-[16px] font-Sora mt-2 font-medium mb-[14px]">
-              Forgot Password?
-          </p>
-          </Link>
 
           {message && (
             <p className="mt-[0.5rem] text-center text-[19px] font-semibold">
@@ -299,4 +228,4 @@ const LogIn: React.FC = () => {
   )
 }
 
-export default LogIn
+export default forgotPassword

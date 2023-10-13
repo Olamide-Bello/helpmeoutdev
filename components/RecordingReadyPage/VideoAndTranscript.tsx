@@ -15,9 +15,9 @@ const VideoAndTranscript: React.FC<VideoAndTranscriptProps> = ({ videoID }) => {
       <Border />
       <div className="md:pl-[40px] h-full flex flex-col gap-[80px] w-[1/2]">
         {/* Video container for tablet and desktop screen */}
-        <VideoContainer videoID={videoID} setCurrentVideoTime={setCurrentTime}/>
+        <VideoContainer videoID={videoID} setCurrentVideoTime={setCurrentTime} setCurrentVidDuration={setCurrentVidDuration}/>
         {/* Transcript for all screens */}
-        <Transcript videoID={videoID} currentVideoTime={currentTime}/>
+        <Transcript videoID={videoID} currentVideoTime={currentTime} currentVidDuration={currentVidDuration}/>
       </div>
     </div>
   )

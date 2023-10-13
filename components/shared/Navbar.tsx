@@ -65,7 +65,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
 
   return (
     <div className='bg-white  '>
-      <div className="container text-primary-600 h-[84px] px-3 xs:px-5 ss:px-16 md:px-[100px] flex justify-between items-center">
+      <div className="container text-primary-600 h-[84px] px-3 xs:px-5 ss:px-12 md:px-[80px] flex justify-between items-center">
         {/* Logo container */}
         <Link href="/" className="flex gap-1 items-center">
           <Image

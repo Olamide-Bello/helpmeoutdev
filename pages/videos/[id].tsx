@@ -12,6 +12,7 @@ import { GlobalContext } from '../../context/GlobalContext';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import MainLayout from '@/components/shared/MainLayout';
 
 interface TranscriptWord {
     start: number;
@@ -131,14 +132,36 @@ const Single = () => {
     }
 
     // function to send the video url to the entered email
-    const sendEmail = () => {
+    const sendEmail = async () => {
         //validate the email before taking action
         const valid = isEmailValid(email)
         if (!valid) {
             setErrMsg(true)
         } else {
-            //send the url here
-            console.log(email)
+            try {
+                const response = await fetch(`https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                if (response.status === 200) {
+                    const result = await response.json()
+                    toast.success(`${result.message}`, {
+                        style: {
+                            background: 'white', // Change the background color as needed
+                            color: 'green', // Change the text color as needed
+                            borderRadius: '8px', // Rounded corners for the toast
+                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+                            padding: '12px 24px', // Adjust padding as needed
+                            fontSize: '16px', // Adjust font size as needed
+                            textAlign: 'center',
+                        },
+                    })
+                }
+            } catch (error) {
+
+            }
         }
     }
     const updateName = async () => {
@@ -155,11 +178,11 @@ const Single = () => {
                     style: {
                         background: 'white', // Change the background color as needed
                         color: 'green', // Change the text color as needed
-                      borderRadius: '8px', // Rounded corners for the toast
-                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-                      padding: '12px 24px', // Adjust padding as needed
-                      fontSize: '16px', // Adjust font size as needed
-                      textAlign: 'center',
+                        borderRadius: '8px', // Rounded corners for the toast
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+                        padding: '12px 24px', // Adjust padding as needed
+                        fontSize: '16px', // Adjust font size as needed
+                        textAlign: 'center',
                     },
                 })
                 window.location.reload()
@@ -176,7 +199,7 @@ const Single = () => {
     return (
         <div>
             <Navbar noNav={true} />
-            <div className='px-3 md:px-[80px] xs:px-5 ss:px-16'>
+            <MainLayout>
                 <div className='text-gray-200 mb-3 mt-2'>
                     <Link href='/'><span className='text-gray-200  text-lg font-normal font-Work-Sans '>Home</span></Link>&nbsp;/&nbsp;
                     <Link href='/videos'><span className='text-gray-200  text-lg font-normal font-Work-Sans'>Recent Videos</span></Link>&nbsp;/&nbsp;
@@ -227,7 +250,7 @@ const Single = () => {
                 </div>
                 {/* share the video on social media */}
                 <Share text={url} />
-            </div>
+            </MainLayout>
             <ToastContainer
                 position="top-center" // Position the toast container at the bottom-center
                 autoClose={1500} // Close after 3 seconds (adjust as needed)

@@ -22,7 +22,9 @@ interface Video {
 
 function Videos() {
   const { user, titleCase } = useContext(GlobalContext)
-  const displayName: string = user || 'user13'
+  // const displayName: string = user || 'user13'
+  // console.log(user)
+  // console.log(displayName)
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
@@ -31,7 +33,7 @@ function Videos() {
     const fetchVideos = async () => {
       try {
         const response = await axios.get(
-          `https://www.cofucan.tech/srce/api/recording/user/${displayName}`,
+          `https://www.cofucan.tech/srce/api/recording/user/${user}`,
         )
         const formattedVideos: Video[] = response.data.map((video: any) => ({
           id: video.id,

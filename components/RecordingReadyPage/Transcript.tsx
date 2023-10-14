@@ -45,7 +45,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
     const transcriptContainer = transcriptContainerRef.current as HTMLElement;
     // transcriptContainer.style.backgroundColor = 'blue';
     if (transcriptContainer) {
-      const currentTranscript = transcriptionData.words.find((item) => item.start <= currentVideoTime && item.end >= currentVideoTime);
+      const currentTranscript = transcriptionData.words?.find((item) => item.start <= currentVideoTime && item.end >= currentVideoTime);
       if (currentTranscript) {
         const transcriptElement = document.getElementById(`transcript-${currentTranscript.start}`) as HTMLElement;
         transcriptElement.style.color = '#000';

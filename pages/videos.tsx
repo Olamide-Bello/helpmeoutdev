@@ -35,6 +35,7 @@ function Videos() {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
+
         const response = await axios.get(
           `https://www.cofucan.tech/srce/api/recording/user/${user}`
       );
@@ -71,6 +72,7 @@ function Videos() {
               });
             })
           );
+
         setVideos(formattedVideos);
         setLoading(false);
       } catch (error) {
@@ -110,53 +112,16 @@ function Videos() {
   };
    
 
-  const src =
-    'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4'
 
-  const details = [
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 1',
-      date: '  SEPTEMBER 20, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 2',
-      date: '  SEPTEMBER 21, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 3',
-      date: '  SEPTEMBER 22, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 4',
-      date: '  SEPTEMBER 23, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 4',
-      date: '  SEPTEMBER 24, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 6',
-      date: '  SEPTEMBER 25, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 7',
-      date: '  SEPTEMBER 26, 2023',
-    },
-  ]
     return (
     <div>
       
         <div className="w-full min-h-full flex flex-col justify-between">
+
         <Navbar noNav={true} />
           <MainLayout>
           <div className="w-full px-0 sm:px-0 lg:px-0 py-0 flex flex-col xs:flex-col sm:flex-row items-center justify-between mb-5">
+
             <div className="w-full lg:w-auto flex flex-col">
               <div className="HelloJohnMark text-neutral-900 lg:text-[32px] font-bold font-['Sora'] md:text-[28px] sm:text-[24px] xs:text-[20px] hidden ss:block">
                 Hello, {user}
@@ -222,9 +187,15 @@ function Videos() {
                           position: 'relative',
                         }}
                       >
-                        <img
-                          className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[380px] sm:h-[220px] ss:w-[520px] ss:h-[220px] xs:w-[320px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
+
+
+                        <Image
+                          className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[525px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
+                          width={100}
+                          height={100}
                           src={item.src}
+                          alt="thumbnail"
+
                         />
 
                         <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">

@@ -12,6 +12,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVide
   useEffect(() => {
     const currentVideoID = videoID || (router.query.videoID as string)
     if (currentVideoID && videoRef.current) {
+      console.log(router.query.videoID)
       console.log('videoREF:', videoRef)
       // videoRef.current.src = `http://web-02.cofucan.tech/srce/api/recording/${currentVideoID}`;  //API that is given by BE inidial one
       // videoRef.current.src = `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`; //API that i've taken from online

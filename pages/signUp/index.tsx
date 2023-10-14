@@ -14,7 +14,7 @@ import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 
-const SignUp: React.FC = () => {
+const SignUp = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const history = useRouter()
   const [username, setUsername] = useState<string>('')
@@ -94,38 +94,43 @@ const SignUp: React.FC = () => {
         },
       })
     }
-  }
+  
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((userCredential) => {
+        const newUser = userCredential.user
+        console.log(newUser)
 
-  const signInWithGoogle = async () => {
-    try {
-      // Send a GET request to the Google login endpoint
-      const response = await fetch(
-        'https://screen-recorder-476l.onrender.com/srce/api/google/login/',
-
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'https://localhost:3000',
+        setUserExist(true) // Change to true
+        toast.success('Successfully Logged In Facebook Account', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
           },
-        },
-      )
-
-      if (response.status === 200) {
-        // Convert the response to JSON
-        const result = await response.json()
-
-        // Assuming you have these functions defined
+        })
         setLogged(true)
-        setUser(result.username)
         history.push('/videos')
-      } else {
-        console.error('Login failed. Status code: ' + response.status)
-      }
-    } catch (error) {
-      console.error('Network error: ', error)
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'red', // Change the background color as needed
+            color: 'white', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+      })
     }
-  }
 
   const signInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider)
@@ -286,6 +291,7 @@ const SignUp: React.FC = () => {
       />
     </section>
   )
+}
 }
 
 export default SignUp

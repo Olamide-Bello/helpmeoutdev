@@ -18,9 +18,8 @@ interface Video {
   name: string
   src: string
   created_date: string
-  duration?: number;
+  duration?: number
 }
-
 
 function Videos() {
   const { user } = useContext(GlobalContext)
@@ -28,100 +27,95 @@ function Videos() {
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('')
   // const [filteredVideos, setFilteredVideos] = useState<Video[]>(videos);
-
 
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-
         const response = await axios.get(
-          `https://www.cofucan.tech/srce/api/recording/user/${user}`
-      );
-     
-          const formattedVideos: Video[] = await Promise.all(
-            response.data.map(async (video: any) => {
-              const videoElement = document.createElement('video');
-              videoElement.src = video.original_location;
-          
-              return new Promise<Video>((resolve) => {
-                videoElement.onloadedmetadata = () => {
-                  const duration = videoElement.duration; // Duration in seconds
-                  resolve({
-                    id: video.id,
-                    name: video.title,
-                    src: video.thumbnail_location,
-                    created_date: formatDate(video.created_date),
-                    duration: duration,
-                  });
-                };
-          
-                videoElement.onerror = (error) => {
-                  console.error('Error loading video:', error);
-                  resolve({
-                    id: video.id,
-                    name: video.title,
-                    src: video.thumbnail_location,
-                    created_date: formatDate(video.created_date),
-                    duration: 0, // Set duration to 0 if there's an error loading the video
-                  });
-                };
-          
-                videoElement.load();
-              });
+          `https://www.cofucan.tech/srce/api/recording/user/${user}`,
+        )
+
+        const formattedVideos: Video[] = await Promise.all(
+          response.data.map(async (video: any) => {
+            const videoElement = document.createElement('video')
+            videoElement.src = video.original_location
+
+            return new Promise<Video>((resolve) => {
+              videoElement.onloadedmetadata = () => {
+                const duration = videoElement.duration // Duration in seconds
+                resolve({
+                  id: video.id,
+                  name: video.title,
+                  src: video.thumbnail_location,
+                  created_date: formatDate(video.created_date),
+                  duration: duration,
+                })
+              }
+
+              videoElement.onerror = (error) => {
+                console.error('Error loading video:', error)
+                resolve({
+                  id: video.id,
+                  name: video.title,
+                  src: video.thumbnail_location,
+                  created_date: formatDate(video.created_date),
+                  duration: 0, // Set duration to 0 if there's an error loading the video
+                })
+              }
+
+              videoElement.load()
             })
-          );
+          }),
+        )
 
-        setVideos(formattedVideos);
-        setLoading(false);
+        setVideos(formattedVideos)
+        setLoading(false)
       } catch (error) {
-        console.error('Error fetching videos:', error);
-        setLoading(false);
+        console.error('Error fetching videos:', error)
+        setLoading(false)
+      }
     }
-};
 
-    fetchVideos();
-  }, [user]);
+    fetchVideos()
+  }, [user])
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
+    setSearchQuery(event.target.value)
+  }
 
-  const filteredVideos = videos.filter(video =>
-    video.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredVideos = videos.filter((video) =>
+    video.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
 
   const formatDate = (dateString: string): string => {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    };
+    }
     const formattedDate = new Date(dateString).toLocaleDateString(
       undefined,
-      options
-    );
-    return formattedDate.toUpperCase();
-  };
+      options,
+    )
+    return formattedDate.toUpperCase()
+  }
   const formatDuration = (duration: number): string => {
-    const seconds = Math.floor(duration); // Round down to get whole seconds
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-  };
-   
+    const seconds = Math.floor(duration) // Round down to get whole seconds
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60
+    return `${String(minutes).padStart(2, '0')}:${String(
+      remainingSeconds,
+    ).padStart(2, '0')}`
+  }
 
-
-    return (
+  return (
     <div>
-      
-        <div className="w-full min-h-full flex flex-col justify-between">
-
+      <div className="w-full min-h-full flex flex-col justify-between">
         <Navbar noNav={true} />
-          <MainLayout>
+        <MainLayout>
           <div className="w-full px-0 sm:px-0 lg:px-0 py-0 flex flex-col xs:flex-col sm:flex-row items-center justify-between mb-5">
-
             <div className="w-full lg:w-auto flex flex-col">
               <div className="HelloJohnMark text-neutral-900 lg:text-[32px] font-bold font-['Sora'] md:text-[28px] sm:text-[24px] xs:text-[20px] hidden ss:block">
                 Hello, {user}
@@ -130,7 +124,6 @@ function Videos() {
                 Here are your recorded videos
               </div>
             </div>
-
 
             <div className="SearchBar w-[90vw] h-[30px] lg:w-[30rem] lg:h-[48px] md:w-[30rem] md:h-[48px] ss:w-[30rem] ss:h-[48px] xs:w-[90vw] xs:h-[30px] bg-stone-300 px-4 flex items-center justify-start border rounded-lg">
               <FiSearch size={15} color="#ccc" />
@@ -175,7 +168,7 @@ function Videos() {
                 filteredVideos.map((item, index) => (
                   <Link key={index} href={`/videos/${item?.id}`} passHref>
                     <div
-                      className="WebCard px-1 pt-4 pb-6 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify-center items-center gap-0 inline-flex lg:w-[557px] lg:h-[322px]  md:w-[557px] md:h-[322px]  sm:w-[400px] sm:h-[322px] ss:w-[557px] ss:h-[322px] xs:w-[340px] xs:h-[280px]"
+                      className="WebCard px-1 pt-4 pb-6 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify-center items-center gap-0 inline-flex lg:w-[400px] lg:h-[322px]  md:w-[400px] md:h-[322px]  sm:w-[400px] sm:h-[322px] ss:w-[400px] ss:h-[322px] xs:w-[320px] xs:h-[280px]"
                       style={{
                         margin: '1rem',
                       }}
@@ -187,20 +180,18 @@ function Videos() {
                           position: 'relative',
                         }}
                       >
-
-
                         <Image
-                          className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[525px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
+                          className="lg:w-[380px] lg:h-[220px] md:w-[380px] md:h-[220px] sm:w-[380px] sm:h-[220px] ss:w-[380px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
                           width={100}
                           height={100}
                           src={item.src}
                           alt="thumbnail"
-
                         />
-
                         <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
                           <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
-                            {item.duration ? formatDuration(item.duration) : 'Loading...'}
+                            {item.duration
+                              ? formatDuration(item.duration)
+                              : 'Loading...'}
                           </div>
                         </div>
                       </div>
@@ -237,17 +228,16 @@ function Videos() {
               )}
             </div>
           )}
-          </MainLayout>
-        </div>
-        <ToastContainer
-          position="top-center"
-          autoClose={1500}
-          style={{
-            width: 'fit-content',
-            textAlign: 'center',
-          }}
-        />
-      
+        </MainLayout>
+      </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        style={{
+          width: 'fit-content',
+          textAlign: 'center',
+        }}
+      />
     </div>
   )
 }

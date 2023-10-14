@@ -42,3 +42,13 @@ html {
   scrollbar-face-color: #888;
   scrollbar-track-color: #f1f1f1;
 }
+.dark input[type="text"] {
+  /* Darken the input field color */
+  background-color: #888; /* Change this to your desired darker color */
+  color: #000000; /* Change this to your desired text color */
+}
+
+.dark .cursor-pointer {
+  /* Darken the update button color */
+  filter: brightness(0.8); /* Change the brightness to darken the button */
+}

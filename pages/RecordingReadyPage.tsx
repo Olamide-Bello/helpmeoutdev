@@ -10,6 +10,8 @@ import { useRouter } from 'next/router'
 
 const RecordingReadyPage: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [isTyping, setIsTyping] = useState(false)
+
 
   // Function to displayModal
   const displayModal = () => {

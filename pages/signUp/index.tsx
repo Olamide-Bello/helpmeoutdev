@@ -62,6 +62,9 @@ const SignUp = () => {
           },
         })
         setLogged(true)
+        localStorage.setItem('user', result.username)
+        const num = Number(true)
+        localStorage.setItem('logged', JSON.stringify(num))
         setUser(result.username)
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page

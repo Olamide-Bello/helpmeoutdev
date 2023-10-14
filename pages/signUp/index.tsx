@@ -94,6 +94,7 @@ const SignUp = () => {
         },
       })
     }
+  }
   
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
@@ -292,6 +293,6 @@ const SignUp = () => {
     </section>
   )
 }
-}
+
 
 export default SignUp

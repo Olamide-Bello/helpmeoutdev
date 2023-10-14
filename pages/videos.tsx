@@ -154,7 +154,7 @@ function Videos() {
     <div>
       
         <div className="w-full min-h-full flex flex-col justify-between">
-          <Navbar />
+        <Navbar noNav={true} />
           <MainLayout>
           <div className="w-full px-0 sm:px-0 lg:px-0 py-0 flex flex-col xs:flex-col sm:flex-row items-center justify-between mb-5">
             <div className="w-full lg:w-auto flex flex-col">

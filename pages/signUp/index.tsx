@@ -102,37 +102,41 @@ const SignUp: React.FC = () => {
     }
   }
 
-  const signInWithGoogle = async () => {
-      try {
-        // Send a POST request to the logout endpoint without a request body
-        const response = await fetch("https://www.cofucan.tech/srce/api/google/login/", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow": "http://localhost:3000"
-            // Add any necessary authentication headers here, such as tokens or cookies
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((userCredential) => {
+        const newUser = userCredential.user
+        console.log(newUser)
+
+        setUserExist(true) // Change to true
+        toast.success('Successfully Logged In Facebook Account', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
           },
-        });
-
-        const result = await response.json()
-    
-        // Check if the request was successful (status code 200)
-        if (response.status === 200) {
-          // Logout was successful, so update your local state
-          setLogged(true)
-          setUser(result.username)
-          history.push('/videos');
-
-        } else {
-          // Handle error cases, e.g., if the API returns an error message
-          console.error("Logout failed. Status code: " + response.status);
-          // You can also handle the error in a user-friendly way here
-        }
-      } catch (error) {
-        // Handle network errors
-        console.error("Network error: ");
-        // You can also provide a user-friendly message for network errors
-      }
+        })
+        setLogged(true)
+        history.push('/videos')
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        toast.error(`Error: ${errorCode}`, {
+          style: {
+            background: 'red', // Change the background color as needed
+            color: 'white', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+      })
   }
 
   const signInWithFacebook = () => {

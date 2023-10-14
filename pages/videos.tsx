@@ -37,14 +37,18 @@ function Videos() {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await axios.get(
-          `https://www.cofucan.tech/srce/api/recording/user/${user}`
-        );
+        const response = await fetch(`https://www.cofucan.tech/srce/api/recording/user/${user}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+        const result = await response.json()
         const formattedVideos: Video[] = await Promise.all(
-          response.data.map(async (video: any) => {
+          result.data?.map(async (video: any) => {
             const videoElement = document.createElement('video');
             videoElement.src = video.original_location;
-            await videoElement.load();
+            videoElement.load();
             const duration = videoElement.duration; // Duration in seconds
             return {
               id: video.id,
@@ -138,7 +142,7 @@ function Videos() {
     <div>
       <div className="w-full min-h-screen overflow-y-hidden">
         <div className="w-full min-h-full flex flex-col justify-between">
-          <Navbar />
+          <Navbar noNav={true} />
           <div className="w-full px-4 sm:px-8 lg:px-20 py-0 flex flex-col xs:flex-col sm:flex-row items-center justify-between mb-5">
             <div className="w-full lg:w-auto flex flex-col">
               <div className="HelloJohnMark text-neutral-900 lg:text-[32px] font-bold font-['Sora'] md:text-[28px] sm:text-[24px] xs:text-[20px] hidden ss:block">
@@ -201,17 +205,19 @@ function Videos() {
                     >
 
                       <div
-                        className="WebCard px-1 pt-4 pb-6 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify-center items-center gap-0 inline-flex lg:w-[557px] lg:h-[322px]  md:w-[557px] md:h-[322px]  sm:w-[400px] sm:h-[322px] ss:w-[557px] ss:h-[322px] xs:w-[340px] xs:h-[280px]"
+                        className="VideoFrame  relative rounded-xl border border-gray-200"
                         style={{
-                          margin: '1rem',
+                          margin: '0.5rem',
+                          position: 'relative',
                         }}
                       >
 
                         <Image
                           className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[525px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
-
+                          width={100}
+                          height={100}
                           src={item.src}
-                          alt="icon"
+                          alt="thumbnail"
                         />
                       </div>
 

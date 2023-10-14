@@ -12,5 +12,7 @@ export type ContextTypes = {
   logged?: boolean,
   setLogged: (logged: boolean) => void,
   user: string,
-  setUser: (user: string) => void
+  setUser: (user: string) => void,
+  sendEmail: (email: string, id: string) => void,
+  errMsg: boolean
 }

@@ -1,17 +1,21 @@
 import React, { createContext, useState, useEffect } from 'react'
 import { ContextTypes } from '@/types/video-repo'
+import { toast } from 'react-toastify'
 
 export const GlobalContext = createContext({
     titleCase: () => "",
     logged: false,
     setLogged: () => { },
     user: '',
-    setUser: () => { }
+    setUser: () => { },
+    sendEmail: () => { },
+    errMsg: false
 } as ContextTypes)
 
 const GlobalState = ({ children }: { children: React.ReactNode }) => {
     const [logged, setLogged] = useState<boolean>(false)
     const [user, setUser] = useState<string>("")
+    const [errMsg, setErrMsg] = useState<boolean>(false);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -39,6 +43,46 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
         }
     }, [])
 
+        //function to validate the entered email
+        const isEmailValid = (mail: string) => {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+            return emailRegex.test(mail)
+        }
+
+        const sendEmail = async (email:string, id:string | string[] | undefined) => {
+            //validate the email before taking action
+            const valid = isEmailValid(email)
+            if (!valid) {
+                setErrMsg(true)
+            } else {
+                try {
+                    const response = await fetch(`https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    console.log(response)
+                    if (response.status === 200) {
+                        const result = await response.json()
+                        toast.success(`${result.message}`, {
+                            style: {
+                                background: 'white', // Change the background color as needed
+                                color: 'green', // Change the text color as needed
+                                borderRadius: '8px', // Rounded corners for the toast
+                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+                                padding: '12px 24px', // Adjust padding as needed
+                                fontSize: '16px', // Adjust font size as needed
+                                textAlign: 'center',
+                            },
+                        })
+                    }
+                } catch (error) {
+    
+                }
+            }
+        }
+
     const titleCase = (name:string) => {
         let intialised = ""
         if (name) {
@@ -60,7 +104,9 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
         logged,
         setLogged,
         user,
-        setUser
+        setUser,
+        sendEmail,
+        errMsg
     }
     return (
         <GlobalContext.Provider value={contextValue} >

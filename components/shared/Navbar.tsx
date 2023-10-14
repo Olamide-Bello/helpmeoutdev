@@ -3,7 +3,7 @@ import Image from 'next/image'
 import MainLayout from './MainLayout'
 import Link from 'next/link'
 import { GlobalContext } from '@/context/GlobalContext'
-import fetch from 'isomorphic-unfetch'
+//import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
 
 const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {

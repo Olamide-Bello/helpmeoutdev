@@ -11,7 +11,7 @@ import { signInWithPopup } from 'firebase/auth'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
-import fetch from 'isomorphic-unfetch'
+//import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 
 const LogIn = () => {

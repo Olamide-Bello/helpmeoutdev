@@ -11,6 +11,7 @@ import { GlobalContext } from '../context/GlobalContext'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Spinner from '../components/Spinner/Spinner'
+import MainLayout from '@/components/shared/MainLayout'
 
 interface Video {
   id: number
@@ -22,10 +23,8 @@ interface Video {
 
 
 function Videos() {
-  const { user, titleCase } = useContext(GlobalContext)
-  // const displayName: string = user || 'user13'
-  // console.log(user)
-  // console.log(displayName)
+  const { user } = useContext(GlobalContext)
+  //const displayName: string = user?.displayName || 'user13'
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
@@ -33,36 +32,54 @@ function Videos() {
   // const [filteredVideos, setFilteredVideos] = useState<Video[]>(videos);
 
 
-
   useEffect(() => {
     const fetchVideos = async () => {
       try {
+
         const response = await axios.get(
           `https://www.cofucan.tech/srce/api/recording/user/${user}`
-        );
-        const formattedVideos: Video[] = await Promise.all(
-          response.data.map(async (video: any) => {
-            const videoElement = document.createElement('video');
-            videoElement.src = video.original_location;
-            await videoElement.load();
-            const duration = videoElement.duration; // Duration in seconds
-            return {
-              id: video.id,
-              name: video.title,
-              src: video.thumbnail_location,
-              created_date: formatDate(video.created_date),
-              duration: duration,
-            };
-          })
-        );
+      );
+     
+          const formattedVideos: Video[] = await Promise.all(
+            response.data.map(async (video: any) => {
+              const videoElement = document.createElement('video');
+              videoElement.src = video.original_location;
+          
+              return new Promise<Video>((resolve) => {
+                videoElement.onloadedmetadata = () => {
+                  const duration = videoElement.duration; // Duration in seconds
+                  resolve({
+                    id: video.id,
+                    name: video.title,
+                    src: video.thumbnail_location,
+                    created_date: formatDate(video.created_date),
+                    duration: duration,
+                  });
+                };
+          
+                videoElement.onerror = (error) => {
+                  console.error('Error loading video:', error);
+                  resolve({
+                    id: video.id,
+                    name: video.title,
+                    src: video.thumbnail_location,
+                    created_date: formatDate(video.created_date),
+                    duration: 0, // Set duration to 0 if there's an error loading the video
+                  });
+                };
+          
+                videoElement.load();
+              });
+            })
+          );
+
         setVideos(formattedVideos);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching videos:', error);
         setLoading(false);
-
-      }
-    };
+    }
+};
 
     fetchVideos();
   }, [user]);
@@ -88,61 +105,26 @@ function Videos() {
     return formattedDate.toUpperCase();
   };
   const formatDuration = (duration: number): string => {
-    const minutes = Math.floor(duration / 60);
-    const seconds = duration % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    const seconds = Math.floor(duration); // Round down to get whole seconds
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
   };
+   
 
 
-  const src =
-    'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4'
-
-  const details = [
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 1',
-      date: '  SEPTEMBER 20, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 2',
-      date: '  SEPTEMBER 21, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 3',
-      date: '  SEPTEMBER 22, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 4',
-      date: '  SEPTEMBER 23, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 4',
-      date: '  SEPTEMBER 24, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 6',
-      date: '  SEPTEMBER 25, 2023',
-    },
-    {
-      src: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
-      title: 'How to Create Facebook Ad Listing 7',
-      date: '  SEPTEMBER 26, 2023',
-    },
-  ]
-  return (
+    return (
     <div>
-      <div className="w-full min-h-screen overflow-y-hidden">
+      
         <div className="w-full min-h-full flex flex-col justify-between">
-          <Navbar noNav={true} />
-          <div className="w-full px-4 sm:px-8 lg:px-20 py-0 flex flex-col xs:flex-col sm:flex-row items-center justify-between mb-5">
+
+        <Navbar noNav={true} />
+          <MainLayout>
+          <div className="w-full px-0 sm:px-0 lg:px-0 py-0 flex flex-col xs:flex-col sm:flex-row items-center justify-between mb-5">
+
             <div className="w-full lg:w-auto flex flex-col">
               <div className="HelloJohnMark text-neutral-900 lg:text-[32px] font-bold font-['Sora'] md:text-[28px] sm:text-[24px] xs:text-[20px] hidden ss:block">
-                Hello, {titleCase(user)}
+                Hello, {user}
               </div>
               <div className="HereAreYourRecordedVideos text-neutral-900 text-opacity-70 lg:text-[28px] font-bold font-['Sora'] md:text-[24px] sm:text-[20px] xs:text-[16x] font-normal font-['Work Sans'] hidden ss:block">
                 Here are your recorded videos
@@ -171,7 +153,6 @@ function Videos() {
             Recent files
           </div>
           {loading ? (
-
             <Spinner />
           ) : (
             <div
@@ -199,7 +180,6 @@ function Videos() {
                         margin: '1rem',
                       }}
                     >
-
                       <div
                         className="VideoFrame  relative rounded-xl border border-gray-200"
                         style={{
@@ -208,30 +188,33 @@ function Videos() {
                         }}
                       >
 
+
                         <Image
                           className="lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[525px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
                           width={100}
                           height={100}
                           src={item.src}
                           alt="thumbnail"
+
                         />
-                      </div>
 
-
-                      <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
-                        <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
-                          {item.duration ? formatDuration(item.duration) : 'Loading...'}
+                        <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
+                          <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
+                            {item.duration ? formatDuration(item.duration) : 'Loading...'}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="Details self-stretch justify-between items-start inline-flex">
-                      <div className="TitleDate grow shrink basis-0 flex-col justify-center items-start gap-0 inline-flex px-4">
-                        <div
-                          className="Title text-neutral-900 text-xl font-medium font-['Work Sans'] capitalize"
-                          style={{ fontSize: '1rem' }}
-                        >
-                          {item.name}
-
+                      <div className="Details self-stretch justify-between items-start inline-flex">
+                        <div className="TitleDate grow shrink basis-0 flex-col justify-center items-start gap-0 inline-flex px-4">
+                          <div
+                            className="Title text-neutral-900 text-xl font-medium font-['Work Sans'] capitalize"
+                            style={{ fontSize: '1rem' }}
+                          >
+                            {item.name}
+                          </div>
+                          <div className="Date text-gray-400 text-base font-normal font-['Work Sans'] uppercase">
+                            {item?.created_date}
+                          </div>
                         </div>
                         <div className="Icons justify-start items-start gap-6 flex">
                           <Image
@@ -254,6 +237,7 @@ function Videos() {
               )}
             </div>
           )}
+          </MainLayout>
         </div>
         <ToastContainer
           position="top-center"
@@ -263,7 +247,7 @@ function Videos() {
             textAlign: 'center',
           }}
         />
-      </div>
+      
     </div>
   )
 }

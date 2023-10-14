@@ -14,9 +14,7 @@ import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 
-
-
-const LogIn: React.FC = () => {
+const LogIn = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const { setUser, setLogged } = useContext(GlobalContext)
   const [message, setMessage] = useState<boolean | string>(false)
@@ -67,9 +65,9 @@ const LogIn: React.FC = () => {
           },
         })
         setLogged(true)
-        localStorage.setItem("user", result.username)
+        localStorage.setItem('user', result.username)
         const num = Number(true)
-        localStorage.setItem("logged", JSON.stringify(num))
+        localStorage.setItem('logged', JSON.stringify(num))
         setUser(result.username)
         history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
@@ -109,7 +107,6 @@ const LogIn: React.FC = () => {
       .then((userCredential) => {
         const newUser = userCredential.user
         console.log(newUser)
-
         setUserExist(true) // Change to true
         toast.success('Successfully Logged In Facebook Account', {
           style: {
@@ -139,7 +136,8 @@ const LogIn: React.FC = () => {
           },
         })
       })
-  }
+    }
+
 
   const logInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider)
@@ -294,7 +292,7 @@ const LogIn: React.FC = () => {
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Don&apos;t Have Account?{' '}
             <Link href={'/signUp'}>
-              <span className="font-bold hover:underline cursor-pointer font-Work-Sans">
+              <span className="font-bold hover:underline cursor-pointer font-Sora">
                 Sign Up
               </span>
             </Link>
@@ -312,5 +310,6 @@ const LogIn: React.FC = () => {
     </section>
   )
 }
+
 
 export default LogIn

@@ -26,9 +26,8 @@ const Transcript = ({ data }: { data: any }) => {
           return (
             <div
               key={el.id}
-              className={`flex mb-10 justify-start items-start ${
-                i === lastItem ? 'opacity-25' : 'opacity-100'
-              } md:gap-10 gap-5`}
+              className={`flex mb-10 justify-start items-start ${i === lastItem ? 'opacity-25' : 'opacity-100'
+                } md:gap-10 gap-5`}
             >
               <p className="text-black font-semibold">{el.time}</p>
               <div>

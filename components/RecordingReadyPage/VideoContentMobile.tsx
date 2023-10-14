@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { VideoPageContentProps } from '@/types/video-repo'
+// import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const VideoContentMobile: React.FC<VideoPageContentProps> = ({
   displayModal,
@@ -38,20 +40,75 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
   useEffect(() => {
     const currentVideoID = videoID || (router.query.videoID as string)
     if (currentVideoID && videoRef.current) {
-      videoRef.current.src = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4` 
+      videoRef.current.src = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4`
     }
   }, [videoID, router.query.videoID])
 
   const [error, setError] = useState<boolean>(false)
+  const isEmailValid = (mail: string) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return emailRegex.test(mail)
+  }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    displayModal()
-    if (!email) {
+    const valid = isEmailValid(email)
+    if (!valid) {
+      setError(true)
       setError(true)
       setTimeout(() => {
         setError(false)
       }, 3000)
+    } else {
+      try {
+        const response = await fetch(`https://www.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        if (response.status === 200) {
+          const result = await response.json()
+          console.log(response)
+          console.log(result.message)
+          // toast.success(`${result.message}`, {
+          //   style: {
+          //     background: 'white', // Change the background color as needed
+          //     color: 'green', // Change the text color as needed
+          //     borderRadius: '8px', // Rounded corners for the toast
+          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          //     padding: '12px 24px', // Adjust padding as needed
+          //     fontSize: '16px', // Adjust font size as needed
+          //     textAlign: 'center',
+          //   },
+          // })
+          displayModal()
+        } else {
+          // toast.error(`Unable to send to Email!`, {
+          //   style: {
+          //     background: 'white', // Change the background color as needed
+          //     color: 'red', // Change the text color as needed
+          //     borderRadius: '8px', // Rounded corners for the toast
+          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          //     padding: '12px 24px', // Adjust padding as needed
+          //     fontSize: '16px', // Adjust font size as needed
+          //     textAlign: 'center',
+          //   },
+          // })
+        }
+      } catch (error) {
+        // toast.error(`${error}`, {
+        //   style: {
+        //     background: 'white', // Change the background color as needed
+        //     color: 'red', // Change the text color as needed
+        //     borderRadius: '8px', // Rounded corners for the toast
+        //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+        //     padding: '12px 24px', // Adjust padding as needed
+        //     fontSize: '16px', // Adjust font size as needed
+        //     textAlign: 'center',
+        //   },
+        // })
+      }
     }
   }
 
@@ -60,13 +117,13 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
       {/* Name container */}
       <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
       <div className="flex items-center w-full justify-between gap-[24px] mb-[12px]">
-          <input
-            type="text"
-            placeholder={placeHolder}
-            value={customFileName}
-            onChange={(e) => setCustomFileName(e.target.value)}
-            className="border-none outline-none rounded-md p-2 mb-2 w-full text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
-          />
+        <input
+          type="text"
+          placeholder={placeHolder}
+          value={customFileName}
+          onChange={(e) => setCustomFileName(e.target.value)}
+          className="border-none outline-none rounded-md p-2 mb-2 w-full text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
+        />
         <Image
           className="w-[16px] h-auto xs:h-[24px] xs:w-[24px]"
           src="/assets/video-repo/edit.svg"
@@ -111,7 +168,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
             onChange={(e) => setEmail(e.target.value)}
             className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
           />
-          <button className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
+          <button type='submit' className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
             Send
           </button>
         </form>
@@ -171,14 +228,21 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
         </div>
         <div className="h-[20px]">
           <p
-            className={`${
-              clicked ? 'flex' : 'hidden'
-            } font-[500] text-primary-600`}
+            className={`${clicked ? 'flex' : 'hidden'
+              } font-[500] text-primary-600`}
           >
             Copied!
           </p>
         </div>
       </div>
+      {/* <ToastContainer
+                position="top-center" // Position the toast container at the bottom-center
+                autoClose={1500} // Close after 3 seconds (adjust as needed)
+                style={{
+                    width: 'fit-content', // Adjust the width as needed
+                    textAlign: 'center', // Center-align the container's content
+                }}
+            /> */}
     </div>
   )
 }

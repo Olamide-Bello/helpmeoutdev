@@ -14,25 +14,21 @@ import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 
-
-const SignUp: React.FC = () => {
+const SignUp = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const [message, setMessage] = useState<boolean | string>(false)
   const history = useRouter()
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const {setLogged, setUser} = useContext(GlobalContext)
+  const { setLogged, setUser } = useContext(GlobalContext)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
-    console.log(value)
   }
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
-    console.log(value)
   }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -50,9 +46,7 @@ const SignUp: React.FC = () => {
         },
       )
 
-      console.log(response)
       const result = await response.json()
-      console.log(result)
 
       if (response.status === 200) {
         console.log('Sign-up successful!')
@@ -100,8 +94,7 @@ const SignUp: React.FC = () => {
         },
       })
     }
-  }
-
+  
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((userCredential) => {
@@ -137,7 +130,7 @@ const SignUp: React.FC = () => {
           },
         })
       })
-  }
+    }
 
   const signInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider)
@@ -281,7 +274,7 @@ const SignUp: React.FC = () => {
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Already Have Account?{' '}
             <Link href={'/logIn'}>
-              <span className="font-bold hover:underline cursor-pointer font-Work-Sans">
+              <span className="font-bold hover:underline cursor-pointer font-Sora">
                 Log In
               </span>
             </Link>
@@ -298,6 +291,7 @@ const SignUp: React.FC = () => {
       />
     </section>
   )
+}
 }
 
 export default SignUp

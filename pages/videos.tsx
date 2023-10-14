@@ -37,14 +37,18 @@ function Videos() {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await axios.get(
-          `https://www.cofucan.tech/srce/api/recording/user/${user}`
-        );
+        const response = await fetch(`https://www.cofucan.tech/srce/api/recording/user/${user}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+        const result = await response.json()
         const formattedVideos: Video[] = await Promise.all(
-          response.data.map(async (video: any) => {
+          result.data?.map(async (video: any) => {
             const videoElement = document.createElement('video');
             videoElement.src = video.original_location;
-            await videoElement.load();
+            videoElement.load();
             const duration = videoElement.duration; // Duration in seconds
             return {
               id: video.id,

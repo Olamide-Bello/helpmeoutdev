@@ -106,7 +106,14 @@ const LogIn = () => {
     signInWithPopup(auth, googleProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
-        console.log(newUser)
+        const copy = newUser.displayName
+        setLogged(true)
+        if (typeof copy === "string") {
+          localStorage.setItem('user', copy)
+          setUser(copy)
+        }
+        const num = Number(true)
+        localStorage.setItem('logged', JSON.stringify(num))
         setUserExist(true) // Change to true
         toast.success('Successfully Logged In Facebook Account', {
           style: {
@@ -143,8 +150,14 @@ const LogIn = () => {
     signInWithPopup(auth, facebookProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
-        console.log(newUser)
-
+        const copy = newUser.displayName
+        setLogged(true)
+        if (typeof copy === "string") {
+          localStorage.setItem('user', copy)
+          setUser(copy)
+        }
+        const num = Number(true)
+        localStorage.setItem('logged', JSON.stringify(num))
         setUserExist(true) // Change to true
         toast.success('Successfully Logged In Facebook Account', {
           style: {

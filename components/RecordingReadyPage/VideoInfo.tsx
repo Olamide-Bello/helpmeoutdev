@@ -44,9 +44,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
     }, 3000)
   }
 
-  // useEffect(() => {
-  //   setCurrentURL(window.location.href)
-  // }, [])
+
 
   const [error, setError] = useState<boolean>(false)
 
@@ -62,7 +60,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         try {
             const response = await axios.get(`https://www.cofucan.tech/srce/api/recording/${videoID}`);
             const data = response.data;
-            // const videoUrl = `https://www.cofucan.tech/srce/api/video/${id}.mp4`;
+            setCurrentURL(`https://www.cofucan.tech/srce/api/video/${videoID}.mp4`)
 
             setCustomFileName(data.title)
         } catch (error) {

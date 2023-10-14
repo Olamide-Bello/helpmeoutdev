@@ -18,11 +18,11 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
 
   const handleLogout = async () => {
     setLogged(false);
-        setShowLogout(false);
-        setUser('');
-        localStorage.removeItem("user")
-        localStorage.removeItem("logged")
-        history.push('/logIn');
+    setShowLogout(false);
+    setUser('');
+    localStorage.removeItem("user")
+    localStorage.removeItem("logged")
+    history.push('/logIn');
     // try {
     //   // Send a POST request to the logout endpoint without a request body
     //   const response = await fetch("https://www.cofucan.tech/srce/api/logout/", {
@@ -32,7 +32,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
     //       // Add any necessary authentication headers here, such as tokens or cookies
     //     },
     //   });
-  
+
     //   // Check if the request was successful (status code 200)
     //   if (response.status === 200) {
     //     // Logout was successful, so update your local state
@@ -53,7 +53,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
     //   // You can also provide a user-friendly message for network errors
     // }
   };
-  
+
 
   /*const handleLogout = () => {
     //call or put the logic for log out here
@@ -111,16 +111,19 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
               />
             </div>
             {logged && showLogout && (
-              <div
-                onClick={handleLogout}
-                className="flex gap-[10px] absolute bottom-[-40px] cursor-pointer text-[#141414] font-Work-Sans font-[500] right-0 py-2 px-5 bg-white shadow-lg"
-              >
-               <Image
-                src="/assets/shared/logout.svg"
-                height={20}
-                width={20}
-                alt="logout"
-              /> Logout
+              <div className='absolute flex flex-col bottom-[-80px] text-[#141414] font-Work-Sans font-[500]  bg-white shadow-lg'>
+                <Link href="/videos" className='py-2 px-5 hover:bg-gray-100'><p>Dashboard</p></Link>
+                <div
+                  onClick={handleLogout}
+                  className="flex gap-[10px] py-2 px-5 cursor-pointer text-[#141414] font-Work-Sans font-[500] hover:bg-gray-100"
+                >
+                  <Image
+                    src="/assets/shared/logout.svg"
+                    height={20}
+                    width={20}
+                    alt="logout"
+                  /> Logout
+                </div>
               </div>
             )}
           </div>

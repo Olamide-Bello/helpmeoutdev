@@ -34,7 +34,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
 
   //copy the url using COPY btn
   const [clicked, setClicked] = useState<boolean>(false)
-  const { sendEmail, errMsg, logged } = useContext(GlobalContext)
+  const { sendEmail, user } = useContext(GlobalContext)
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentURL)
@@ -48,7 +48,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
 
   const handleSubmit = async () => {
     if (typeof videoID === 'string') {
-      sendEmail(email, videoID)
+      sendEmail(email, videoID, user)
     }
   }
 

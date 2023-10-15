@@ -62,7 +62,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       if (user) {
         try {
           const response = await fetch(
-            `https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}?sender=${user}`,
+            `https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}&sender=${user}`,
             {
               method: 'POST',
               headers: {
@@ -91,7 +91,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       } else {
         try {
           const response = await fetch(
-            `https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}?sender=""`,
+            `https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}&sender=""`,
             {
               method: 'POST',
               headers: {

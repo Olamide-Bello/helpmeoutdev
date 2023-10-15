@@ -152,7 +152,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
           <p
             className={`${error ? 'flex' : 'hidden'} text-[#FF0000] font-[500]`}
           >
-            Email form cannot be empty!
+          Email is not valid!
           </p>
         </div>
       </div>

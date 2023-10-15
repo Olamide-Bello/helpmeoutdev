@@ -174,7 +174,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
         </form>
         <div className="h-[20px] mb-[12px]">
           <p className={`${error ? 'flex' : 'hidden'} text-[#FF0000]`}>
-            Email form cannot be empty!
+            Email is not valid!
           </p>
         </div>
       </div>

@@ -14,8 +14,7 @@ interface User {
 }
 
 const ForgotPassword: React.FC = () => {
-  const [userExist, setUserExist] = useState<boolean>(false)
-  const [user, setUser] = useState<User | null>(null)
+  
   const [message, setMessage] = useState<boolean | string>(false)
   const {otp, setOtp} = useContext(GlobalContext)
   const {username, setUsername} = useContext(GlobalContext)

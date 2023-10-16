@@ -9,13 +9,19 @@ export const GlobalContext = createContext({
     user: '',
     setUser: () => { },
     sendEmail: () => { },
-    errMsg: false
+    errMsg: false,
+    otp: 0,
+    setOtp: () => { },
+    username: '',
+    setUsername: () => { }
 } as ContextTypes)
 
 const GlobalState = ({ children }: { children: React.ReactNode }) => {
     const [logged, setLogged] = useState<boolean>(false)
     const [user, setUser] = useState<string>("")
-    const [errMsg, setErrMsg] = useState<boolean>(false);
+    const [errMsg, setErrMsg] = useState<boolean>(false)
+    const [otp, setOtp] = useState<number>(0)
+    const [username, setUsername] = useState<string>('')
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -106,7 +112,11 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
         user,
         setUser,
         sendEmail,
-        errMsg
+        errMsg,
+        otp,
+        setOtp,
+        username,
+        setUsername
     }
     return (
         <GlobalContext.Provider value={contextValue} >

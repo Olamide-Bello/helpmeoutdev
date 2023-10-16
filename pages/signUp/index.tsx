@@ -24,11 +24,13 @@ const SignUp = () => {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
+    console.log(value)
   }
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
+    console.log(value)
   }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {

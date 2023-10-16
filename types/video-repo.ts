@@ -14,5 +14,9 @@ export type ContextTypes = {
   user: string,
   setUser: (user: string) => void,
   sendEmail: (email: string, id: string) => void,
-  errMsg: boolean
+  errMsg: boolean,
+  otp: number,
+  setOtp: (otp: number) => void,
+  username: string,
+  setUsername: (username: string) => void
 }

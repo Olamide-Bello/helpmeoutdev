@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { toast, ToastContainer } from 'react-toastify'
@@ -13,47 +13,89 @@ interface User {
   displayName: string | null
 }
 
-const ForgotPassword: React.FC = () => {
+const ForgotPassword2: React.FC = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const [user, setUser] = useState<User | null>(null)
   const [message, setMessage] = useState<boolean | string>(false)
-  const {otp, setOtp} = useContext(GlobalContext)
-  const {username, setUsername} = useContext(GlobalContext)
+  const { otp } = useContext(GlobalContext)
+  const {username} = useContext(GlobalContext)
 
   const history = useRouter()
 
-  const [userName, setUserName] = useState<string>('')
+  const [token, setToken] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [password2, setPassword2] = useState<string>('')
+  const [err, setErr] = useState<boolean>(false)
+  const errMsg = 'Passwords do not match'
+  const [otpErr, setOtpErr] = useState<boolean>(false)
+  const errOtpMsg = 'OTP Invalid'
+  
 
-
-  const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    setUserName(value)
-    console.log(value)
+    setToken(value)
+    if(otp !== +value) {
+      setOtpErr(true)
+    } else {
+      setOtpErr(false)
+    }
   }
 
   
 
-  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
+  const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setPassword(value)
+    console.log(value)
+  }
+
+  const handlePassChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setPassword2(value)
+    console.log(value)
+    if (password !== value) {
+      setErr(true)
+    } else {
+      setErr(false)
+    }
+  }
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+    if (otpErr) {
+      // Don't proceed if OTP is incorrect
+      toast.error(`OTP Invalid`, {
+        style: {
+          background: 'white', // Change the background color as needed
+          color: 'red', // Change the text color as needed
+          borderRadius: '8px', // Rounded corners for the toast
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          padding: '12px 24px', // Adjust padding as needed
+          fontSize: '16px', // Adjust font size as needed
+          textAlign: 'center',
+        },
+      })
+      return;
+    }
+    const data = { username, password }
+    console.log(data)
     try {
       const response = await fetch(
-        `https://www.cofucan.tech/srce/api/request_otp/?username=${userName}`,
+        'https://www.cofucan.tech/srce/api/change_password/',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          
-        })
+          body: JSON.stringify(data),
+        },
+      )
 
       console.log(response)
       const result = await response.json()
       console.log(result)
       if (result.status_code === 200) {
-        console.log('Successful!')
-        setOtp(result.verification_code)
-        setUsername(result.username)
-        toast.success('A Token has been sent to your Email', {
+        console.log('Password Changed Successfully!')
+        toast.success('Password Changed Successfully', {
           style: {
             background: 'white', // Change the background color as needed
             color: 'green', // Change the text color as needed
@@ -64,11 +106,11 @@ const ForgotPassword: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push('/forgotPassword2')
+        history.push('/videos')
         // You can handle success here, e.g., redirect to a success page
       } else {
-        console.error('Unsuccessful', result.status_code)
-        toast.error(`User Email not found`, {
+        console.error('Password Change failed', result.message)
+        toast.error(`Password Change failed`, {
           style: {
             background: 'white', // Change the background color as needed
             color: 'red', // Change the text color as needed
@@ -118,31 +160,70 @@ const ForgotPassword: React.FC = () => {
             Forgot Password?
           </h1>
           <p className="text-primary-300 text-center text-[15px] font-Work-Sans font-medium tracking-tight mb-[32px]">
-            Enter your username to continue
+            Enter the OTP sent to your email and a new password to continue
           </p>
         </section>
-        <div
+        <form
           className="flex flex-col w-full ss:w-[475px]"
-         
+          onSubmit={handleSubmit}
         >
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
-              Username
+              OTP
             </p>
             <input
-              type="text"
-              placeholder="Enter your username"
+              type="number"
+              placeholder="Enter your OTP"
               required
-              value={userName}
-              onChange={handleUserChange}
+              value={token}
+              onChange={handleTokenChange}
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
+            /> 
+          </div>
+          {otpErr && (
+            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+              {errOtpMsg}
+            </p>
+          )}
+          <div>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
+              New Password
+            </p>
+            <input
+              type="password"
+              placeholder="Enter your Password"
+              required
+              value={password}
+              onChange={handlePassChange}
+              minLength={5}
               className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>
+
+          <div>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
+              Confirm Password
+            </p>
+            <input
+              type="password"
+              placeholder="Enter your Password"
+              required
+              value={password2}
+              onChange={handlePassChange2}
+              minLength={5}
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
+            />
+          </div>
+          {err && (
+            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+              {errMsg}
+            </p>
+          )}
           <button
-           onClick={handleSubmit}
+            // onClick={login}
             className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
           >
-            Get Verification code via Email
+            Update Password
           </button>
 
           {message && (
@@ -158,7 +239,7 @@ const ForgotPassword: React.FC = () => {
               </span>
             </Link>
           </h2>
-        </div>
+        </form>
       </div>
       <ToastContainer
         position="top-center" // Position the toast container at the bottom-center
@@ -172,4 +253,4 @@ const ForgotPassword: React.FC = () => {
   )
 }
 
-export default ForgotPassword
+export default ForgotPassword2

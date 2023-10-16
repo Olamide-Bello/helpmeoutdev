@@ -101,7 +101,7 @@ const LogIn = () => {
       })
     }
   }
-/*  */
+
   const loginWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((userCredential) => {
@@ -144,7 +144,70 @@ const LogIn = () => {
         })
       })
     }
+     
 
+ /* const loginWithGoogle = async () => {
+    try {
+      const response = await fetch('https://www.cofucan.tech/srce/api/google/login/', {
+        method: 'GET',
+        mode: 'no-cors',
+        headers: {
+          'Access-Control-Allow-Origin': 'http://localhost:3000/',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Request-Headers': 'X-Requested-With, Content-Type, Accept, Origin, Authorization',
+          'Access-Control-Allow-Credentials': 'true'
+          
+        }
+        
+      })
+
+      console.log(response)
+      if (response.status === 200) {
+        console.log('Login Successful!')
+        toast.success('Welcome Back', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+        
+        history.push('/videos')
+        // You can handle success here, e.g., redirect to a success page
+      } else {
+        console.error('Sign-up failed with status code', response.status)
+        toast.error(`Login failed`, {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
+        })
+        // Handle the error, show an error message, etc.
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+      toast.error(`Error: ${error}`, {
+        style: {
+          background: 'white', // Change the background color as needed
+          color: 'red', // Change the text color as needed
+          borderRadius: '8px', // Rounded corners for the toast
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          padding: '12px 24px', // Adjust padding as needed
+          fontSize: '16px', // Adjust font size as needed
+          textAlign: 'center',
+        },
+      })
+    }
+  } */
 
   const logInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider)

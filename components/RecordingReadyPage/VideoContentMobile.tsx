@@ -115,7 +115,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
   return (
     <div className="w-full h-auto block ss:hidden">
       {/* Name container */}
-      <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
+      {/* <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
       <div className="flex items-center w-full justify-between gap-[24px] mb-[12px]">
         <input
           type="text"
@@ -131,10 +131,10 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
           width="32"
           height="32"
         />
-      </div>
+      </div> */}
 
       {/* Video demo */}
-      {videoID ? (
+      {/* {videoID ? (
         <video
           ref={videoRef}
           controls
@@ -153,7 +153,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
             className="w-full h-full"
           />
         </div>
-      )}
+      )} */}
       {/* Email input and send button */}
       <div className="w-full">
         <form

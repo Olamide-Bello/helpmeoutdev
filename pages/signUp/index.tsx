@@ -13,46 +13,67 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 //import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
+import { BsEye, BsEyeSlash } from 'react-icons/bs'
+import { UrlObject } from 'url';
 
+type StateObject = {
+  username: string;
+  email: string;
+  password: string;
+  otp: any;
+};
+type CustomUrlObject = UrlObject & {
+  state?: StateObject;
+};
 const SignUp = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const history = useRouter()
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
   const { setLogged, setUser } = useContext(GlobalContext)
+  const [otp, setOtp] = useState('');
+  const [email, setEmail] = useState('');
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+  const handleEmailOtp = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setEmail(value)
+  }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
-    console.log(value)
   }
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
-    console.log(value)
   }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    const data = { username, password }
+    
+    //const data: StateObject = { username, email, password, otp };
     try {
       const response = await fetch(
-        'https://www.cofucan.tech/srce/api/signup/',
+        'https://www.cofucan.tech/srce/api/get_signup_otp/',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ username, email }),
         },
       )
 
       const result = await response.json()
 
       if (response.status === 200) {
-        console.log('Sign-up successful!')
-        toast.success('Successfully created an Account', {
+        console.log('Confirm OTP!')
+        toast.success('One more step to go', {
           style: {
             background: 'white', // Change the background color as needed
             color: 'green', // Change the text color as needed
@@ -63,12 +84,20 @@ const SignUp = () => {
             textAlign: 'center',
           },
         })
-        setLogged(true)
-        localStorage.setItem('user', result.username)
-        const num = Number(true)
-        localStorage.setItem('logged', JSON.stringify(num))
-        setUser(result.username)
-        history.push('/videos')
+        
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        setOtp(otp);
+
+        const userData = { username, email, password, otp: result.verification_code };
+        localStorage.setItem('userData', JSON.stringify(userData));
+  
+        // Redirect to the next page
+        history.push({
+          pathname: '/emailotp',
+          state: userData as StateObject,
+        } as CustomUrlObject);
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Sign-up failed with status code', result.message)
@@ -100,14 +129,14 @@ const SignUp = () => {
       })
     }
   }
-  
+
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
         const copy = newUser.displayName
         setLogged(true)
-        if (typeof copy === "string") {
+        if (typeof copy === 'string') {
           localStorage.setItem('user', copy)
           setUser(copy)
         }
@@ -143,7 +172,7 @@ const SignUp = () => {
           },
         })
       })
-    }
+  }
 
   const signInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider)
@@ -151,7 +180,7 @@ const SignUp = () => {
         const newUser = userCredential.user
         const copy = newUser.displayName
         setLogged(true)
-        if (typeof copy === "string") {
+        if (typeof copy === 'string') {
           localStorage.setItem('user', copy)
           setUser(copy)
         }
@@ -256,6 +285,7 @@ const SignUp = () => {
           onSubmit={handleSubmit}
         >
           <div>
+         
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Username
             </p>
@@ -270,17 +300,39 @@ const SignUp = () => {
           </div>
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
-              Password
+              Email
             </p>
             <input
-              type="password"
-              placeholder="Enter your Password"
+              type="Email"
+              placeholder="Enter your Email"
               required
-              value={password}
-              onChange={handlePassChange}
-              minLength={5}
+              value={email}
+              onChange={handleEmailOtp}
               className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
             />
+          </div>
+          <div>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
+              Password
+            </p>
+            <div className="flex">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password}
+                onChange={handlePassChange}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button pl-3 text-xl"
+              >
+                {showPassword ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
           </div>
 
           <button
@@ -312,5 +364,5 @@ const SignUp = () => {
   )
 }
 
-
 export default SignUp
+

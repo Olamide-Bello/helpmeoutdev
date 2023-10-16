@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 //import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
+import { BsEye, BsEyeSlash } from 'react-icons/bs'
 
 const LogIn = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
@@ -23,6 +24,11 @@ const LogIn = () => {
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -101,14 +107,14 @@ const LogIn = () => {
       })
     }
   }
-
+  /*  */
   const loginWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
         const copy = newUser.displayName
         setLogged(true)
-        if (typeof copy === "string") {
+        if (typeof copy === 'string') {
           localStorage.setItem('user', copy)
           setUser(copy)
         }
@@ -143,71 +149,7 @@ const LogIn = () => {
           },
         })
       })
-    }
-     
-
- /* const loginWithGoogle = async () => {
-    try {
-      const response = await fetch('https://www.cofucan.tech/srce/api/google/login/', {
-        method: 'GET',
-        mode: 'no-cors',
-        headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:3000/',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Request-Headers': 'X-Requested-With, Content-Type, Accept, Origin, Authorization',
-          'Access-Control-Allow-Credentials': 'true'
-          
-        }
-        
-      })
-
-      console.log(response)
-      if (response.status === 200) {
-        console.log('Login Successful!')
-        toast.success('Welcome Back', {
-          style: {
-            background: 'white', // Change the background color as needed
-            color: 'green', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-        
-        history.push('/videos')
-        // You can handle success here, e.g., redirect to a success page
-      } else {
-        console.error('Sign-up failed with status code', response.status)
-        toast.error(`Login failed`, {
-          style: {
-            background: 'white', // Change the background color as needed
-            color: 'red', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-        // Handle the error, show an error message, etc.
-      }
-    } catch (error) {
-      console.error('An error occurred:', error)
-      toast.error(`Error: ${error}`, {
-        style: {
-          background: 'white', // Change the background color as needed
-          color: 'red', // Change the text color as needed
-          borderRadius: '8px', // Rounded corners for the toast
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-          padding: '12px 24px', // Adjust padding as needed
-          fontSize: '16px', // Adjust font size as needed
-          textAlign: 'center',
-        },
-      })
-    }
-  } */
+  }
 
   const logInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider)
@@ -215,7 +157,7 @@ const LogIn = () => {
         const newUser = userCredential.user
         const copy = newUser.displayName
         setLogged(true)
-        if (typeof copy === "string") {
+        if (typeof copy === 'string') {
           localStorage.setItem('user', copy)
           setUser(copy)
         }
@@ -337,15 +279,24 @@ const LogIn = () => {
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Password
             </p>
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              required
-              value={password}
-              onChange={handlePassChange}
-              minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
-            />
+            <div className="flex">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password}
+                onChange={handlePassChange}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button pl-3 text-xl"
+              >
+                {showPassword ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
           </div>
 
           <button
@@ -386,6 +337,5 @@ const LogIn = () => {
     </section>
   )
 }
-
 
 export default LogIn

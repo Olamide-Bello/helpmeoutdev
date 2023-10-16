@@ -16,21 +16,33 @@ interface User {
 const EmailOtp: React.FC = () => {
   const [token, setToken] = useState<string>('')
   const { otp } = useContext(GlobalContext)
+  const [storageOtp, setStorageOtp] = useState<number>(0)
   const { setLogged, setUser } = useContext(GlobalContext)
+  const [userInfo, setUserInfo] = useState<User>(
+    {
+      username: "",
+      email: "",
+      password: ""
+    }
+  )
   const history = useRouter()
 
   useEffect(() => {
     // Access localStorage inside useEffect, which runs only on the client side
+    if (typeof window !== 'undefined') {
     const userDataString = localStorage.getItem('userData');
     const userData = userDataString ? JSON.parse(userDataString) : {};
+    setUserInfo(userData)
     const storedOtp: number = userData.otp ? parseInt(userData.otp, 10) : 0;
+    setStorageOtp(storedOtp)
     // Perform any operations involving localStorage here
+    }
   }, []); // Empty dependency array ensures the effect runs once after the initial render
 
 
-  const userDataString = localStorage.getItem('userData')
-  const userData = userDataString ? JSON.parse(userDataString) : {}
-  const storedOtp: number = userData.otp ? parseInt(userData.otp, 10) : 0
+  // const userDataString = localStorage.getItem('userData')
+  // const userData = userDataString ? JSON.parse(userDataString) : {}
+  // const storedOtp: number = userData.otp ? parseInt(userData.otp, 10) : 0
 
   const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -39,10 +51,10 @@ const EmailOtp: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    const { username, email, password } = userData
+    const { username, email, password } = userInfo
     const tokenNumber = parseInt(token, 10)
 
-    if (tokenNumber !== storedOtp) {
+    if (tokenNumber !== storageOtp) {
       toast.error('Invalid OTP')
       return
     }

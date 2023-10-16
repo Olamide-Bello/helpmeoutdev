@@ -14,7 +14,17 @@ import { useRouter } from 'next/router'
 //import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
+import { UrlObject } from 'url';
 
+type StateObject = {
+  username: string;
+  email: string;
+  password: string;
+  otp: any;
+};
+type CustomUrlObject = UrlObject & {
+  state?: StateObject;
+};
 const SignUp = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const history = useRouter()
@@ -22,11 +32,17 @@ const SignUp = () => {
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const { setLogged, setUser } = useContext(GlobalContext)
-  
+  const [otp, setOtp] = useState('');
+  const [email, setEmail] = useState('');
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
-  
+  const handleEmailOtp = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setEmail(value)
+  }
+
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
@@ -39,24 +55,25 @@ const SignUp = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    const data = { username, password }
+    
+    //const data: StateObject = { username, email, password, otp };
     try {
       const response = await fetch(
-        'https://www.cofucan.tech/srce/api/signup/',
+        'https://www.cofucan.tech/srce/api/get_signup_otp/',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ username, email }),
         },
       )
 
       const result = await response.json()
 
       if (response.status === 200) {
-        console.log('Sign-up successful!')
-        toast.success('Successfully created an Account', {
+        console.log('Confirm OTP!')
+        toast.success('One more step to go', {
           style: {
             background: 'white', // Change the background color as needed
             color: 'green', // Change the text color as needed
@@ -67,12 +84,20 @@ const SignUp = () => {
             textAlign: 'center',
           },
         })
-        setLogged(true)
-        localStorage.setItem('user', result.username)
-        const num = Number(true)
-        localStorage.setItem('logged', JSON.stringify(num))
-        setUser(result.username)
-        history.push('/videos')
+        
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        setOtp(otp);
+
+        const userData = { username, email, password, otp: result.verification_code };
+        localStorage.setItem('userData', JSON.stringify(userData));
+  
+        // Redirect to the next page
+        history.push({
+          pathname: '/emailotp',
+          state: userData as StateObject,
+        } as CustomUrlObject);
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Sign-up failed with status code', result.message)
@@ -260,7 +285,8 @@ const SignUp = () => {
           onSubmit={handleSubmit}
         >
           <div>
-                     <p className="text-[16px] font-Sora font-medium mb-[14px]">
+         
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Username
             </p>
             <input
@@ -272,7 +298,20 @@ const SignUp = () => {
               className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
             />
           </div>
-                    <div>
+          <div>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
+              Email
+            </p>
+            <input
+              type="Email"
+              placeholder="Enter your Email"
+              required
+              value={email}
+              onChange={handleEmailOtp}
+              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+            />
+          </div>
+          <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Password
             </p>
@@ -326,3 +365,4 @@ const SignUp = () => {
 }
 
 export default SignUp
+

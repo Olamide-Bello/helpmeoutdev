@@ -340,7 +340,7 @@ const ForgotPassword2: React.FC = () => {
     <>
       Request for New OTP in <span className="text-red-600">{seconds}</span> seconds
     </>
-  ) : (<p onClick={handleResendClick} className="text-green-500">Resend OTP</p>
+  ) : (<p onClick={handleResendClick} className="text-green-500 cursor-pointer">Resend OTP</p>
 
   )}
 </div>

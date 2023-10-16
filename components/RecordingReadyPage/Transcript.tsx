@@ -150,10 +150,10 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
 
               return (
                 <div key={index} className='flex'>
-                  <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3">
+                  <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3 xs:w-2/12">
                     {formatTime(startTime)}
                   </h5>
-                  <div className="w-11/12 flex flex-wrap py-2">
+                  <div className="w-11/12 flex flex-wrap py-2 xs:w-10/12">
                     {wordsInInterval.map((item, wordIndex) => (
                       //mapping with key 'wordIndex'
                       <div key={wordIndex} id="transcript-container" ref={transcriptContainerRef} className="custom-scrollbar  overflow-x-auto flex flex-wrap" >

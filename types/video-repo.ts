@@ -1,11 +1,10 @@
-import { User } from "firebase/auth";
+import { User } from 'firebase/auth'
 export interface VideoPageContentProps {
-  displayModal: () => void,
-  setEmail: (parameter: string) => void,
-  videoID?: string | string[] | undefined; // Add a videoID prop
+  displayModal: () => void
+  setEmail: (parameter: string) => void
+  videoID?: string | string[] | undefined // Add a videoID prop
   email: string
 }
-
 
 export type ContextTypes = {
   titleCase: (name: string) => string,
@@ -20,3 +19,4 @@ export type ContextTypes = {
   username: string,
   setUsername: (username: string) => void
 }
+  

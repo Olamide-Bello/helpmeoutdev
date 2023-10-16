@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useContext } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import axios from 'axios';
+import axios from 'axios'
 import { VideoPageContentProps } from '@/types/video-repo'
 import { Share } from '../SingleViewPage/share'
 import { ToastContainer, toast } from 'react-toastify'
@@ -34,7 +34,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
 
   //copy the url using COPY btn
   const [clicked, setClicked] = useState<boolean>(false)
-  const {sendEmail, errMsg} = useContext(GlobalContext)
+  const { sendEmail, user } = useContext(GlobalContext)
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentURL)
@@ -44,63 +44,62 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
     }, 3000)
   }
 
-
-
   const [error, setError] = useState<boolean>(false)
 
-
   const handleSubmit = async () => {
-    if (typeof videoID === "string") {
-      sendEmail(email, videoID)
+    if (typeof videoID === 'string') {
+      sendEmail(email, videoID, user)
     }
   }
 
   useEffect(() => {
     const fetchVideoData = async () => {
-        try {
-            const response = await axios.get(`https://www.cofucan.tech/srce/api/recording/${videoID}`);
-            const data = response.data;
-            setCurrentURL(`https://www.cofucan.tech/srce/api/video/${videoID}.mp4`)
+      try {
+        const response = await axios.get(
+          `https://www.cofucan.tech/srce/api/recording/${videoID}`,
+        )
+        const data = response.data
+        setCurrentURL(`https://www.cofucan.tech/srce/api/video/${videoID}.mp4`)
 
-            setCustomFileName(data.title)
-        } catch (error) {
-            console.error('Error fetching video data:', error);
-        }
-    };
+        setCustomFileName(data.title)
+      } catch (error) {
+        console.error('Error fetching video data:', error)
+      }
+    }
 
     if (videoID) {
-        fetchVideoData();
+      fetchVideoData()
     }
-}, [videoID]);
-
+  }, [videoID])
 
   const updateName = async () => {
     try {
-        const response = await fetch(`https://www.cofucan.tech/srce/api/video/${videoID}?title=${customFileName}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+      const response = await fetch(
+        `https://www.cofucan.tech/srce/api/video/${videoID}?title=${customFileName}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+
+      if (response.status === 200) {
+        toast.success('Name change successful!', {
+          style: {
+            background: 'white', // Change the background color as needed
+            color: 'green', // Change the text color as needed
+            borderRadius: '8px', // Rounded corners for the toast
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+            padding: '12px 24px', // Adjust padding as needed
+            fontSize: '16px', // Adjust font size as needed
+            textAlign: 'center',
+          },
         })
-
-        if (response.status === 200) {
-            toast.success('Name change successful!', {
-                style: {
-                    background: 'white', // Change the background color as needed
-                    color: 'green', // Change the text color as needed
-                    borderRadius: '8px', // Rounded corners for the toast
-                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-                    padding: '12px 24px', // Adjust padding as needed
-                    fontSize: '16px', // Adjust font size as needed
-                    textAlign: 'center',
-                },
-            })
-            window.location.reload()
-        }
-    } catch (err) {
-
-    }
-}
+        window.location.reload()
+      }
+    } catch (err) {}
+  }
 
   return (
     <div className="hidden ss:flex flex-col items-start ss:gap-[36px] md:gap-[64px] w-full md:w-[1/2]">
@@ -121,8 +120,8 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
               className="border-none outline-none rounded-md p-2 mb-2 w-full text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
             />
             <Image
-            onClick={updateName}
-              className="w-[16px] h-auto xs:h-[32px] xs:w-[32px]"
+              onClick={updateName}
+              className="w-[16px] h-auto xs:h-[32px] xs:w-[32px] cursor-pointer"
               src="/assets/video-repo/edit.svg"
               alt="edit"
               width="32"
@@ -133,9 +132,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
       </div>
       {/* Email input and send button */}
       <div className="w-full">
-        <div
-          className="py-[12px] mb-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between"
-        >
+        <div className="py-[12px] mb-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between">
           <input
             type="email"
             name="receiverEmail"
@@ -144,7 +141,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
             onChange={(e) => setEmail(e.target.value)}
             className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
           />
-          <button onClick={handleSubmit} className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
+          <button
+            onClick={handleSubmit}
+            className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans"
+          >
             Send
           </button>
         </div>
@@ -152,7 +152,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
           <p
             className={`${error ? 'flex' : 'hidden'} text-[#FF0000] font-[500]`}
           >
-            Email form cannot be empty!
+          Email is not valid!
           </p>
         </div>
       </div>
@@ -183,8 +183,9 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
           </div>
           <div className="h-[20px]">
             <p
-              className={`${clicked ? 'flex' : 'hidden'
-                } font-[500] text-primary-600`}
+              className={`${
+                clicked ? 'flex' : 'hidden'
+              } font-[500] text-primary-600`}
             >
               Copied!
             </p>
@@ -192,7 +193,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         </div>
       </div>
       {/* Share options */}
-      <Share text='#' />
+      <Share text="#" />
       <ToastContainer
         position="top-center" // Position the toast container at the bottom-center
         autoClose={1500} // Close after 3 seconds (adjust as needed)

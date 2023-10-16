@@ -17,6 +17,17 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVide
       // videoRef.current.src = `http://web-02.cofucan.tech/srce/api/recording/${currentVideoID}`;  //API that is given by BE inidial one
       // videoRef.current.src = `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`; //API that i've taken from online
       videoRef.current.src = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4` //new API from BE
+
+
+      // to get the vid duration
+      videoRef.current.preload = 'metadata'; // Preload metadata to get duration
+      
+      videoRef.current.addEventListener('loadeddata', function() {
+        console.log("videoref.current: ", videoRef.current?.duration);
+        // const duration = videoRef.current.duration;
+        // setCurrentVidDuration(duration);
+        // console.log(`The video duration is ${duration} seconds.`);
+      });
     }
   }, [videoID, router.query.videoID])
 
@@ -105,17 +116,21 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVide
   // to set current video duration - overall duration of the video
   useEffect(() => {
     const fetchVideo = async () => {
+      // const videoUrl = `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`;
       const videoUrl = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4`;
       const video = document.createElement('video');
       
       video.src = videoUrl;
       video.preload = 'metadata'; // Preload metadata to get duration
       
-      video.addEventListener('loadedmetadata', function() {
+      video.addEventListener('loadeddata', function() {
         const duration = video.duration;
-        setCurrentVidDuration(duration);
+        if(duration <= 1200){
+          setCurrentVidDuration(duration);
+        }
         console.log(`The video duration is ${duration} seconds.`);
       });
+      
     };
 
     fetchVideo();

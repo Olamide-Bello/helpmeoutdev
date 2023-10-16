@@ -153,7 +153,7 @@ const ForgotPassword2: React.FC = () => {
       setConsecutiveFailures(consecutiveFailures + 1)
   
       if (consecutiveFailures >= 5) {
-        setOtpExpiredMessage("OTP has expired, click the link at the bottom of the page to resend the OTP")
+        setOtpExpiredMessage("OTP has Expired")
         return
       }
   
@@ -340,7 +340,7 @@ const ForgotPassword2: React.FC = () => {
     <>
       Request for New OTP in <span className="text-red-600">{seconds}</span> seconds
     </>
-  ) : (<p onClick={handleResendClick}>Resend OTP</p>
+  ) : (<p onClick={handleResendClick} className="text-green-500">Resend OTP</p>
 
   )}
 </div>

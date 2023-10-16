@@ -19,6 +19,15 @@ const EmailOtp: React.FC = () => {
   const { setLogged, setUser } = useContext(GlobalContext)
   const history = useRouter()
 
+  useEffect(() => {
+    // Access localStorage inside useEffect, which runs only on the client side
+    const userDataString = localStorage.getItem('userData');
+    const userData = userDataString ? JSON.parse(userDataString) : {};
+    const storedOtp: number = userData.otp ? parseInt(userData.otp, 10) : 0;
+    // Perform any operations involving localStorage here
+  }, []); // Empty dependency array ensures the effect runs once after the initial render
+
+
   const userDataString = localStorage.getItem('userData')
   const userData = userDataString ? JSON.parse(userDataString) : {}
   const storedOtp: number = userData.otp ? parseInt(userData.otp, 10) : 0

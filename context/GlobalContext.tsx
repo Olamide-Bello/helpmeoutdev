@@ -58,8 +58,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
 
   const sendEmail = async (
     email: string,
-    id: string | string[] | undefined,
-    user?: string,
+    id: string | string[] | undefined
   ) => {
     //validate the email before taking action
     const valid = isEmailValid(email)
@@ -69,7 +68,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       if (user) {
         try {
           const response = await fetch(
-            `https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}&sender=${user}`,
+            `https://www.cofucan.tech/srce/api/send-email/${id}?sender=${user}&recipient=${email}`,
             {
               method: 'POST',
               headers: {
@@ -80,17 +79,6 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
           console.log(response)
           if (response.status === 200) {
             const result = await response.json()
-            toast.success(`${result.message}`, {
-              style: {
-                background: 'white', // Change the background color as needed
-                color: 'green', // Change the text color as needed
-                borderRadius: '8px', // Rounded corners for the toast
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-                padding: '12px 24px', // Adjust padding as needed
-                fontSize: '16px', // Adjust font size as needed
-                textAlign: 'center',
-              },
-            })
           }
         } catch (error) {
           console.log(error)
@@ -109,17 +97,6 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
           console.log(response)
           if (response.status === 200) {
             const result = await response.json()
-            toast.success(`${result.message}`, {
-              style: {
-                background: 'white', // Change the background color as needed
-                color: 'green', // Change the text color as needed
-                borderRadius: '8px', // Rounded corners for the toast
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-                padding: '12px 24px', // Adjust padding as needed
-                fontSize: '16px', // Adjust font size as needed
-                textAlign: 'center',
-              },
-            })
           }
         } catch (error) {
           console.log(error)

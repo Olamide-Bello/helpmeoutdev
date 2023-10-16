@@ -13,6 +13,7 @@ import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MainLayout from '@/components/shared/MainLayout'
+import Modal from '@/components/RecordingReadyPage/Modal'
 
 interface TranscriptWord {
   start: number
@@ -23,7 +24,7 @@ interface TranscriptWord {
 const Single = () => {
   const router = useRouter()
   const { id } = router.query
-  const { user } = useContext(GlobalContext)
+  const { user, sendEmail } = useContext(GlobalContext)
   const TranscriptId = '5z7aWVvi8lE1SFh'
 
   const [email, setEmail] = useState<string>('')
@@ -32,6 +33,7 @@ const Single = () => {
   const [newName, setNewName] = useState<string>('')
   const [copied, setCopied] = useState<boolean>(false)
   const [url, setUrl] = useState<string>('')
+  const [showModal, setShowModal] = useState<boolean>(false)
   const [transcript, setTranscript] = useState<{ time: number; msg: string }[]>(
     [],
   )
@@ -135,44 +137,10 @@ const Single = () => {
     }
   }
 
-  //function to validate the entered email
-  const isEmailValid = (mail: string) => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-    return emailRegex.test(mail)
-  }
-
-  // function to send the video url to the entered email
-  const sendEmail = async () => {
-    //validate the email before taking action
-    const valid = isEmailValid(email)
-    if (!valid) {
-      setErrMsg(true)
-    } else {
-      try {
-        const response = await fetch(
-          `https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        )
-        if (response.status === 200) {
-          const result = await response.json()
-          toast.success(`${result.message}`, {
-            style: {
-              background: 'white', // Change the background color as needed
-              color: 'green', // Change the text color as needed
-              borderRadius: '8px', // Rounded corners for the toast
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-              padding: '12px 24px', // Adjust padding as needed
-              fontSize: '16px', // Adjust font size as needed
-              textAlign: 'center',
-            },
-          })
-        }
-      } catch (error) {}
+  const handleMail = () => {
+    if (typeof id === "string") {
+      sendEmail(email, id)
+      setShowModal(true)
     }
   }
   const updateName = async () => {
@@ -261,7 +229,7 @@ const Single = () => {
                 text="Send"
                 placeholder="Enter the email of the reciever"
                 onChange={(e) => handleChange(e)}
-                onClick={sendEmail}
+                onClick={handleMail}
                 readOnly={false}
               />
               <Input
@@ -295,6 +263,7 @@ const Single = () => {
           textAlign: 'center', // Center-align the container's content
         }}
       />
+      {showModal && <Modal setShowModal={setShowModal} email={email}/>}
     </div>
   )
 }

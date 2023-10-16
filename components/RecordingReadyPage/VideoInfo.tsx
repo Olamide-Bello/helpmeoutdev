@@ -46,9 +46,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
 
   const [error, setError] = useState<boolean>(false)
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (typeof videoID === 'string') {
-      sendEmail(email, videoID, user)
+      sendEmail(email, videoID)
+      displayModal()
     }
   }
 

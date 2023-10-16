@@ -3,19 +3,25 @@ import { ContextTypes } from '@/types/video-repo'
 import { toast } from 'react-toastify'
 
 export const GlobalContext = createContext({
-  titleCase: () => '',
-  logged: false,
-  setLogged: () => {},
-  user: '',
-  setUser: () => {},
-  sendEmail: () => {},
-  errMsg: false,
+    titleCase: () => "",
+    logged: false,
+    setLogged: () => { },
+    user: '',
+    setUser: () => { },
+    sendEmail: () => { },
+    errMsg: false,
+    otp: 0,
+    setOtp: () => { },
+    username: '',
+    setUsername: () => { }
 } as ContextTypes)
 
 const GlobalState = ({ children }: { children: React.ReactNode }) => {
-  const [logged, setLogged] = useState<boolean>(false)
-  const [user, setUser] = useState<string>('')
-  const [errMsg, setErrMsg] = useState<boolean>(false)
+    const [logged, setLogged] = useState<boolean>(false)
+    const [user, setUser] = useState<string>("")
+    const [errMsg, setErrMsg] = useState<boolean>(false)
+    const [otp, setOtp] = useState<number>(0)
+    const [username, setUsername] = useState<string>('')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -30,6 +36,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       }
     }
   })
+
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -141,6 +148,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
   }
 
   const contextValue: ContextTypes = {
+    
     titleCase,
     logged,
     setLogged,
@@ -148,6 +156,10 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
     setUser,
     sendEmail,
     errMsg,
+    otp,
+    setOtp,
+    username,
+    setUsername
   }
   return (
     <GlobalContext.Provider value={contextValue}>

@@ -7,11 +7,16 @@ export interface VideoPageContentProps {
 }
 
 export type ContextTypes = {
-  titleCase: (name: string) => string
-  logged?: boolean
-  setLogged: (logged: boolean) => void
-  user: string
-  setUser: (user: string) => void
-  sendEmail: (email: string, id: string, user?: string) => void
-  errMsg: boolean
+  titleCase: (name: string) => string,
+  logged?: boolean,
+  setLogged: (logged: boolean) => void,
+  user: string,
+  setUser: (user: string) => void,
+  sendEmail: (email: string, id: string) => void,
+  errMsg: boolean,
+  otp: number,
+  setOtp: (otp: number) => void,
+  username: string,
+  setUsername: (username: string) => void
 }
+  

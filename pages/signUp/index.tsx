@@ -22,11 +22,11 @@ const SignUp = () => {
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const { setLogged, setUser } = useContext(GlobalContext)
-
+  
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
-
+  
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
@@ -260,7 +260,7 @@ const SignUp = () => {
           onSubmit={handleSubmit}
         >
           <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">
+                     <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Username
             </p>
             <input
@@ -272,7 +272,7 @@ const SignUp = () => {
               className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
             />
           </div>
-          <div>
+                    <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Password
             </p>

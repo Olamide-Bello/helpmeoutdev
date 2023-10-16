@@ -99,14 +99,14 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         })
         window.location.reload()
       }
-    } catch (err) {}
+    } catch (err) { }
   }
 
   return (
-    <div className="hidden ss:flex flex-col items-start ss:gap-[36px] md:gap-[64px] w-full md:w-[1/2]">
+    <div className=" ss:flex flex-col items-start ss:gap-[36px] md:gap-[64px] w-full md:w-[1/2]">
       {/* Header */}
       <div className="w-full">
-        <h2 className="text-black-600 text-[32px] xs:text-[45px] font-[700] mb-[48px]">
+        <h2 className="hidden text-black-600 text-[32px] xs:text-[45px] font-[700] mb-[48px]">
           Your video is ready!
         </h2>
         {/* Name container */}
@@ -132,7 +132,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         </div>
       </div>
       {/* Email input and send button */}
-      <div className="w-full">
+      <div className="hidden ss:block w-full">
         <div className="py-[12px] mb-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between">
           <input
             type="email"
@@ -153,12 +153,12 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
           <p
             className={`${error ? 'flex' : 'hidden'} text-[#FF0000] font-[500]`}
           >
-          Email is not valid!
+            Email is not valid!
           </p>
         </div>
       </div>
       {/* Video URL */}
-      <div className="w-full pt-[12px]">
+      <div className="w-full pt-[12px] hidden ss:block">
         <h2 className="text-black-600 font-Sora text-[20px] mb-[16px] font-[600] ">
           Video Url
         </h2>
@@ -184,17 +184,19 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
           </div>
           <div className="h-[20px]">
             <p
-              className={`${
-                clicked ? 'flex' : 'hidden'
-              } font-[500] text-primary-600`}
+              className={`${clicked ? 'flex' : 'hidden'
+                } font-[500] text-primary-600`}
             >
               Copied!
             </p>
           </div>
         </div>
       </div>
-      {/* Share options */}
-      <Share text="#" />
+      <div className='hidden ss:block'>
+        {/* Share options */}
+        <Share text="#" />
+
+      </div>
       <ToastContainer
         position="top-center" // Position the toast container at the bottom-center
         autoClose={1500} // Close after 3 seconds (adjust as needed)

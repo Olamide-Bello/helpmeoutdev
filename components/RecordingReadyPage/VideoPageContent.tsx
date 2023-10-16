@@ -9,13 +9,13 @@ const VideoPageContent: React.FC<VideoPageContentProps> = ({
 }) => {
   return (
     <div className=" font-Sora w-full h-auto md:h-[970px] ss:pt-[40px] flex md:justify-between 
-    flex-col md:flex-row items-start gap-[72px] my-[32px] xs:my-[64px]">
+    flex-col md:flex-row items-start gap-[10px] ss:gap-[72px] my-[32px] xs:my-[64px]">
       {/* Video information for tablet and Desktop view */}
       <VideoInfo displayModal={displayModal} videoID={videoID} setEmail={setEmail} email={email}/>
       {/* Video & information for mobile view */}
-      <VideoContentMobile displayModal={displayModal} videoID={videoID} setEmail={setEmail} email={email}/>
+      {/* <VideoContentMobile displayModal={displayModal} videoID={videoID} setEmail={setEmail} email={email}/> */}
       {/* Video for tablet & Desktop and transcript container */}
-      <VideoAndTranscript videoID={videoID}/>
+      <VideoAndTranscript displayModal={displayModal} videoID={videoID} setEmail={setEmail} email={email}/>
     </div>
   )
 }

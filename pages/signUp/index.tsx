@@ -13,24 +13,28 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 //import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
+import { BsEye, BsEyeSlash } from 'react-icons/bs'
 
 const SignUp = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const history = useRouter()
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
   const { setLogged, setUser } = useContext(GlobalContext)
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
-    console.log(value)
   }
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
-    console.log(value)
   }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -100,14 +104,14 @@ const SignUp = () => {
       })
     }
   }
-  
+
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
         const copy = newUser.displayName
         setLogged(true)
-        if (typeof copy === "string") {
+        if (typeof copy === 'string') {
           localStorage.setItem('user', copy)
           setUser(copy)
         }
@@ -143,7 +147,7 @@ const SignUp = () => {
           },
         })
       })
-    }
+  }
 
   const signInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider)
@@ -151,7 +155,7 @@ const SignUp = () => {
         const newUser = userCredential.user
         const copy = newUser.displayName
         setLogged(true)
-        if (typeof copy === "string") {
+        if (typeof copy === 'string') {
           localStorage.setItem('user', copy)
           setUser(copy)
         }
@@ -272,15 +276,24 @@ const SignUp = () => {
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Password
             </p>
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              required
-              value={password}
-              onChange={handlePassChange}
-              minLength={5}
-              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
-            />
+            <div className="flex">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password}
+                onChange={handlePassChange}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button pl-3 text-xl"
+              >
+                {showPassword ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
           </div>
 
           <button
@@ -311,6 +324,5 @@ const SignUp = () => {
     </section>
   )
 }
-
 
 export default SignUp

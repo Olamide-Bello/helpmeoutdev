@@ -14,8 +14,7 @@ interface User {
 }
 
 const ForgotPassword: React.FC = () => {
-  const [userExist, setUserExist] = useState<boolean>(false)
-  const [user, setUser] = useState<User | null>(null)
+  
   const [message, setMessage] = useState<boolean | string>(false)
   const {otp, setOtp} = useContext(GlobalContext)
   const {username, setUsername} = useContext(GlobalContext)
@@ -40,9 +39,14 @@ const ForgotPassword: React.FC = () => {
         `https://www.cofucan.tech/srce/api/request_otp/?username=${userName}`,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+           headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              Vary: 'Origin',
+            },
+           
+            mode: 'cors',
           
         })
 

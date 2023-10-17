@@ -14,17 +14,17 @@ import { useRouter } from 'next/router'
 //import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
-import { UrlObject } from 'url';
+import { UrlObject } from 'url'
 
 type StateObject = {
-  username: string;
-  email: string;
-  password: string;
-  otp: any;
-};
+  username: string
+  email: string
+  password: string
+  otp: any
+}
 type CustomUrlObject = UrlObject & {
-  state?: StateObject;
-};
+  state?: StateObject
+}
 const SignUp = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const history = useRouter()
@@ -32,8 +32,8 @@ const SignUp = () => {
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const { setLogged, setUser } = useContext(GlobalContext)
-  const [otp, setOtp] = useState('');
-  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('')
+  const [email, setEmail] = useState('')
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -84,7 +84,11 @@ const SignUp = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            Vary: 'Origin',
           },
+          mode: 'cors',
           body: JSON.stringify({ username, email }),
         },
       )
@@ -104,20 +108,25 @@ const SignUp = () => {
             textAlign: 'center',
           },
         })
-        
-        setUsername(username);
-        setEmail(email);
-        setPassword(password);
-        setOtp(otp);
 
-        const userData = { username, email, password, otp: result.verification_code };
-        localStorage.setItem('userData', JSON.stringify(userData));
-  
+        setUsername(username)
+        setEmail(email)
+        setPassword(password)
+        setOtp(otp)
+
+        const userData = {
+          username,
+          email,
+          password,
+          otp: result.verification_code,
+        }
+        localStorage.setItem('userData', JSON.stringify(userData))
+
         // Redirect to the next page
         history.push({
           pathname: '/emailotp',
           state: userData as StateObject,
-        } as CustomUrlObject);
+        } as CustomUrlObject)
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Sign-up failed with status code', result.message)
@@ -305,7 +314,6 @@ const SignUp = () => {
           onSubmit={handleSubmit}
         >
           <div>
-         
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Username
             </p>
@@ -319,9 +327,7 @@ const SignUp = () => {
             />
           </div>
           <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">
-              Email
-            </p>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">Email</p>
             <input
               type="Email"
               placeholder="Enter your Email"
@@ -390,4 +396,3 @@ const SignUp = () => {
 }
 
 export default SignUp
-

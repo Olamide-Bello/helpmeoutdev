@@ -50,23 +50,31 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
     return emailRegex.test(mail)
   }
 
-  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const valid = isEmailValid(email)
     if (!valid) {
-      setError(true)
       setError(true)
       setTimeout(() => {
         setError(false)
       }, 3000)
     } else {
+      displayModal()
       try {
-        const response = await fetch(`https://www.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `https://www.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              Vary: 'Origin',
+            },
+           
+            mode: 'cors',
           },
-        })
+        )
         if (response.status === 200) {
           const result = await response.json()
           console.log(response)
@@ -158,7 +166,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
       <div className="w-full">
         <form
           onSubmit={handleSubmit}
-          className="py-[12px] mb-[12px] px-[8px] bg-primary-50 rounded-[12px] h-[64px] w-full flex items-center justify-between"
+          className="mb-[12px] px-[8px] bg-primary-50 rounded-[12px] h-[64px] w-full flex items-center justify-between"
         >
           <input
             type="email"
@@ -168,7 +176,10 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
             onChange={(e) => setEmail(e.target.value)}
             className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
           />
-          <button type='submit' className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
+          <button
+            type="submit"
+            className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans"
+          >
             Send
           </button>
         </form>
@@ -228,8 +239,9 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
         </div>
         <div className="h-[20px]">
           <p
-            className={`${clicked ? 'flex' : 'hidden'
-              } font-[500] text-primary-600`}
+            className={`${
+              clicked ? 'flex' : 'hidden'
+            } font-[500] text-primary-600`}
           >
             Copied!
           </p>

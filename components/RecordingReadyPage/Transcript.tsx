@@ -36,7 +36,18 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
     const fetchTranscription = async () => {
       console.log("this is in transcript fetch");
       try {
-        const response = await fetch(`https://www.cofucan.tech/srce/api/transcript/${videoID}.json`);
+        const response = await fetch(
+          `https://www.cofucan.tech/srce/api/transcript/${videoID}.json`,
+          {
+            headers: {
+              "Accept": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              "Vary": "Origin"
+            },
+            body: "",
+            mode: "cors"
+          }
+          );
         // const response = await fetch("https://random-words-api.vercel.app/word");
         console.log("response at 40T:", response);
         const data = await response.json();

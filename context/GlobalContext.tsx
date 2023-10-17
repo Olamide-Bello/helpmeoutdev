@@ -3,25 +3,25 @@ import { ContextTypes } from '@/types/video-repo'
 import { toast } from 'react-toastify'
 
 export const GlobalContext = createContext({
-    titleCase: () => "",
-    logged: false,
-    setLogged: () => { },
-    user: '',
-    setUser: () => { },
-    sendEmail: () => { },
-    errMsg: false,
-    otp: 0,
-    setOtp: () => { },
-    username: '',
-    setUsername: () => { }
+  titleCase: () => '',
+  logged: false,
+  setLogged: () => {},
+  user: '',
+  setUser: () => {},
+  sendEmail: () => {},
+  errMsg: false,
+  otp: 0,
+  setOtp: () => {},
+  username: '',
+  setUsername: () => {},
 } as ContextTypes)
 
 const GlobalState = ({ children }: { children: React.ReactNode }) => {
-    const [logged, setLogged] = useState<boolean>(false)
-    const [user, setUser] = useState<string>("")
-    const [errMsg, setErrMsg] = useState<boolean>(false)
-    const [otp, setOtp] = useState<number>(0)
-    const [username, setUsername] = useState<string>('')
+  const [logged, setLogged] = useState<boolean>(false)
+  const [user, setUser] = useState<string>('')
+  const [errMsg, setErrMsg] = useState<boolean>(false)
+  const [otp, setOtp] = useState<number>(0)
+  const [username, setUsername] = useState<string>('')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -36,7 +36,6 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       }
     }
   })
-
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -58,7 +57,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
 
   const sendEmail = async (
     email: string,
-    id: string | string[] | undefined
+    id: string | string[] | undefined,
   ) => {
     //validate the email before taking action
     const valid = isEmailValid(email)
@@ -73,7 +72,12 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                Vary: 'Origin',
               },
+             
+              mode: 'cors',
             },
           )
           console.log(response)
@@ -91,7 +95,12 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                Vary: 'Origin',
               },
+             
+              mode: 'cors',
             },
           )
           console.log(response)
@@ -125,7 +134,6 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
   }
 
   const contextValue: ContextTypes = {
-    
     titleCase,
     logged,
     setLogged,
@@ -136,7 +144,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
     otp,
     setOtp,
     username,
-    setUsername
+    setUsername,
   }
   return (
     <GlobalContext.Provider value={contextValue}>

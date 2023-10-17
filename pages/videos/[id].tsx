@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, ChangeEvent  } from 'react'
+import React, { useState, useEffect, useContext, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
 import Navbar from '@/components/shared/Navbar'
 import Link from 'next/link'
@@ -169,12 +169,16 @@ const Single = () => {
         })
         window.location.reload()
       }
-    } catch (err) {}
+    } catch (err) { }
   }
   const changeName = (e: ChangeEvent<HTMLInputElement>) => {
     setNewName(e.target.value);
     setIsTyping(true);
-};
+  };
+
+  // Define state for current time
+  const [currentTime, setCurrentTime] = useState(0);
+  const [currentVidDuration, setCurrentVidDuration] = useState(0);
 
   return (
     <div>
@@ -196,9 +200,8 @@ const Single = () => {
           <span className="text-primary-400 font-[500]">{videoName}</span>
         </div>
         <div
-          className={`flex font-2xl font-[600] text-lg text-black font-Sora  items-center mb-5 ${
-            isTyping ? 'dark' : ''
-          }`}
+          className={`flex font-2xl font-[600] text-lg text-black font-Sora  items-center mb-5 ${isTyping ? 'dark' : ''
+            }`}
         >
           <input
             type="text"
@@ -217,9 +220,9 @@ const Single = () => {
           />
         </div>
         {/* video player component*/}
-        {url ? <VideoPlayer url={url} /> : <Demo />}
+        {url ? <VideoPlayer url={url}  videoID={id} setCurrentVideoTime={setCurrentTime} setCurrentVidDuration={setCurrentVidDuration}/> : <Demo />}
         {/* video transcript*/}
-        <Transcript data={transcript} />
+        <Transcript data={transcript} videoID={id} currentVideoTime={currentTime} currentVidDuration={currentVidDuration}/>
         <div>
           <div className="flex flex-col gap-6 w-full my-10">
             <div className="flex md:flex-row flex-col bg-opacity-40 justify-between items-center md:gap-20 gap-5">
@@ -263,7 +266,7 @@ const Single = () => {
           textAlign: 'center', // Center-align the container's content
         }}
       />
-      {showModal && <Modal setShowModal={setShowModal} email={email}/>}
+      {showModal && <Modal setShowModal={setShowModal} email={email} />}
     </div>
   )
 }

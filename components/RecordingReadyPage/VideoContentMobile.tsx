@@ -55,11 +55,11 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
     const valid = isEmailValid(email)
     if (!valid) {
       setError(true)
-      setError(true)
       setTimeout(() => {
         setError(false)
       }, 3000)
     } else {
+      displayModal()
       try {
         const response = await fetch(`https://www.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`, {
           method: 'POST',
@@ -158,7 +158,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
       <div className="w-full">
         <form
           onSubmit={handleSubmit}
-          className="py-[12px] mb-[12px] px-[8px] bg-primary-50 rounded-[12px] h-[64px] w-full flex items-center justify-between"
+          className="mb-[12px] px-[8px] bg-primary-50 rounded-[12px] h-[64px] w-full flex items-center justify-between"
         >
           <input
             type="email"

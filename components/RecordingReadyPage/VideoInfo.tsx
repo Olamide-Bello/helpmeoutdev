@@ -45,11 +45,69 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   }
 
   const [error, setError] = useState<boolean>(false)
+  const isEmailValid = (mail: string) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return emailRegex.test(mail)
+  }
 
-  const handleSubmit = () => {
-    if (typeof videoID === 'string') {
-      sendEmail(email, videoID)
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const valid = isEmailValid(email)
+    if (!valid) {
+      setError(true)
+      setTimeout(() => {
+        setError(false)
+      }, 3000)
+    } else {
       displayModal()
+      try {
+        const response = await fetch(`https://www.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        if (response.status === 200) {
+          const result = await response.json()
+          console.log(response)
+          console.log(result.message)
+          // toast.success(`${result.message}`, {
+          //   style: {
+          //     background: 'white', // Change the background color as needed
+          //     color: 'green', // Change the text color as needed
+          //     borderRadius: '8px', // Rounded corners for the toast
+          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          //     padding: '12px 24px', // Adjust padding as needed
+          //     fontSize: '16px', // Adjust font size as needed
+          //     textAlign: 'center',
+          //   },
+          // })
+        } else {
+          // toast.error(`Unable to send to Email!`, {
+          //   style: {
+          //     background: 'white', // Change the background color as needed
+          //     color: 'red', // Change the text color as needed
+          //     borderRadius: '8px', // Rounded corners for the toast
+          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          //     padding: '12px 24px', // Adjust padding as needed
+          //     fontSize: '16px', // Adjust font size as needed
+          //     textAlign: 'center',
+          //   },
+          // })
+        }
+      } catch (error) {
+        // toast.error(`${error}`, {
+        //   style: {
+        //     background: 'white', // Change the background color as needed
+        //     color: 'red', // Change the text color as needed
+        //     borderRadius: '8px', // Rounded corners for the toast
+        //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+        //     padding: '12px 24px', // Adjust padding as needed
+        //     fontSize: '16px', // Adjust font size as needed
+        //     textAlign: 'center',
+        //   },
+        // })
+      }
     }
   }
 
@@ -132,7 +190,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         </div>
       </div>
       {/* Email input and send button */}
-      <div className="hidden ss:block w-full">
+      <form onSubmit={handleSubmit} className="hidden ss:block w-full">
         <div className="py-[12px] mb-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between">
           <input
             type="email"
@@ -143,7 +201,6 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
             className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
           />
           <button
-            onClick={handleSubmit}
             className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans"
           >
             Send
@@ -156,7 +213,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
             Email is not valid!
           </p>
         </div>
-      </div>
+      </form>
       {/* Video URL */}
       <div className="w-full pt-[12px] hidden ss:block">
         <h2 className="text-black-600 font-Sora text-[20px] mb-[16px] font-[600] ">

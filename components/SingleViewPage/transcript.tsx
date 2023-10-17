@@ -71,7 +71,7 @@ const Transcript: React.FC<TranscriptSingelViewProps> = ({ data, videoID, curren
       // Scroll your transcript container here
       const transcriptContainer = document.getElementById('org-transcipt-container');
       if (transcriptContainer) {
-        transcriptContainer.scrollTop = (progress / 100) * transcriptContainer.scrollHeight * 0.8;  //adjust the scroll speed
+        transcriptContainer.scrollTop = (progress / 100) * transcriptContainer.scrollHeight * 0.9;  //adjust the scroll speed
       }
     }
   }, [currentVidDuration, currentVideoTime]);

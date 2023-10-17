@@ -279,7 +279,7 @@ const LogIn = () => {
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Password
             </p>
-            <div className="flex">
+            <div className="relative w-full">
               <input
                 type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
                 placeholder="Enter your Password"
@@ -292,7 +292,7 @@ const LogIn = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="password-toggle-button pl-3 text-xl"
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
               >
                 {showPassword ? <BsEye /> : <BsEyeSlash />}
               </button>

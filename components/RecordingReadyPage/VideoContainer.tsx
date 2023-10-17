@@ -144,7 +144,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVide
           Your browser does not support the video tag.
         </video>
       )}
-      <div className="hidden w-full h-[80px] bg-white ss:flex justify-between items-center  px-[12px] ss:px-[40px]">
+             <div className="hidden w-full h-[80px] bg-white ss:flex justify-between items-center  px-[12px] ss:px-[40px]">
         <h3 className="font-Inter text-primary-200 font-[500] text-[14px] ss:text-[24px]">
           {formatTime(currentTime)}
         </h3>

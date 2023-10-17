@@ -196,19 +196,24 @@ const Single = () => {
           <span className="text-primary-400 font-[500]">{videoName}</span>
         </div>
         <div
-          className={`flex font-2xl font-[600] text-lg text-black font-Sora  items-center mb-5 ${
-            isTyping ? 'dark' : ''
-          }`}
+          className={`flex font-2xl font-[600] text-lg text-black font-Sora  items-center mb-5 `}
         >
           <input
             type="text"
             value={newName}
             placeholder={videoName}
             onChange={changeName}
-            className="border-none outline-none rounded-md p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                updateName();
+              }
+            }}
+            className={`border p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600 `}
           />
           <Image
-            className={`cursor-pointer ${isTyping ? 'dark' : ''}`}
+            className={`cursor-pointer ${
+              isTyping ? 'dark' : ''
+            } transform hover:scale-110`}
             onClick={updateName}
             src="/assets/video-repo/edit.svg"
             alt="Logo"
@@ -218,7 +223,7 @@ const Single = () => {
         </div>
         {/* video player component*/}
         {url ? <VideoPlayer url={url} /> : <Demo />}
-        {/* video transcript*/}
+                {/* video transcript*/}
         <Transcript data={transcript} />
         <div>
           <div className="flex flex-col gap-6 w-full my-10">

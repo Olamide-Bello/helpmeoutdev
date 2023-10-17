@@ -1,0 +1,6 @@
+export interface TranscriptSingelViewProps {
+    data: any;
+    videoID?: string | string[] | undefined; // Add a videoID prop
+    currentVideoTime: number;
+    currentVidDuration: number;
+}

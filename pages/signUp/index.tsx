@@ -53,8 +53,28 @@ const SignUp = () => {
     setPassword(value)
   }
 
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular expression for validating an Email
+  const isEmailValid = emailRegex.test(email);
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+    
+    if (!isEmailValid) {
+      toast.error('Invalid email address', {
+        style: {
+          background: 'white',
+          color: 'red',
+          borderRadius: '8px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          padding: '12px 24px',
+          fontSize: '16px',
+          textAlign: 'center',
+        },
+      });
+      return;
+    }
+
 
     //const data: StateObject = { username, email, password, otp };
     try {
@@ -316,12 +336,17 @@ const SignUp = () => {
               onChange={handleEmailOtp}
               className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
             />
+             {!isEmailValid && (
+          <p className="text-red-500 text-[14px] font-Work-Sans mt-0">
+            Invalid email address
+          </p>
+        )}
           </div>
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Password
             </p>
-            <div className="flex">
+            <div className="relative w-full">
               <input
                 type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
                 placeholder="Enter your Password"
@@ -334,8 +359,8 @@ const SignUp = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="password-toggle-button pl-3 text-xl"
-              >
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
+                >
                 {showPassword ? <BsEye /> : <BsEyeSlash />}
               </button>
             </div>

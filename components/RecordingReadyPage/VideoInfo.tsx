@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useContext } from 'react'
+import React, { useRef, useEffect, useState, useContext, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import axios from 'axios'
@@ -7,6 +7,7 @@ import { Share } from '../SingleViewPage/share'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { GlobalContext } from '@/context/GlobalContext'
+
 
 const VideoInfo: React.FC<VideoPageContentProps> = ({
   displayModal,
@@ -24,10 +25,13 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   //     videoRef.current.src = `http://web-02.cofucan.tech/srce/api/video/stream/${currentVideoID}`;
   //   }
   // }, [videoID, router.query.videoID]);
-
+  const router = useRouter()
+  const { id } = router.query
+  const videoUrl = `https://www.cofucan.tech/srce/api/video/${id}.mp4`
   //custom file name
   const [customFileName, setCustomFileName] = useState('')
   const placeHolder = `Untitled_Video_${videoID}`
+  const [isTyping, setIsTyping] = useState(false)
 
   //get current window/tab url
   const [currentURL, setCurrentURL] = useState<string>('')
@@ -172,7 +176,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
       }
     } catch (err) {}
   }
-
+  const changeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setCustomFileName(e.target.value);
+    setIsTyping(true);
+  };
   return (
     <div className=" ss:flex flex-col items-start ss:gap-[36px] md:gap-[64px] w-full md:w-[1/2]">
       {/* Header */}
@@ -183,17 +190,23 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         {/* Name container */}
         <div className="w-full">
           <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
-          <div className="flex items-center justify-between w-full">
+          <div className={`flex font-2xl font-[600] text-lg text-black font-Sora  items-center mb-5 w-full`}>
             <input
               type="text"
               placeholder={placeHolder}
               value={customFileName}
-              onChange={(e) => setCustomFileName(e.target.value)}
-              className="border-none outline-none rounded-md p-2 mb-2 w-full text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
+              onChange={changeName} 
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  updateName();
+                }
+              }}
+              className=" w-full border p-2 mb-2  text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600
+              "
             />
             <Image
               onClick={updateName}
-              className="w-[16px] h-auto xs:h-[32px] xs:w-[32px] cursor-pointer"
+               className={`cursor-pointer ${isTyping ? 'dark' : ''} transform hover:scale-110 w-[16px] h-auto xs:h-[32px] xs:w-[32px]`}
               src="/assets/video-repo/edit.svg"
               alt="edit"
               width="32"
@@ -263,7 +276,8 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
       </div>
       <div className="hidden ss:block">
         {/* Share options */}
-        <Share text="#" />
+        <Share text={videoUrl} />
+
       </div>
       <ToastContainer
         position="top-center" // Position the toast container at the bottom-center

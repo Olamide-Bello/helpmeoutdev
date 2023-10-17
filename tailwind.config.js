@@ -31,6 +31,9 @@ module.exports = {
           400: 'hsla(0, 0%, 26%, 0.8)',
           600: 'hsla(0, 0%, 8%, 1)',
         },
+        borderColor: {
+          'dark': '#333', 
+        },
         'pastel-bg': 'hsla(240, 100%, 99%, 1)',
       },
       fontFamily: {

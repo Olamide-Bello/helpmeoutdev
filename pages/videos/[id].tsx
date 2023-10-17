@@ -301,7 +301,7 @@ const Single = () => {
           textAlign: 'center', // Center-align the container's content
         }}
       />
-      {showModal && <Modal setShowModal={setShowModal} email={email} />}
+      {showModal && <Modal setShowModal={setShowModal} email={email} videoID={id} />}
     </div>
   )
 }

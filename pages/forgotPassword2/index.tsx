@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
+import { BsEye, BsEyeSlash } from 'react-icons/bs'
 
 interface User {
   uid: string
@@ -32,6 +33,11 @@ const ForgotPassword2: React.FC = () => {
   const [otpExpiredMessage, setOtpExpiredMessage] = useState<string | null>(
     null,
   )
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
 
   useEffect(() => {
     // Create an interval that decreases the seconds state every second
@@ -300,30 +306,48 @@ const ForgotPassword2: React.FC = () => {
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               New Password
             </p>
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              required
-              value={password}
-              onChange={handlePassChange}
-              minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password}
+                onChange={handlePassChange}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
+              >
+                {showPassword ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
           </div>
 
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Confirm Password
             </p>
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              required
-              value={password2}
-              onChange={handlePassChange2}
-              minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password2}
+                onChange={handlePassChange2}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
+              >
+                {showPassword ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
           </div>
           {err && (
             <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">

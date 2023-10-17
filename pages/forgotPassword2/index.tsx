@@ -15,8 +15,8 @@ interface User {
 
 const ForgotPassword2: React.FC = () => {
   const [message, setMessage] = useState<boolean | string>(false)
-  const {otp, setOtp} = useContext(GlobalContext)
-  const {username, setUsername} = useContext(GlobalContext)
+  const { otp, setOtp } = useContext(GlobalContext)
+  const { username, setUsername } = useContext(GlobalContext)
   const { setUser, setLogged } = useContext(GlobalContext)
 
   const history = useRouter()
@@ -29,10 +29,9 @@ const ForgotPassword2: React.FC = () => {
   const [otpErr, setOtpErr] = useState<boolean>(false)
   const [seconds, setSeconds] = useState<number>(60)
   const [consecutiveFailures, setConsecutiveFailures] = useState<number>(0)
-  const [otpExpiredMessage, setOtpExpiredMessage] = useState<string | null>(null);
-
-  
-  
+  const [otpExpiredMessage, setOtpExpiredMessage] = useState<string | null>(
+    null,
+  )
 
   useEffect(() => {
     // Create an interval that decreases the seconds state every second
@@ -41,27 +40,26 @@ const ForgotPassword2: React.FC = () => {
         setSeconds(seconds - 1)
       } else {
         clearInterval(intervalId) // Clear the interval when the countdown reaches 0
-        
       }
-    }, 1000);
+    }, 1000)
 
     // Clean up the interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, [seconds]);
-
-  
+    return () => clearInterval(intervalId)
+  }, [seconds])
 
   const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setToken(value)
-    if(otp !== +value) {
+    if (otp !== +value) {
       setOtpErr(true)
     } else {
       setOtpErr(false)
     }
   }
 
-  const handleResendClick: React.MouseEventHandler<HTMLParagraphElement> = async (e) => {
+  const handleResendClick: React.MouseEventHandler<
+    HTMLParagraphElement
+  > = async (e) => {
     e.preventDefault()
     setSeconds(60)
     setOtpExpiredMessage(null)
@@ -73,9 +71,14 @@ const ForgotPassword2: React.FC = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            Vary: 'Origin',
           },
-          
-        })
+         
+          mode: 'cors',
+        },
+      )
 
       console.log(response)
       const result = await response.json()
@@ -95,7 +98,7 @@ const ForgotPassword2: React.FC = () => {
             textAlign: 'center',
           },
         })
-        
+
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Unsuccessful', result.status_code)
@@ -127,7 +130,6 @@ const ForgotPassword2: React.FC = () => {
       })
     }
   }
-  
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -151,12 +153,12 @@ const ForgotPassword2: React.FC = () => {
     if (otpErr) {
       // Increment consecutive failures
       setConsecutiveFailures(consecutiveFailures + 1)
-  
+
       if (consecutiveFailures >= 5) {
-        setOtpExpiredMessage("OTP has Expired")
+        setOtpExpiredMessage('OTP has Expired')
         return
       }
-  
+
       // Display an error toast for OTP invalid
       toast.error(`OTP Invalid`, {
         style: {
@@ -169,7 +171,7 @@ const ForgotPassword2: React.FC = () => {
           textAlign: 'center',
         },
       })
-  
+
       return
     }
     setConsecutiveFailures(0)
@@ -183,7 +185,12 @@ const ForgotPassword2: React.FC = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            Vary: 'Origin',
           },
+
+          mode: 'cors',
           body: JSON.stringify(data),
         },
       )
@@ -266,12 +273,11 @@ const ForgotPassword2: React.FC = () => {
             Enter the OTP sent to your email and a new password to continue
           </p>
           <div className="flex flex-col justify-center items-center">
-          {consecutiveFailures >= 5 && otpExpiredMessage && (
-  <p className="text-red-400 font-Sora font-medium">
-    {otpExpiredMessage}
-  </p>
-)}
-
+            {consecutiveFailures >= 5 && otpExpiredMessage && (
+              <p className="text-red-400 font-Sora font-medium">
+                {otpExpiredMessage}
+              </p>
+            )}
           </div>
         </section>
         <form
@@ -279,9 +285,7 @@ const ForgotPassword2: React.FC = () => {
           onSubmit={handleSubmit}
         >
           <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">
-              OTP
-            </p>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">OTP</p>
             <input
               type="number"
               placeholder="Enter your OTP"
@@ -289,9 +293,9 @@ const ForgotPassword2: React.FC = () => {
               value={token}
               onChange={handleTokenChange}
               className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
-            /> 
+            />
           </div>
-          
+
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               New Password
@@ -334,19 +338,24 @@ const ForgotPassword2: React.FC = () => {
             Update Password
           </button>
 
-            <div>
+          <div>
             <div className="mt-[1rem] text-center text-[18px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
-  {seconds > 0 ? (
-    <>
-      Request for New OTP in <span className="text-red-600">{seconds}</span> seconds
-    </>
-  ) : (<p onClick={handleResendClick} className="text-green-500 cursor-pointer">Resend OTP</p>
+              {seconds > 0 ? (
+                <>
+                  Request for New OTP in{' '}
+                  <span className="text-red-600">{seconds}</span> seconds
+                </>
+              ) : (
+                <p
+                  onClick={handleResendClick}
+                  className="text-green-500 cursor-pointer"
+                >
+                  Resend OTP
+                </p>
+              )}
+            </div>
+          </div>
 
-  )}
-</div>
-
-      </div>
-          
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Don&apos;t Have Account?{' '}
             <Link href={'/signUp'}>

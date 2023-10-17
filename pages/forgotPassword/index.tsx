@@ -39,9 +39,14 @@ const ForgotPassword: React.FC = () => {
         `https://www.cofucan.tech/srce/api/request_otp/?username=${userName}`,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+           headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              Vary: 'Origin',
+            },
+           
+            mode: 'cors',
           
         })
 

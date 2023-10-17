@@ -34,14 +34,17 @@ const SignUp = () => {
   const { setLogged, setUser } = useContext(GlobalContext)
   const [otp, setOtp] = useState('')
   const [email, setEmail] = useState('')
+  const [isEmailValid, setIsEmailValid] = useState(false);
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
   const handleEmailOtp = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    setEmail(value)
-  }
+    const { value } = e.target;
+    setEmail(value);
+    setIsEmailValid(value !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+  };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -53,13 +56,11 @@ const SignUp = () => {
     setPassword(value)
   }
 
-  
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular expression for validating an Email
-  const isEmailValid = emailRegex.test(email);
+ 
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    
+
     if (!isEmailValid) {
       toast.error('Invalid email address', {
         style: {
@@ -71,10 +72,9 @@ const SignUp = () => {
           fontSize: '16px',
           textAlign: 'center',
         },
-      });
-      return;
+      })
+      return
     }
-
 
     //const data: StateObject = { username, email, password, otp };
     try {
@@ -334,13 +334,13 @@ const SignUp = () => {
               required
               value={email}
               onChange={handleEmailOtp}
-              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
-             {!isEmailValid && (
-          <p className="text-red-500 text-[14px] font-Work-Sans mt-0">
-            Invalid email address
-          </p>
-        )}
+            {!isEmailValid && email.length > 0 && (
+            <p className="text-red-500 text-[14px] font-Work-Sans mt-0">
+              Invalid email address
+            </p>
+          )}
           </div>
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
@@ -360,7 +360,7 @@ const SignUp = () => {
                 type="button"
                 onClick={togglePasswordVisibility}
                 className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
-                >
+              >
                 {showPassword ? <BsEye /> : <BsEyeSlash />}
               </button>
             </div>

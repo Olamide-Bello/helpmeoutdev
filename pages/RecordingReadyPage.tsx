@@ -38,6 +38,11 @@ const RecordingReadyPage: React.FC = () => {
     console.log('Video ID:', videoID)
   }
 
+  
+interface idProps {
+  videoID: string | string[] | undefined
+}
+
   const [email, setEmail] = useState<string>('')
 
   return (
@@ -56,7 +61,7 @@ const RecordingReadyPage: React.FC = () => {
       </MainLayout>
       <Footer />
       {showModal && email ? (
-        <Modal setShowModal={setShowModal} email={email} />
+        <Modal videoID={videoID} setShowModal={setShowModal} email={email} />
       ) : null}
     </div>
   )

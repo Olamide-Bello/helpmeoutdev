@@ -40,18 +40,18 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
           `https://www.cofucan.tech/srce/api/transcript/${videoID}.json`,
           {
             headers: {
-              "Accept": "application/json",
-              "Access-Control-Allow-Origin": "*",
-              "Vary": "Origin"
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              Vary: 'Origin',
             },
-            body: "",
-            mode: "cors"
-          }
-          );
+
+            mode: 'cors',
+          },
+        )
         // const response = await fetch("https://random-words-api.vercel.app/word");
         console.log("response at 40T:", response);
         const data = await response.json();
-        console.log(data.word)
         setTranscriptionData(data);
       } catch (error) {
         console.error('Error fetching transcript:', error);
@@ -117,7 +117,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
   return (
     <div className='w-full'>
       <h5 className="text-h6 ss:text-h5 text-black font-Sora font-[600] mb-4">
-        Transcript 
+        Transcript
       </h5>
       <div className="mb-[40px] gap-[80px] border-[1px] px-[8px] w-[170px] h-[35px] items-center rounded-[4px] hidden ss:flex">
         <h6 className="text-h6 text-gray-300">English</h6>

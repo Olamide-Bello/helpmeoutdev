@@ -34,9 +34,23 @@ const ForgotPassword2: React.FC = () => {
     null,
   )
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [valErrMsg, setValErrMsg] = useState<boolean>(false)
+  const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
+  }
+
+  const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{5,}$/
+
+    if (!passwordRegex.test(value)) {
+      setValErrMsg(true)
+    } else {
+      setValErrMsg(false)
+    }
   }
 
   useEffect(() => {
@@ -141,6 +155,10 @@ const ForgotPassword2: React.FC = () => {
     const { value } = e.target
     setPassword(value)
     console.log(value)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])\S{5,}$/;
+    if (passwordRegex.test(value)) {
+      setValErrMsg(false)
+    }
   }
 
   const handlePassChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,6 +174,11 @@ const ForgotPassword2: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+    
+    if (valErrMsg) {
+      return;
+    }
+
     if (otpErr) {
       // Increment consecutive failures
       setConsecutiveFailures(consecutiveFailures + 1)
@@ -180,6 +203,7 @@ const ForgotPassword2: React.FC = () => {
 
       return
     }
+    
     setConsecutiveFailures(0)
     setOtpExpiredMessage(null)
     const data = { username, password }
@@ -280,7 +304,7 @@ const ForgotPassword2: React.FC = () => {
           </p>
           <div className="flex flex-col justify-center items-center">
             {consecutiveFailures >= 5 && otpExpiredMessage && (
-              <p className="text-red-400 font-Sora font-medium">
+              <p className="text-red-600 font-Sora font-medium">
                 {otpExpiredMessage}
               </p>
             )}
@@ -313,6 +337,7 @@ const ForgotPassword2: React.FC = () => {
                 required
                 value={password}
                 onChange={handlePassChange}
+                onBlur={validatePassword}
                 minLength={5}
                 className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
               />
@@ -325,6 +350,11 @@ const ForgotPassword2: React.FC = () => {
               </button>
             </div>
           </div>
+          {valErrMsg && (
+            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+              {errMsgVal}
+            </p>
+          )}
 
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">

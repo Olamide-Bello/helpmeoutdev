@@ -2,22 +2,22 @@ import React, { createContext, useState, useEffect } from 'react'
 import { ContextTypes } from '@/types/video-repo'
 
 export const GlobalContext = createContext({
-  titleCase: () => "",
+  titleCase: () => '',
   logged: false,
-  setLogged: () => { },
+  setLogged: () => {},
   user: '',
-  setUser: () => { },
-  sendEmail: () => { },
+  setUser: () => {},
+  sendEmail: () => {},
   errMsg: false,
   otp: 0,
-  setOtp: () => { },
+  setOtp: () => {},
   username: '',
-  setUsername: () => { }
+  setUsername: () => {},
 } as ContextTypes)
 
 const GlobalState = ({ children }: { children: React.ReactNode }) => {
   const [logged, setLogged] = useState<boolean>(false)
-  const [user, setUser] = useState<string>("")
+  const [user, setUser] = useState<string>('')
   const [errMsg, setErrMsg] = useState<boolean>(false)
   const [otp, setOtp] = useState<number>(0)
   const [username, setUsername] = useState<string>('')
@@ -35,7 +35,6 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       }
     }
   })
-
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -69,7 +68,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
 
   const sendEmail = async (
     email: string,
-    id: string | string[] | undefined
+    id: string | string[] | undefined,
   ) => {
     //validate the email before taking action
     const valid = isEmailValid(email)
@@ -143,7 +142,6 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
   }
 
   const contextValue: ContextTypes = {
-
     titleCase,
     logged,
     setLogged,
@@ -154,7 +152,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
     otp,
     setOtp,
     username,
-    setUsername
+    setUsername,
   }
   return (
     <GlobalContext.Provider value={contextValue}>

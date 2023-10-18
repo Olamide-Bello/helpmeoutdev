@@ -14,17 +14,17 @@ import { useRouter } from 'next/router'
 //import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
-import { UrlObject } from 'url';
+import { UrlObject } from 'url'
 
 type StateObject = {
-  username: string;
-  email: string;
-  password: string;
-  otp: any;
-};
+  username: string
+  email: string
+  password: string
+  otp: any
+}
 type CustomUrlObject = UrlObject & {
-  state?: StateObject;
-};
+  state?: StateObject
+}
 const SignUp = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const history = useRouter()
@@ -32,16 +32,19 @@ const SignUp = () => {
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const { setLogged, setUser } = useContext(GlobalContext)
-  const [otp, setOtp] = useState('');
-  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('')
+  const [email, setEmail] = useState('')
+  const [isEmailValid, setIsEmailValid] = useState(false);
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
   const handleEmailOtp = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    setEmail(value)
-  }
+    const { value } = e.target;
+    setEmail(value);
+    setIsEmailValid(value !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+  };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -53,9 +56,26 @@ const SignUp = () => {
     setPassword(value)
   }
 
+ 
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    
+
+    if (!isEmailValid) {
+      toast.error('Invalid email address', {
+        style: {
+          background: 'white',
+          color: 'red',
+          borderRadius: '8px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          padding: '12px 24px',
+          fontSize: '16px',
+          textAlign: 'center',
+        },
+      })
+      return
+    }
+
     //const data: StateObject = { username, email, password, otp };
     try {
       const response = await fetch(
@@ -87,20 +107,25 @@ const SignUp = () => {
             textAlign: 'center',
           },
         })
-        
-        setUsername(username);
-        setEmail(email);
-        setPassword(password);
-        setOtp(otp);
 
-        const userData = { username, email, password, otp: result.verification_code };
-        localStorage.setItem('userData', JSON.stringify(userData));
-  
+        setUsername(username)
+        setEmail(email)
+        setPassword(password)
+        setOtp(otp)
+
+        const userData = {
+          username,
+          email,
+          password,
+          otp: result.verification_code,
+        }
+        localStorage.setItem('userData', JSON.stringify(userData))
+
         // Redirect to the next page
         history.push({
           pathname: '/emailotp',
           state: userData as StateObject,
-        } as CustomUrlObject);
+        } as CustomUrlObject)
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Sign-up failed with status code', result.message)
@@ -288,7 +313,6 @@ const SignUp = () => {
           onSubmit={handleSubmit}
         >
           <div>
-         
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Username
             </p>
@@ -302,23 +326,26 @@ const SignUp = () => {
             />
           </div>
           <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">
-              Email
-            </p>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">Email</p>
             <input
               type="Email"
               placeholder="Enter your Email"
               required
               value={email}
               onChange={handleEmailOtp}
-              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
+            {!isEmailValid && email.length > 0 && (
+            <p className="text-red-500 text-[14px] font-Work-Sans mt-0">
+              Invalid email address
+            </p>
+          )}
           </div>
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Password
             </p>
-            <div className="flex">
+            <div className="relative w-full">
               <input
                 type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
                 placeholder="Enter your Password"
@@ -331,7 +358,7 @@ const SignUp = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="password-toggle-button pl-3 text-xl"
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
               >
                 {showPassword ? <BsEye /> : <BsEyeSlash />}
               </button>
@@ -368,4 +395,3 @@ const SignUp = () => {
 }
 
 export default SignUp
-

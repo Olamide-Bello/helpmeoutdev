@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
+import { BsEye, BsEyeSlash } from 'react-icons/bs'
 
 interface User {
   uid: string
@@ -15,8 +16,8 @@ interface User {
 
 const ForgotPassword2: React.FC = () => {
   const [message, setMessage] = useState<boolean | string>(false)
-  const {otp, setOtp} = useContext(GlobalContext)
-  const {username, setUsername} = useContext(GlobalContext)
+  const { otp, setOtp } = useContext(GlobalContext)
+  const { username, setUsername } = useContext(GlobalContext)
   const { setUser, setLogged } = useContext(GlobalContext)
 
   const history = useRouter()
@@ -29,10 +30,28 @@ const ForgotPassword2: React.FC = () => {
   const [otpErr, setOtpErr] = useState<boolean>(false)
   const [seconds, setSeconds] = useState<number>(60)
   const [consecutiveFailures, setConsecutiveFailures] = useState<number>(0)
-  const [otpExpiredMessage, setOtpExpiredMessage] = useState<string | null>(null);
+  const [otpExpiredMessage, setOtpExpiredMessage] = useState<string | null>(
+    null,
+  )
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [valErrMsg, setValErrMsg] = useState<boolean>(false)
+  const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
 
-  
-  
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
+  const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{5,}$/
+
+    if (!passwordRegex.test(value)) {
+      setValErrMsg(true)
+    } else {
+      setValErrMsg(false)
+    }
+  }
 
   useEffect(() => {
     // Create an interval that decreases the seconds state every second
@@ -41,27 +60,26 @@ const ForgotPassword2: React.FC = () => {
         setSeconds(seconds - 1)
       } else {
         clearInterval(intervalId) // Clear the interval when the countdown reaches 0
-        
       }
-    }, 1000);
+    }, 1000)
 
     // Clean up the interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, [seconds]);
-
-  
+    return () => clearInterval(intervalId)
+  }, [seconds])
 
   const handleTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setToken(value)
-    if(otp !== +value) {
+    if (otp !== +value) {
       setOtpErr(true)
     } else {
       setOtpErr(false)
     }
   }
 
-  const handleResendClick: React.MouseEventHandler<HTMLParagraphElement> = async (e) => {
+  const handleResendClick: React.MouseEventHandler<
+    HTMLParagraphElement
+  > = async (e) => {
     e.preventDefault()
     setSeconds(60)
     setOtpExpiredMessage(null)
@@ -97,7 +115,7 @@ const ForgotPassword2: React.FC = () => {
             textAlign: 'center',
           },
         })
-        
+
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Unsuccessful', result.status_code)
@@ -129,12 +147,15 @@ const ForgotPassword2: React.FC = () => {
       })
     }
   }
-  
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
     console.log(value)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])\S{5,}$/;
+    if (passwordRegex.test(value)) {
+      setValErrMsg(false)
+    }
   }
 
   const handlePassChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,15 +171,20 @@ const ForgotPassword2: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+    
+    if (valErrMsg) {
+      return;
+    }
+
     if (otpErr) {
       // Increment consecutive failures
       setConsecutiveFailures(consecutiveFailures + 1)
-  
+
       if (consecutiveFailures >= 5) {
-        setOtpExpiredMessage("OTP has expired, click the link at the bottom of the page to resend the OTP")
+        setOtpExpiredMessage('OTP has Expired')
         return
       }
-  
+
       // Display an error toast for OTP invalid
       toast.error(`OTP Invalid`, {
         style: {
@@ -171,9 +197,10 @@ const ForgotPassword2: React.FC = () => {
           textAlign: 'center',
         },
       })
-  
+
       return
     }
+    
     setConsecutiveFailures(0)
     setOtpExpiredMessage(null)
     const data = { username, password }
@@ -185,7 +212,12 @@ const ForgotPassword2: React.FC = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            Vary: 'Origin',
           },
+
+          mode: 'cors',
           body: JSON.stringify(data),
         },
       )
@@ -268,12 +300,11 @@ const ForgotPassword2: React.FC = () => {
             Enter the OTP sent to your email and a new password to continue
           </p>
           <div className="flex flex-col justify-center items-center">
-          {consecutiveFailures >= 5 && otpExpiredMessage && (
-  <p className="text-red-400 font-Sora font-medium">
-    {otpExpiredMessage}
-  </p>
-)}
-
+            {consecutiveFailures >= 5 && otpExpiredMessage && (
+              <p className="text-red-600 font-Sora font-medium">
+                {otpExpiredMessage}
+              </p>
+            )}
           </div>
         </section>
         <form
@@ -281,9 +312,7 @@ const ForgotPassword2: React.FC = () => {
           onSubmit={handleSubmit}
         >
           <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">
-              OTP
-            </p>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">OTP</p>
             <input
               type="number"
               placeholder="Enter your OTP"
@@ -291,37 +320,61 @@ const ForgotPassword2: React.FC = () => {
               value={token}
               onChange={handleTokenChange}
               className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
-            /> 
-          </div>
-          
-          <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">
-              New Password
-            </p>
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              required
-              value={password}
-              onChange={handlePassChange}
-              minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>
 
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
+              New Password
+            </p>
+            <div className="relative w-full">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password}
+                onChange={handlePassChange}
+                onBlur={validatePassword}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
+              >
+                {showPassword ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
+          </div>
+          {valErrMsg && (
+            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+              {errMsgVal}
+            </p>
+          )}
+
+          <div>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Confirm Password
             </p>
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              required
-              value={password2}
-              onChange={handlePassChange2}
-              minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password2}
+                onChange={handlePassChange2}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
+              >
+                {showPassword ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
           </div>
           {err && (
             <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
@@ -336,19 +389,24 @@ const ForgotPassword2: React.FC = () => {
             Update Password
           </button>
 
-            <div>
+          <div>
             <div className="mt-[1rem] text-center text-[18px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
-  {seconds > 0 ? (
-    <>
-      Request for New OTP in <span className="text-red-600">{seconds}</span> seconds
-    </>
-  ) : (<p onClick={handleResendClick}>Resend OTP</p>
+              {seconds > 0 ? (
+                <>
+                  Request for New OTP in{' '}
+                  <span className="text-red-600">{seconds}</span> seconds
+                </>
+              ) : (
+                <p
+                  onClick={handleResendClick}
+                  className="text-green-500 cursor-pointer"
+                >
+                  Resend OTP
+                </p>
+              )}
+            </div>
+          </div>
 
-  )}
-</div>
-
-      </div>
-          
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Don&apos;t Have Account?{' '}
             <Link href={'/signUp'}>

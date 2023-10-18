@@ -18,27 +18,24 @@ const EmailOtp: React.FC = () => {
   const { otp } = useContext(GlobalContext)
   const [storageOtp, setStorageOtp] = useState<number>(0)
   const { setLogged, setUser } = useContext(GlobalContext)
-  const [userInfo, setUserInfo] = useState<User>(
-    {
-      username: "",
-      email: "",
-      password: ""
-    }
-  )
+  const [userInfo, setUserInfo] = useState<User>({
+    username: '',
+    email: '',
+    password: '',
+  })
   const history = useRouter()
 
   useEffect(() => {
     // Access localStorage inside useEffect, which runs only on the client side
     if (typeof window !== 'undefined') {
-    const userDataString = localStorage.getItem('userData');
-    const userData = userDataString ? JSON.parse(userDataString) : {};
-    setUserInfo(userData)
-    const storedOtp: number = userData.otp ? parseInt(userData.otp, 10) : 0;
-    setStorageOtp(storedOtp)
-    // Perform any operations involving localStorage here
+      const userDataString = localStorage.getItem('userData')
+      const userData = userDataString ? JSON.parse(userDataString) : {}
+      setUserInfo(userData)
+      const storedOtp: number = userData.otp ? parseInt(userData.otp, 10) : 0
+      setStorageOtp(storedOtp)
+      // Perform any operations involving localStorage here
     }
-  }, []); // Empty dependency array ensures the effect runs once after the initial render
-
+  }, []) // Empty dependency array ensures the effect runs once after the initial render
 
   // const userDataString = localStorage.getItem('userData')
   // const userData = userDataString ? JSON.parse(userDataString) : {}
@@ -71,8 +68,8 @@ const EmailOtp: React.FC = () => {
             "Access-Control-Allow-Origin": "*",
             "Vary": "Origin"
           },
-          body: JSON.stringify(data),
-          mode: "cors"
+          mode: 'cors',
+          body: JSON.stringify(data)
         },
       )
 
@@ -193,5 +190,3 @@ const EmailOtp: React.FC = () => {
 }
 
 export default EmailOtp
-
-

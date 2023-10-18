@@ -6,11 +6,13 @@ import Navbar from '@/components/shared/Navbar'
 // import { Spinner } from '../../components/shared/Loader'
 // import VideoCard from '../../components/shared/VideoCard'
 import Link from 'next/link'
+import axios from 'axios'
 import { GlobalContext } from '../context/GlobalContext'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Spinner from '../components/Spinner/Spinner'
 import MainLayout from '@/components/shared/MainLayout'
+import { useRouter } from 'next/router'
 
 interface Video {
   id: number
@@ -21,78 +23,82 @@ interface Video {
 }
 
 function Videos() {
+  const router = useRouter()
+  const { id } = router.query
   const { user } = useContext(GlobalContext)
   //const displayName: string = user?.displayName || 'user13'
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  // const [filteredVideos, setFilteredVideos] = useState<Video[]>(videos);
+  const [showDeleteOption, setShowDeleteOption] = useState(false)
+  const [selectedVideoId, setSelectedVideoId] = useState<number | null>(null)
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Access-Control-Allow-Origin", "*");
-        const requestOptions:RequestInit = {
+    fetchVideos();
+  }, [user]);
+
+ 
+   
+  const fetchVideos = async () => {
+    try {
+      const headers = new Headers();
+      headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN'); // Add your access token or any other necessary headers
+  
+      const response = await fetch(
+        `https://www.cofucan.tech/srce/api/recording/user/${user}`,
+        {
           method: 'GET',
-          headers: myHeaders,
-          redirect: 'follow',
-          mode: 'cors'
-        };
-        const response = await fetch(
-          `https://www.cofucan.tech/srce/api/recording/user/${user}`,
-          requestOptions
-        )
-        if (response.status === 200) {
-          const result = await response.json()
-          console.log(result)
-          const formattedVideos: Video[] = await Promise.all(
-            result.map(async (video: any) => {
-              const videoElement = document.createElement('video')
-              videoElement.src = video.original_location
-  
-              return new Promise<Video>((resolve) => {
-                videoElement.onloadedmetadata = () => {
-                  const duration = videoElement.duration // Duration in seconds
-                  resolve({
-                    id: video.id,
-                    name: video.title,
-                    src: video.thumbnail_location,
-                    created_date: formatDate(video.created_date),
-                    duration: duration,
-                  })
-                }
-  
-                videoElement.onerror = (error) => {
-                  console.error('Error loading video:', error)
-                  resolve({
-                    id: video.id,
-                    name: video.title,
-                    src: video.thumbnail_location,
-                    created_date: formatDate(video.created_date),
-                    duration: 0, // Set duration to 0 if there's an error loading the video
-                  })
-                }
-  
-                videoElement.load()
-              })
-            }),
-          )
-          setVideos(formattedVideos)
-          setLoading(false)
+          headers: headers,
         }
+      );
+  
+      if (response.ok) {
+        const responseData = await response.json(); // Parse JSON response
+        const formattedVideos: Video[] = await Promise.all(
+          responseData.map(async (video: any) => {
+            const videoElement = document.createElement('video')
+            videoElement.src = video.original_location
+            return new Promise<Video>((resolve) => {
+              videoElement.onloadedmetadata = () => {
+                const duration = videoElement.duration // Duration in seconds
+                resolve({
+                  id: video.id,
+                  name: video.title,
+                  src: video.thumbnail_location,
+                  created_date: formatDate(video.created_date),
+                  duration: duration,
+                })
+              }
 
+              videoElement.onerror = (error) => {
+                console.error('Error loading video:', error)
+                resolve({
+                  id: video.id,
+                  name: video.title,
+                  src: video.thumbnail_location,
+                  created_date: formatDate(video.created_date),
+                  duration: 0, // Set duration to 0 if there's an error loading the video
+                })
+              }
 
-      } catch (error) {
-        console.error('Error fetching videos:', error)
-        setLoading(false)
+              videoElement.load()
+            })
+          }),
+        )
+
+        setVideos(formattedVideos);
+        setLoading(false);
+      } else {
+        console.error('Error fetching videos:', response.status);
+        setLoading(false);
       }
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+      setLoading(false);
     }
+  };
 
-    fetchVideos()
-  }, [user])
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
@@ -123,6 +129,31 @@ function Videos() {
     ).padStart(2, '0')}`
   }
 
+const handleMoreClick = (videoId: number) => {
+  if (selectedVideoId === videoId && showDeleteOption) {
+    // If the same "more" button is clicked again, hide the delete option
+    setShowDeleteOption(false);
+    setSelectedVideoId(null);
+  } else {
+    setShowDeleteOption(true);
+    setSelectedVideoId(videoId);
+  }
+};
+
+const handleDeleteVideo = async () => {
+  try {
+    if (selectedVideoId !== null) {
+      await axios.delete(
+        `https://www.cofucan.tech/srce/api/video/${selectedVideoId}`,
+      );
+      // Fetch videos again after deletion
+      fetchVideos();
+    }
+    setShowDeleteOption(false); // Hide the delete option after deletion
+  } catch (error) {
+    console.error('Error deleting video:', error);
+  }
+};
   return (
     <div>
       <div className="w-full min-h-full flex flex-col justify-between">
@@ -179,7 +210,7 @@ function Videos() {
                 </div>
               ) : (
                 filteredVideos.map((item, index) => (
-                  <Link key={index} href={`/videos/${item?.id}`} passHref>
+                  <>
                     <div
                       className="WebCard px-1 pt-4 pb-6 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify-center items-center gap-0 inline-flex lg:w-[400px] lg:h-[322px]  md:w-[400px] md:h-[322px]  sm:w-[400px] sm:h-[322px] ss:w-[400px] ss:h-[322px] xs:w-[320px] xs:h-[280px]"
                       style={{
@@ -193,13 +224,15 @@ function Videos() {
                           position: 'relative',
                         }}
                       >
-                        <Image
-                          className="lg:w-[380px] lg:h-[220px] md:w-[380px] md:h-[220px] sm:w-[380px] sm:h-[220px] ss:w-[380px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
-                          width={100}
-                          height={100}
-                          src={item.src}
-                          alt="thumbnail"
-                        />
+                        <Link key={index} href={`/videos/${item?.id}`} passHref>
+                          <Image
+                            className="lg:w-[380px] lg:h-[220px] md:w-[380px] md:h-[220px] sm:w-[380px] sm:h-[220px] ss:w-[380px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
+                            width={100}
+                            height={100}
+                            src={item.src}
+                            alt="thumbnail"
+                          />
+                        </Link>
                         <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
                           <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
                             {item.duration
@@ -227,16 +260,37 @@ function Videos() {
                             width={20}
                             height={20}
                           />
-                          <Image
-                            src="/assets/video-repo/more.png"
-                            alt="stuff"
-                            width={20}
-                            height={20}
-                          />
+                          <div style={{ position: 'relative' }}>
+                            <Image
+                              className="cursor-pointer"
+                              src="/assets/video-repo/more.png"
+                              alt="stuff"
+                              width={20}
+                              height={20}
+                              onClick={() => handleMoreClick(item.id)}
+                            />
+                            {showDeleteOption &&
+                              selectedVideoId === item.id && (
+                                <div className="DeleteOption">
+                                  <button
+                                    onClick={handleDeleteVideo}
+                                    className="DeleteButton text-xl font-medium font-['Work Sans'] capitalize"
+                                    style={{
+                                      position: 'absolute',
+                                      top: '25px',
+                                      right: '10px',
+                                      color: 'red',
+                                    }}
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </Link>
+                  </>
                 ))
               )}
             </div>

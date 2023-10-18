@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useContext } from 'react'
+import React, { useRef, useEffect, useState, useContext, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import axios from 'axios'
@@ -7,6 +7,7 @@ import { Share } from '../SingleViewPage/share'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { GlobalContext } from '@/context/GlobalContext'
+
 
 const VideoInfo: React.FC<VideoPageContentProps> = ({
   displayModal,
@@ -24,10 +25,13 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   //     videoRef.current.src = `http://web-02.cofucan.tech/srce/api/video/stream/${currentVideoID}`;
   //   }
   // }, [videoID, router.query.videoID]);
-
+  const router = useRouter()
+  const { id } = router.query
+  const videoUrl = `https://www.cofucan.tech/srce/api/video/${id}.mp4`
   //custom file name
   const [customFileName, setCustomFileName] = useState('')
   const placeHolder = `Untitled_Video_${videoID}`
+  const [isTyping, setIsTyping] = useState(false)
 
   //get current window/tab url
   const [currentURL, setCurrentURL] = useState<string>('')
@@ -45,11 +49,77 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   }
 
   const [error, setError] = useState<boolean>(false)
+  const isEmailValid = (mail: string) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return emailRegex.test(mail)
+  }
 
-  const handleSubmit = () => {
-    if (typeof videoID === 'string') {
-      sendEmail(email, videoID)
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const valid = isEmailValid(email)
+    if (!valid) {
+      setError(true)
+      setTimeout(() => {
+        setError(false)
+      }, 3000)
+    } else {
       displayModal()
+      try {
+        const response = await fetch(
+          `https://www.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              Vary: 'Origin',
+            },
+           
+            mode: 'cors',
+          },
+        )
+        if (response.status === 200) {
+          const result = await response.json()
+          console.log(response)
+          console.log(result.message)
+          // toast.success(`${result.message}`, {
+          //   style: {
+          //     background: 'white', // Change the background color as needed
+          //     color: 'green', // Change the text color as needed
+          //     borderRadius: '8px', // Rounded corners for the toast
+          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          //     padding: '12px 24px', // Adjust padding as needed
+          //     fontSize: '16px', // Adjust font size as needed
+          //     textAlign: 'center',
+          //   },
+          // })
+        } else {
+          // toast.error(`Unable to send to Email!`, {
+          //   style: {
+          //     background: 'white', // Change the background color as needed
+          //     color: 'red', // Change the text color as needed
+          //     borderRadius: '8px', // Rounded corners for the toast
+          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          //     padding: '12px 24px', // Adjust padding as needed
+          //     fontSize: '16px', // Adjust font size as needed
+          //     textAlign: 'center',
+          //   },
+          // })
+        }
+      } catch (error) {
+        // toast.error(`${error}`, {
+        //   style: {
+        //     background: 'white', // Change the background color as needed
+        //     color: 'red', // Change the text color as needed
+        //     borderRadius: '8px', // Rounded corners for the toast
+        //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+        //     padding: '12px 24px', // Adjust padding as needed
+        //     fontSize: '16px', // Adjust font size as needed
+        //     textAlign: 'center',
+        //   },
+        // })
+      }
     }
   }
 
@@ -102,9 +172,12 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         })
         window.location.reload()
       }
-    } catch (err) { }
+    } catch (err) {}
   }
-
+  const changeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setCustomFileName(e.target.value);
+    setIsTyping(true);
+  };
   return (
     <div className=" ss:flex flex-col items-start ss:gap-[36px] md:gap-[64px] w-full md:w-[1/2]">
       {/* Header */}
@@ -115,17 +188,23 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         {/* Name container */}
         <div className="w-full">
           <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
-          <div className="flex items-center justify-between w-full">
+          <div className={`flex font-2xl font-[600] text-lg text-black font-Sora  items-center mb-5 w-full`}>
             <input
               type="text"
               placeholder={placeHolder}
               value={customFileName}
-              onChange={(e) => setCustomFileName(e.target.value)}
-              className="border-none outline-none rounded-md p-2 mb-2 w-full text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600]"
+              onChange={changeName} 
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  updateName();
+                }
+              }}
+              className=" w-full border p-2 mb-2  text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600
+              "
             />
             <Image
               onClick={updateName}
-              className="w-[16px] h-auto xs:h-[32px] xs:w-[32px] cursor-pointer"
+               className={`cursor-pointer ${isTyping ? 'dark' : ''} transform hover:scale-110 w-[16px] h-auto xs:h-[32px] xs:w-[32px]`}
               src="/assets/video-repo/edit.svg"
               alt="edit"
               width="32"
@@ -135,7 +214,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         </div>
       </div>
       {/* Email input and send button */}
-      <div className="hidden ss:block w-full">
+      <form onSubmit={handleSubmit} className="hidden ss:block w-full">
         <div className="py-[12px] mb-[12px] px-[10px] xs:px-[24px] bg-primary-50 rounded-[16px] h-[64px] w-full flex items-center justify-between">
           <input
             type="email"
@@ -145,10 +224,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
             onChange={(e) => setEmail(e.target.value)}
             className="text-black-400 text-[13px] xs:text-[16px] ss:text-[18px] font-[400] w-full bg-transparent outline-none"
           />
-          <button
-            onClick={handleSubmit}
-            className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans"
-          >
+          <button className="xs:px-[18px] px-[10px] py-[10px] cursor-pointer text-[13px] xs:text-[16px] rounded-[8px] bg-primary-400 text-pastel-bg font-Work-Sans">
             Send
           </button>
         </div>
@@ -159,7 +235,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
             Email is not valid!
           </p>
         </div>
-      </div>
+      </form>
       {/* Video URL */}
       <div className="w-full pt-[12px] hidden ss:block">
         <h2 className="text-black-600 font-Sora text-[20px] mb-[16px] font-[600] ">
@@ -187,17 +263,18 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
           </div>
           <div className="h-[20px]">
             <p
-              className={`${clicked ? 'flex' : 'hidden'
-                } font-[500] text-primary-600`}
+              className={`${
+                clicked ? 'flex' : 'hidden'
+              } font-[500] text-primary-600`}
             >
               Copied!
             </p>
           </div>
         </div>
       </div>
-      <div className='hidden ss:block'>
+      <div className="hidden ss:block">
         {/* Share options */}
-        <Share text="#" />
+        <Share text={videoUrl} />
 
       </div>
       <ToastContainer

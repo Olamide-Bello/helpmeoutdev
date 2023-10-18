@@ -45,7 +45,6 @@ const ForgotPassword: React.FC = () => {
             "Vary": "Origin"
           },
           mode: "cors"
-          
         })
 
       console.log(response)

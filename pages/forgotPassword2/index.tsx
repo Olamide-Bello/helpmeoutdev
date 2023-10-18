@@ -352,7 +352,7 @@ const ForgotPassword2: React.FC = () => {
             </div>
           </div>
           {valErrMsg && (
-            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
               {errMsgVal}
             </p>
           )}
@@ -381,7 +381,7 @@ const ForgotPassword2: React.FC = () => {
             </div>
           </div>
           {err && (
-            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
               {errMsg}
             </p>
           )}

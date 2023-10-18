@@ -34,11 +34,16 @@ const ForgotPassword2: React.FC = () => {
     null,
   )
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showPassword2, setShowPassword2] = useState<boolean>(false)
   const [valErrMsg, setValErrMsg] = useState<boolean>(false)
   const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
+  }
+
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2)
   }
 
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -358,7 +363,7 @@ const ForgotPassword2: React.FC = () => {
             </p>
             <div className="relative w-full">
               <input
-                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                type={showPassword2 ? 'text' : 'password'} // Toggle input type based on showPassword state
                 placeholder="Enter your Password"
                 required
                 value={password2}
@@ -368,10 +373,10 @@ const ForgotPassword2: React.FC = () => {
               />
               <button
                 type="button"
-                onClick={togglePasswordVisibility}
+                onClick={togglePasswordVisibility2}
                 className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
               >
-                {showPassword ? <BsEye /> : <BsEyeSlash />}
+                {showPassword2 ? <BsEye /> : <BsEyeSlash />}
               </button>
             </div>
           </div>

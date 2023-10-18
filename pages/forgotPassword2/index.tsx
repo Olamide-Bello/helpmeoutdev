@@ -173,11 +173,10 @@ const ForgotPassword2: React.FC = () => {
     e.preventDefault()
     
     if (valErrMsg) {
-      return;
+      return
     }
 
     if (otpErr) {
-      // Increment consecutive failures
       setConsecutiveFailures(consecutiveFailures + 1)
 
       if (consecutiveFailures >= 5) {

@@ -7,7 +7,7 @@ import { GlobalContext } from '@/context/GlobalContext'
 import { useRouter } from 'next/router'
 
 const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
-  const { logged, user, setLogged, setUser, titleCase } = useContext(GlobalContext)
+  const { logged, user, setLogged, setUser } = useContext(GlobalContext)
   const [showLogout, setShowLogout] = useState<boolean>(false)
   const history = useRouter()
 
@@ -101,7 +101,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
               onClick={handleShowLogout}
               className="flex md:gap-[10px] cursor-pointer"
             >
-              <p className="text-[13px] ss:text-[18px]">{titleCase(user)}</p>
+              <p className="text-[13px] ss:text-[18px]">{user}</p>
               <Image
                 src="/assets/video-repo/arrow-down.svg"
                 height={20}

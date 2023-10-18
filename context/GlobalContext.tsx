@@ -46,19 +46,15 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       } else {
         setUser('')
       }
-      chrome.runtime?.sendMessage("jbagojkmnpbphopookajpgemnhhfiabd",{
-        action: "FROM_PAGE",
-        username: savedSession
-      })
     }
   }, [])
 
-  // useEffect(() => {
-  //     chrome.runtime?.sendMessage("jbagojkmnpbphopookajpgemnhhfiabd",{
-  //       action: "FROM_PAGE",
-  //       username: user
-  //     })
-  // }, [user])
+  useEffect(() => {
+      chrome.runtime?.sendMessage("jbagojkmnpbphopookajpgemnhhfiabd",{
+        action: "FROM_PAGE",
+        username: user
+      })
+  }, [user])
 
   //function to validate the entered email
   const isEmailValid = (mail: string) => {

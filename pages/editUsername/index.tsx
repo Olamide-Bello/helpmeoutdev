@@ -5,6 +5,7 @@ const EditUsername = () => {
   const [newUsername, setNewUsername] = useState<string>('')
 
   const handleSubmit = () => {}
+  const handleClick = () => {}
 
   return (
     <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem] ">
@@ -46,7 +47,7 @@ const EditUsername = () => {
           </div>
 
           <button
-            // onClick={login}
+            onClick={handleClick}
             className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
           >
             Update Username

@@ -37,6 +37,7 @@ const SignUp = () => {
   const [isEmailValid, setIsEmailValid] = useState(false)
   const [valErrMsg, setValErrMsg] = useState<boolean>(false)
   const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
+  const [errorMessage, setErrorMessage] = useState<boolean | string>(false)
 
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -63,6 +64,11 @@ const SignUp = () => {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
+    if (/^\s+|\s+$|\s+(?=\s)/.test(value)) {
+      setErrorMessage('Username cannot contain leading, trailing, or consecutive spaces');
+    } else {
+      setErrorMessage('')
+    }
   }
 
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,7 +122,7 @@ const SignUp = () => {
 
       const result = await response.json()
 
-      if (response.status === 200) {
+      if (!errorMessage && response.status === 200) {
         console.log('Confirm OTP!')
         toast.success('One more step to go', {
           style: {
@@ -153,27 +159,27 @@ const SignUp = () => {
         console.error('Sign-up failed with status code', result.message)
         toast.error(`Sign-up failed`, {
           style: {
-            background: 'white', // Change the background color as needed
-            color: 'red', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
+            background: 'white', 
+            color: 'red', 
+            borderRadius: '8px', 
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+            padding: '12px 24px', 
+            fontSize: '16px', 
             textAlign: 'center',
           },
         })
-        // Handle the error, show an error message, etc.
+        
       }
     } catch (error) {
       console.error('An error occurred:', error)
       toast.error(`Error: ${error}`, {
         style: {
-          background: 'white', // Change the background color as needed
-          color: 'red', // Change the text color as needed
-          borderRadius: '8px', // Rounded corners for the toast
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-          padding: '12px 24px', // Adjust padding as needed
-          fontSize: '16px', // Adjust font size as needed
+          background: 'white', 
+          color: 'red', 
+          borderRadius: '8px', 
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+          padding: '12px 24px',
+          fontSize: '16px',
           textAlign: 'center',
         },
       })
@@ -347,6 +353,8 @@ const SignUp = () => {
               className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
             />
           </div>
+          {errorMessage && <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">{errorMessage}</p>}
+
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">Email</p>
             <input
@@ -358,7 +366,7 @@ const SignUp = () => {
               className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
             {!isEmailValid && email.length > 0 && (
-            <p className="text-red-500 text-[14px] font-Work-Sans mt-0">
+            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
               Invalid email address
             </p>
           )}
@@ -388,7 +396,7 @@ const SignUp = () => {
             </div>
           </div>
           {valErrMsg && (
-            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
               {errMsgVal}
             </p>
           )}

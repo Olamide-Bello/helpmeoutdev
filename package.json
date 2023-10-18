@@ -11,6 +11,7 @@
     "check-format": "prettier --check \"src/**/*.js\" || echo 'Prettier found formatting issues. Please run `npm run format`.'"
   },
   "dependencies": {
+    "@types/chrome": "^0.0.248",
     "axios": "^1.5.1",
     "firebase": "^10.4.0",
     "isomorphic-unfetch": "^4.0.2",

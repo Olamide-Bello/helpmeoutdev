@@ -91,14 +91,11 @@ const ForgotPassword2: React.FC = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            Vary: 'Origin',
+            "Access-Control-Allow-Origin": "*",
+            "Vary": "Origin"
           },
-         
-          mode: 'cors',
-        },
-      )
+          mode: "cors"
+        })
 
       console.log(response)
       const result = await response.json()

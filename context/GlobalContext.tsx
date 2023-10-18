@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react'
 import { ContextTypes } from '@/types/video-repo'
-import { toast } from 'react-toastify'
 
 export const GlobalContext = createContext({
   titleCase: () => '',
@@ -40,6 +39,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedSession = localStorage.getItem('user')
+      console.log(savedSession)
       if (savedSession) {
         console.log(savedSession)
         setUser(savedSession)
@@ -48,6 +48,13 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       }
     }
   }, [])
+
+  useEffect(() => {
+      chrome.runtime?.sendMessage("jbagojkmnpbphopookajpgemnhhfiabd",{
+        action: "FROM_PAGE",
+        username: user
+      })
+  }, [user])
 
   //function to validate the entered email
   const isEmailValid = (mail: string) => {
@@ -65,19 +72,18 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       setErrMsg(true)
     } else {
       if (user) {
+        const init = titleCase(user)
         try {
           const response = await fetch(
-            `https://www.cofucan.tech/srce/api/send-email/${id}?sender=${user}&recipient=${email}`,
+            `https://www.cofucan.tech/srce/api/send-email/${id}?sender=${init}&recipient=${email}`,
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                Vary: 'Origin',
+                "Access-Control-Allow-Origin": "*",
+                "Vary": "Origin"
               },
-             
-              mode: 'cors',
+              mode: "cors"
             },
           )
           console.log(response)
@@ -95,12 +101,10 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                Accept: 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                Vary: 'Origin',
+                "Access-Control-Allow-Origin": "*",
+                "Vary": "Origin"
               },
-             
-              mode: 'cors',
+              mode: "cors"
             },
           )
           console.log(response)

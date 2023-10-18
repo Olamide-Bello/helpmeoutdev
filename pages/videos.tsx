@@ -38,7 +38,7 @@ function Videos() {
     fetchVideos()
   }, [user])
 
- /*  const fetchVideos = async () => {
+  /*  const fetchVideos = async () => {
     try {
       const headers = new Headers();
       headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN'); // Add your access token or any other necessary headers
@@ -99,65 +99,64 @@ function Videos() {
     }
   } */
   const fetchVideos = async () => {
-    setLoading(true); // Set loading state to true when starting the fetch operation
+    setLoading(true) // Set loading state to true when starting the fetch operation
     try {
-      const headers = new Headers();
-      headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN'); // Add your access token or any other necessary headers
-      headers.append("Content-Type", "application/json");
-      headers.append("Access-Control-Allow-Origin", "*");
+      const headers = new Headers()
+      headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN') // Add your access token or any other necessary headers
+      headers.append('Content-Type', 'application/json')
+      headers.append('Access-Control-Allow-Origin', '*')
       const response = await fetch(
         `https://www.cofucan.tech/srce/api/recording/user/${user}`,
         {
           method: 'GET',
           headers: headers,
-          mode: "cors"
-        }
-      );
-  
+          mode: 'cors',
+        },
+      )
+
       if (response.ok) {
-        const responseData = await response.json(); // Parse JSON response
+        const responseData = await response.json() // Parse JSON response
         const formattedVideos: Video[] = await Promise.all(
           responseData.map(async (video: any) => {
-            const videoElement = document.createElement('video');
-            videoElement.src = video.original_location;
+            const videoElement = document.createElement('video')
+            videoElement.src = video.original_location
             return new Promise<Video>((resolve) => {
               videoElement.onloadedmetadata = () => {
-                const duration = videoElement.duration; // Duration in seconds
+                const duration = videoElement.duration // Duration in seconds
                 resolve({
                   id: video.id,
                   name: video.title,
                   src: video.thumbnail_location,
                   created_date: formatDate(video.created_date),
                   duration: duration,
-                });
-              };
-  
+                })
+              }
+
               videoElement.onerror = (error) => {
-                console.error('Error loading video:', error);
+                console.error('Error loading video:', error)
                 resolve({
                   id: video.id,
                   name: video.title,
                   src: video.thumbnail_location,
                   created_date: formatDate(video.created_date),
                   duration: 0, // Set duration to 0 if there's an error loading the video
-                });
-              };
-  
-              videoElement.load();
-            });
-          })
-        );
-  
-        setVideos(formattedVideos);
+                })
+              }
+
+              videoElement.load()
+            })
+          }),
+        )
+
+        setVideos(formattedVideos)
       }
     } catch (error) {
-      console.error('Error fetching videos:', error);
+      console.error('Error fetching videos:', error)
       // Handle errors here
     } finally {
-      setLoading(false); // Set loading state to false after the fetch operation is complete (either success or error)
+      setLoading(false) // Set loading state to false after the fetch operation is complete (either success or error)
     }
-  };
-  
+  }
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
@@ -272,34 +271,50 @@ function Videos() {
           {loading ? (
             <Spinner />
           ) : (
-            /*   <div
-              className="lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full"
+            /*  <div
+               className="lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full"
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                justifyContent: 'space-between',
+                justifyContent: 'space-around',
                 alignItems: 'start',
-                margin: '0 auto',
+                //margin: '0 auto',
                 // overflowY: 'scroll',
                 // maxHeight: '100%',
               }}
-            > */
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full">
+            >  */
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 justify-between lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full ">
               {filteredVideos.length === 0 ? (
-                <div className="NoRecentVideosMessage text-xl text-neutral-900 font-medium">
-                  No video found
+                        <div
+                  className="NoRecentVideosMessage text-xl text-neutral-900 font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center flex flex-col justify-center"
+                  style={{
+                    textAlign: 'center',
+                    transform: 'translate(-50%, -50%)',
+                    width: '100%',
+                    height: '100vh',
+                  }}
+                >
+                  <Image
+                    className="w-[50px] h-[50px]"
+                    width={50}
+                    height={50}
+                    src="/assets/video-repo/opps1.gif"
+                    alt="thumbnail"
+                    quality={100}
+                  />
+                  <div>Opps! No video found</div>
                 </div>
               ) : (
                 filteredVideos.map((item, index) => (
                   <>
                     <div
-                      className="WebCard px-1 pt-1 pb-1 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify items-center gap-0 inline-flex lg:w-[557px] lg:h-[322px]  md:w-[557px] md:h-[322px]  sm:w-[557px] sm:h-[322px] ss:w-[557px] ss:h-[322px] xs:w-[320px] xs:h-[280px]"
+                      className="WebCard px-1 pt-1 pb-1 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify items-center gap-0 inline-flex lg:w-[500px] lg:h-[322px]  md:w-[500px] md:h-[322px]  sm:w-[500px] sm:h-[322px] ss:w-[500px] ss:h-[322px] xs:w-[320px] xs:h-[280px]"
                       style={{
                         margin: '10px',
                       }}
                     >
                       <div
-                        className="VideoFrame  relative rounded-xl border border-gray-200"
+                        className="VideoFrame  relative rounded-2xl border border-gray-200"
                         style={{
                           margin: '0.5rem',
                           position: 'relative',
@@ -307,7 +322,7 @@ function Videos() {
                       >
                         <Link key={index} href={`/videos/${item?.id}`} passHref>
                           <Image
-                            className="w-[525px] h-[220px] lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-3xl bg-gray-300 "
+                            className="w-[525px] h-[220px] lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-2xl bg-gray-300 "
                             width={525}
                             height={220}
                             src={item.src}

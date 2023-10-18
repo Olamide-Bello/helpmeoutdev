@@ -100,8 +100,18 @@ const Single = () => {
         setUrl(videoUrl)
 
         // Fetch transcript data if required
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Access-Control-Allow-Origin", "*");
+        const requestOptions:RequestInit = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow',
+          mode: 'cors'
+        };
         const transcriptResponse = await fetch(
           `https://www.cofucan.tech/srce/api/transcript/${id}.json`,
+          requestOptions
         )
         const transcriptData = await transcriptResponse.json()
         const convertedTranscript = convertToUrlTranscript(transcriptData.words)
@@ -151,7 +161,10 @@ const Single = () => {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*",
+                        "Vary": "Origin"
           },
+          mode: "cors"
         },
       )
 

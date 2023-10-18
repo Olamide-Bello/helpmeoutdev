@@ -6,7 +6,6 @@ import Navbar from '@/components/shared/Navbar'
 // import { Spinner } from '../../components/shared/Loader'
 // import VideoCard from '../../components/shared/VideoCard'
 import Link from 'next/link'
-import axios from 'axios'
 import { GlobalContext } from '../context/GlobalContext'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -33,45 +32,59 @@ function Videos() {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await axios.get(
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Access-Control-Allow-Origin", "*");
+        const requestOptions:RequestInit = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow',
+          mode: 'cors'
+        };
+        const response = await fetch(
           `https://www.cofucan.tech/srce/api/recording/user/${user}`,
+          requestOptions
         )
+        if (response.status === 200) {
+          const result = await response.json()
+          console.log(result)
+          const formattedVideos: Video[] = await Promise.all(
+            result.map(async (video: any) => {
+              const videoElement = document.createElement('video')
+              videoElement.src = video.original_location
+  
+              return new Promise<Video>((resolve) => {
+                videoElement.onloadedmetadata = () => {
+                  const duration = videoElement.duration // Duration in seconds
+                  resolve({
+                    id: video.id,
+                    name: video.title,
+                    src: video.thumbnail_location,
+                    created_date: formatDate(video.created_date),
+                    duration: duration,
+                  })
+                }
+  
+                videoElement.onerror = (error) => {
+                  console.error('Error loading video:', error)
+                  resolve({
+                    id: video.id,
+                    name: video.title,
+                    src: video.thumbnail_location,
+                    created_date: formatDate(video.created_date),
+                    duration: 0, // Set duration to 0 if there's an error loading the video
+                  })
+                }
+  
+                videoElement.load()
+              })
+            }),
+          )
+          setVideos(formattedVideos)
+          setLoading(false)
+        }
 
-        const formattedVideos: Video[] = await Promise.all(
-          response.data.map(async (video: any) => {
-            const videoElement = document.createElement('video')
-            videoElement.src = video.original_location
 
-            return new Promise<Video>((resolve) => {
-              videoElement.onloadedmetadata = () => {
-                const duration = videoElement.duration // Duration in seconds
-                resolve({
-                  id: video.id,
-                  name: video.title,
-                  src: video.thumbnail_location,
-                  created_date: formatDate(video.created_date),
-                  duration: duration,
-                })
-              }
-
-              videoElement.onerror = (error) => {
-                console.error('Error loading video:', error)
-                resolve({
-                  id: video.id,
-                  name: video.title,
-                  src: video.thumbnail_location,
-                  created_date: formatDate(video.created_date),
-                  duration: 0, // Set duration to 0 if there's an error loading the video
-                })
-              }
-
-              videoElement.load()
-            })
-          }),
-        )
-
-        setVideos(formattedVideos)
-        setLoading(false)
       } catch (error) {
         console.error('Error fetching videos:', error)
         setLoading(false)

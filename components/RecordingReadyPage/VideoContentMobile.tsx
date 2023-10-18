@@ -65,7 +65,10 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*",
+            "Vary": "Origin"
           },
+          mode: 'cors'
         })
         if (response.status === 200) {
           const result = await response.json()

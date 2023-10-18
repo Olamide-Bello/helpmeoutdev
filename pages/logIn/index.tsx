@@ -50,8 +50,11 @@ const LogIn = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin"
         },
         body: JSON.stringify(data),
+        mode: "cors"
       })
 
       console.log(response)

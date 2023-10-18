@@ -68,8 +68,11 @@ const EmailOtp: React.FC = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*",
+            "Vary": "Origin"
           },
           body: JSON.stringify(data),
+          mode: "cors"
         },
       )
 

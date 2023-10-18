@@ -41,7 +41,10 @@ const ForgotPassword: React.FC = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*",
+            "Vary": "Origin"
           },
+          mode: "cors"
           
         })
 

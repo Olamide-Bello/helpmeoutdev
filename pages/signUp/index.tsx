@@ -64,8 +64,11 @@ const SignUp = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*",
+                        "Vary": "Origin"
           },
           body: JSON.stringify({ username, email }),
+          mode: "cors"
         },
       )
 

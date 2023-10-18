@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 const EditUsername = () => {
-  const [newUsername, setNewUsername] = useState('')
+  const [newUsername, setNewUsername] = useState<string>('')
 
   const handleSubmit = () => {}
 

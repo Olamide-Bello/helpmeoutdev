@@ -36,22 +36,20 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
     const fetchTranscription = async () => {
       console.log("this is in transcript fetch");
       try {
-        const response = await fetch(
-          `https://www.cofucan.tech/srce/api/transcript/${videoID}.json`,
-          {
-            headers: {
-              "Accept": "application/json",
-              "Access-Control-Allow-Origin": "*",
-              "Vary": "Origin"
-            },
-            body: "",
-            mode: "cors"
-          }
-          );
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Access-Control-Allow-Origin", "*");
+        const requestOptions:RequestInit = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow',
+          mode: 'cors'
+        };
+        const response = await fetch(`https://www.cofucan.tech/srce/api/transcript/${videoID}.json`, requestOptions);
         // const response = await fetch("https://random-words-api.vercel.app/word");
         console.log("response at 40T:", response);
         const data = await response.json();
-        console.log(data.word)
+        console.log(data)
         setTranscriptionData(data);
       } catch (error) {
         console.error('Error fetching transcript:', error);
@@ -113,11 +111,12 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
   for (let i = 0; i < duration; i += intervalDuration) {
     intervals.push(i);
   }
+  console.log(intervals)
 
   return (
     <div className='w-full'>
       <h5 className="text-h6 ss:text-h5 text-black font-Sora font-[600] mb-4">
-        Transcript 
+        Transcript
       </h5>
       <div className="mb-[40px] gap-[80px] border-[1px] px-[8px] w-[170px] h-[35px] items-center rounded-[4px] hidden ss:flex">
         <h6 className="text-h6 text-gray-300">English</h6>
@@ -134,7 +133,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
 
           {/* if we are getting duration infinity err then uncomment this piece of code and comment the next section of code also the above code that is used to set intervals in intervals[] */}
           {/* transcript to show as a single piece of text -start */}
-          {/* <div className='p-2 overflow-y-scroll custom-scrollbar flex gap-4 h-full pt-10 ' id='org-transcipt-container'>
+          <div className='p-2 overflow-y-scroll custom-scrollbar flex gap-4 h-full pt-10 ' id='org-transcipt-container'>
           <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3">
               {formatTime(currentVideoTime)}
               </h5>
@@ -147,18 +146,18 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
                 );
               })}
 
-            </div> */}
+            </div>
           {/* transcript to show as a single piece of text -end */}
 
 
 
           {/* this code to work - we need video duration, if duration is infinity then this piece of code will return memory overflow err as duration is infinity the arr will give memory overload */}
           {/* transcript to display as it is in design -start */}
-          <div className='p-2 overflow-y-scroll custom-scrollbar gap-4 h-full pt-10 ' id='org-transcipt-container'>
+          {/* <div className='p-2 overflow-y-scroll custom-scrollbar gap-4 h-full pt-10 ' id='org-transcipt-container'>
             {intervals.map((startTime, index) => {
               const endTime = startTime + intervalDuration;
               const wordsInInterval = transcriptionData.words.filter(item => item.start >= startTime && item.start < endTime);
-
+              console.log(wordsInInterval)
               return (
                 <div key={index} className='flex'>
                   <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3 xs:w-2/12">
@@ -176,7 +175,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
                   </div>
                 </div>
               );
-            })}
+            })} */}
             {/* transcript to display as it is in design -end */}
             {/* this section ends here till here  */}
           </div>

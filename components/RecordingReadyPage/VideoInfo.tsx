@@ -151,12 +151,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            Vary: 'Origin',
+            "Access-Control-Allow-Origin": "*",
+            "Vary": "Origin"
           },
-         
-          mode: 'cors',
+          mode: "cors"
         },
       )
 

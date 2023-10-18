@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
+import { BsEye, BsEyeSlash } from 'react-icons/bs'
 
 interface User {
   uid: string
@@ -32,6 +33,30 @@ const ForgotPassword2: React.FC = () => {
   const [otpExpiredMessage, setOtpExpiredMessage] = useState<string | null>(
     null,
   )
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showPassword2, setShowPassword2] = useState<boolean>(false)
+  const [valErrMsg, setValErrMsg] = useState<boolean>(false)
+  const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2)
+  }
+
+  const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{5,}$/
+
+    if (!passwordRegex.test(value)) {
+      setValErrMsg(true)
+    } else {
+      setValErrMsg(false)
+    }
+  }
 
   useEffect(() => {
     // Create an interval that decreases the seconds state every second
@@ -71,14 +96,11 @@ const ForgotPassword2: React.FC = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            Vary: 'Origin',
+            "Access-Control-Allow-Origin": "*",
+            "Vary": "Origin"
           },
-         
-          mode: 'cors',
-        },
-      )
+          mode: "cors"
+        })
 
       console.log(response)
       const result = await response.json()
@@ -135,6 +157,10 @@ const ForgotPassword2: React.FC = () => {
     const { value } = e.target
     setPassword(value)
     console.log(value)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])\S{5,}$/;
+    if (passwordRegex.test(value)) {
+      setValErrMsg(false)
+    }
   }
 
   const handlePassChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,8 +176,12 @@ const ForgotPassword2: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+    
+    if (valErrMsg) {
+      return
+    }
+
     if (otpErr) {
-      // Increment consecutive failures
       setConsecutiveFailures(consecutiveFailures + 1)
 
       if (consecutiveFailures >= 5) {
@@ -174,6 +204,7 @@ const ForgotPassword2: React.FC = () => {
 
       return
     }
+    
     setConsecutiveFailures(0)
     setOtpExpiredMessage(null)
     const data = { username, password }
@@ -274,7 +305,7 @@ const ForgotPassword2: React.FC = () => {
           </p>
           <div className="flex flex-col justify-center items-center">
             {consecutiveFailures >= 5 && otpExpiredMessage && (
-              <p className="text-red-400 font-Sora font-medium">
+              <p className="text-red-600 font-Sora font-medium">
                 {otpExpiredMessage}
               </p>
             )}
@@ -300,33 +331,57 @@ const ForgotPassword2: React.FC = () => {
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               New Password
             </p>
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              required
-              value={password}
-              onChange={handlePassChange}
-              minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password}
+                onChange={handlePassChange}
+                onBlur={validatePassword}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
+              >
+                {showPassword ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
           </div>
+          {valErrMsg && (
+            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
+              {errMsgVal}
+            </p>
+          )}
 
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Confirm Password
             </p>
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              required
-              value={password2}
-              onChange={handlePassChange2}
-              minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword2 ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password2}
+                onChange={handlePassChange2}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility2}
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
+              >
+                {showPassword2 ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
           </div>
           {err && (
-            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
               {errMsg}
             </p>
           )}

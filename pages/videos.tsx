@@ -40,17 +40,19 @@ function Videos() {
 
  /*  const fetchVideos = async () => {
     try {
-      const headers = new Headers()
-      headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN') // Add your access token or any other necessary headers
-
+      const headers = new Headers();
+      headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN'); // Add your access token or any other necessary headers
+      headers.append("Content-Type", "application/json");
+      headers.append("Access-Control-Allow-Origin", "*");
       const response = await fetch(
         `https://www.cofucan.tech/srce/api/recording/user/${user}`,
         {
           method: 'GET',
           headers: headers,
-        },
-      )
-
+          mode: "cors"
+        }
+      );
+  
       if (response.ok) {
         const responseData = await response.json() // Parse JSON response
         const formattedVideos: Video[] = await Promise.all(
@@ -101,12 +103,14 @@ function Videos() {
     try {
       const headers = new Headers();
       headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN'); // Add your access token or any other necessary headers
-  
+      headers.append("Content-Type", "application/json");
+      headers.append("Access-Control-Allow-Origin", "*");
       const response = await fetch(
         `https://www.cofucan.tech/srce/api/recording/user/${user}`,
         {
           method: 'GET',
           headers: headers,
+          mode: "cors"
         }
       );
   

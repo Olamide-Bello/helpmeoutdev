@@ -34,7 +34,21 @@ const SignUp = () => {
   const { setLogged, setUser } = useContext(GlobalContext)
   const [otp, setOtp] = useState('')
   const [email, setEmail] = useState('')
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false)
+  const [valErrMsg, setValErrMsg] = useState<boolean>(false)
+  const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
+
+  const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{5,}$/
+
+    if (!passwordRegex.test(value)) {
+      setValErrMsg(true)
+    } else {
+      setValErrMsg(false)
+    }
+  }
 
 
   const togglePasswordVisibility = () => {
@@ -54,12 +68,20 @@ const SignUp = () => {
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])\S{5,}$/;
+    if (passwordRegex.test(value)) {
+      setValErrMsg(false)
+    }
   }
 
  
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+
+    if (valErrMsg) {
+      return
+    }
 
     if (!isEmailValid) {
       toast.error('Invalid email address', {
@@ -353,6 +375,7 @@ const SignUp = () => {
                 required
                 value={password}
                 onChange={handlePassChange}
+                onBlur={validatePassword}
                 minLength={5}
                 className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
               />
@@ -365,6 +388,11 @@ const SignUp = () => {
               </button>
             </div>
           </div>
+          {valErrMsg && (
+            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+              {errMsgVal}
+            </p>
+          )}
 
           <button
             // onClick={signUp}

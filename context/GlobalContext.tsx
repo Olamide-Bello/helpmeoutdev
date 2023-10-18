@@ -50,10 +50,13 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   useEffect(() => {
-      chrome.runtime?.sendMessage("jbagojkmnpbphopookajpgemnhhfiabd",{
+    if (typeof window !== 'undefined') {
+      const extensionId = localStorage.getItem('extension_id')
+      chrome.runtime?.sendMessage(extensionId,{
         action: "FROM_PAGE",
         username: user
       })
+    }
   }, [user])
 
   //function to validate the entered email

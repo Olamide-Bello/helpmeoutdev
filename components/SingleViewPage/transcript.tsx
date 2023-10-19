@@ -12,6 +12,8 @@ const Transcript: React.FC<TranscriptSingelViewProps> = ({ data, videoID, curren
   }>({ transcript: '', words: [] });
   const transcriptContainerRef = useRef<HTMLDivElement>(null); // Ref for the transcript container
 
+  const [totalVidDuration, setTotalVidDuration] = useState(0);
+
 
   // Fetch transcript data
   useEffect(() => {
@@ -55,6 +57,7 @@ const Transcript: React.FC<TranscriptSingelViewProps> = ({ data, videoID, curren
           // console.log("response at 30VD in Transcript:", response);
           const data = await response.json();
           console.log("data in VD at 76:", data);
+          setTotalVidDuration(data.video_length);
         } catch (error) {
           console.error('Error fetching videoDetails in Transcript:', error);
         }
@@ -94,10 +97,10 @@ const Transcript: React.FC<TranscriptSingelViewProps> = ({ data, videoID, curren
 
   useEffect(() => {
     // Making sure videoDuration is greater than 0 to avoid division by zero
-    if (currentVidDuration > 0 && currentVideoTime > 0) {
-      // console.log("curentVidDur:", currentVidDuration, " & currVidTime:", currentVideoTime);
+    if (totalVidDuration > 0 && currentVideoTime > 0) {
+      // console.log("curentVidDur:", totalVidDuration, " & currVidTime:", currentVideoTime);
       // Calculate the progress percentage
-      const progress = (currentVideoTime / currentVidDuration) * 100 ;
+      const progress = (currentVideoTime / totalVidDuration) * 100 ;
       console.log("Progresses:", progress);
       // Scroll your transcript container here
       const transcriptContainer = document.getElementById('org-transcipt-container');
@@ -105,12 +108,12 @@ const Transcript: React.FC<TranscriptSingelViewProps> = ({ data, videoID, curren
         transcriptContainer.scrollTop = (progress / 100) * transcriptContainer.scrollHeight * 0.9;  //adjust the scroll speed
       }
     }
-  }, [currentVidDuration, currentVideoTime]);
+  }, [totalVidDuration, currentVideoTime]);
 
 
   // set interval to show the transcript in different div with interval of 'intervalDuration'
   const intervalDuration = 6; // 6 seconds
-  const duration = currentVidDuration;
+  const duration = totalVidDuration;
   const intervals = [];
   for (let i = 0; i < duration; i += intervalDuration) {
     intervals.push(i);

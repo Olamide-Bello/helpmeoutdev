@@ -46,7 +46,7 @@ const LogIn = () => {
     e.preventDefault()
     const data = { username, password }
     try {
-      const response = await fetch('https://www.cofucan.tech/srce/api/login/', {
+      const response = await fetch('https://helpmeout.cofucan.tech/srce/api/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ const Transcript: React.FC<TranscriptSingelViewProps> = ({ data, videoID, curren
       console.log("this is in transcript fetch");
       try {
         const response = await fetch(
-          `https://www.cofucan.tech/srce/api/transcript/${videoID}.json`,
+          `https://helpmeout.cofucan.tech/srce/api/transcript/${videoID}`,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -44,6 +44,25 @@ const Transcript: React.FC<TranscriptSingelViewProps> = ({ data, videoID, curren
       fetchTranscription();
     }
   }, [videoID]);
+
+    //fetch the videoDuration from videoDetails API
+    useEffect(() => {
+      const fetchVideoFromNewAPI = async () => {
+        console.log("this is in videoDetails fetch");
+        try {
+          const response = await fetch(`https://helpmeout.cofucan.tech/srce/api/recording/${videoID}`);
+          // const response = await fetch("https://random-words-api.vercel.app/word");
+          // console.log("response at 30VD in Transcript:", response);
+          const data = await response.json();
+          console.log("data in VD at 76:", data);
+        } catch (error) {
+          console.error('Error fetching videoDetails in Transcript:', error);
+        }
+      };
+      if (videoID) {
+        fetchVideoFromNewAPI();
+      }
+    }, [videoID]);
 
   // to format time
   const formatTime = (seconds: number) => {

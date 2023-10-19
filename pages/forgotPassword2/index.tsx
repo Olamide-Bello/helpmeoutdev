@@ -91,7 +91,7 @@ const ForgotPassword2: React.FC = () => {
     setConsecutiveFailures(0)
     try {
       const response = await fetch(
-        `https://www.cofucan.tech/srce/api/request_otp/?username=${username}`,
+        `https://helpmeout.cofucan.tech/srce/api/request_otp/?username=${username}`,
         {
           method: 'POST',
           headers: {

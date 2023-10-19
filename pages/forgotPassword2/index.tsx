@@ -49,7 +49,7 @@ const ForgotPassword2: React.FC = () => {
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{5,}$/
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/
 
     if (!passwordRegex.test(value)) {
       setValErrMsg(true)

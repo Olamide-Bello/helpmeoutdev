@@ -16,7 +16,7 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVide
       console.log('videoREF:', videoRef)
       // videoRef.current.src = `http://web-02.cofucan.tech/srce/api/recording/${currentVideoID}`;  //API that is given by BE inidial one
       // videoRef.current.src = `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`; //API that i've taken from online
-      videoRef.current.src = `https://helpmeout.cofucan.tech/srce/api/video/${videoID}.mp4` //new API from BE
+      videoRef.current.src = `https://helpmeout.cofucan.tech/srce/api/stream/${videoID}` //new API from BE
 
 
       // to get the vid duration

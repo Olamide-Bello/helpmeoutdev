@@ -15,7 +15,7 @@ const SaveToAccount: React.FC<idProps> = ({videoID}) => {
         To ensure the availability and privacy of your video, we recommend
         saving it to your account.
       </h3>
-      <Link href={`https://www.cofucan.tech/srce/api/download/${videoID}`}><button className="font-Work-Sans text-[16px] font-[500px] text-white bg-primary-600 px-[32px] py-[16px] rounded-[8px]">
+      <Link href={`https://helpmeout.cofucan.tech/srce/api/download/${videoID}`}><button className="font-Work-Sans text-[16px] font-[500px] text-white bg-primary-600 px-[32px] py-[16px] rounded-[8px]">
         Save Video
       </button></Link>
       <h2 className="font-Sora text-[16px] ss:text-[24px] font-[400] text-gray-400 text-center">

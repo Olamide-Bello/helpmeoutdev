@@ -60,7 +60,7 @@ const EmailOtp: React.FC = () => {
     console.log(data)
     try {
       const response = await fetch(
-        'https://www.cofucan.tech/srce/api/signup/',
+        'https://helpmeout.cofucan.tech/srce/api/signup/',
         {
           method: 'POST',
           headers: {

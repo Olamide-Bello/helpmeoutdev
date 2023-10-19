@@ -48,7 +48,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
           redirect: 'follow',
           mode: 'cors'
         };
-        const response = await fetch(`https://helpmeout.cofucan.tech/srce/api/transcript/${videoID}.json`, requestOptions);
+        const response = await fetch(`https://helpmeout.cofucan.tech/srce/api/transcript/${videoID}`, requestOptions);
         // const response = await fetch("https://random-words-api.vercel.app/word");
         console.log("response at 40T:", response);
         const data = await response.json();

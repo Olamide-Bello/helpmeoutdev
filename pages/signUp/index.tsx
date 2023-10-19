@@ -42,7 +42,7 @@ const SignUp = () => {
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{5,}$/
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/
 
     if (!passwordRegex.test(value)) {
       setValErrMsg(true)
@@ -64,7 +64,10 @@ const SignUp = () => {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
-    if (/^\s+|\s+$|\s+(?=\s)/.test(value)) {
+    if (/[^a-zA-Z0-9_]/.test(value)) {
+      setErrorMessage('Username cannot contain symbols or spaces');
+    }
+    else if (/^\s+|\s+$|\s+(?=\s)/.test(value)) {
       setErrorMessage('Username cannot contain leading, trailing, or consecutive spaces');
     } else {
       setErrorMessage('')
@@ -74,7 +77,7 @@ const SignUp = () => {
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])\S{5,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/;
     if (passwordRegex.test(value)) {
       setValErrMsg(false)
     }

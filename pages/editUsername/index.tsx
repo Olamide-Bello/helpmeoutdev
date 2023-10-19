@@ -1,11 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useState, useContext } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-
+import 'react-toastify/dist/ReactToastify.css'
+import { GlobalContext } from '@/context/GlobalContext'
 const EditUsername = () => {
   const [newUsername, setNewUsername] = useState('')
   const [oldUsername, setOldUsername] = useState('')
+  const history = useRouter()
+  const { setUser } = useContext(GlobalContext)
 
   const handleUpdateUsername = async (event) => {
     event.preventDefault()
@@ -39,6 +43,9 @@ const EditUsername = () => {
         })
         const responseData = await response.json()
         console.log(responseData)
+
+        setUser(newUsername)
+        history.push('/videos')
       }
     } catch (error) {
       toast.error(`Error: ${error}`, {

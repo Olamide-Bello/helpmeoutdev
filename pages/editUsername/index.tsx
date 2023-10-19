@@ -1,29 +1,57 @@
-import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 
 const EditUsername = () => {
-  const [newUsername, setNewUsername] = useState<string>('')
-  const [oldUsername, setOldUsername] = useState<string>('')
+  const [newUsername, setNewUsername] = useState('')
+  const [oldUsername, setOldUsername] = useState('')
 
-  const handleUpdateUsername = async () => {
+  const handleUpdateUsername = async (event) => {
+    event.preventDefault()
+
     try {
-      const response = await axios.put(
-        `https://helpmeout.cofucan.tech/srce/api/username/${oldUsername}?newUsername=${newUsername}`,
-        null, // Pass the new username in the request body
+      const response = await fetch(
+        `https://helpmeout.cofucan.tech/srce/api/username/${oldUsername}/?new_username=${newUsername}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ newUsername, oldUsername }),
+        },
       )
 
       if (response.status === 200) {
         // Request was successful, you can handle the response here
         console.log('Username updated successfully')
-        // You can also display a success message using a library like 'react-toastify' or by setting a state variable
+        console.log(response)
+        toast.success('Username Updated Successfully', {
+          style: {
+            background: 'white',
+            color: 'green',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            padding: '12px 24px',
+            fontSize: '16px',
+            textAlign: 'center',
+          },
+        })
+        const responseData = await response.json()
+        console.log(responseData)
       }
     } catch (error) {
-      // Handle any errors that may occur during the request
-      console.error('Error updating username', error)
-      // You can also display an error message
+      toast.error(`Error: ${error}`, {
+        style: {
+          background: 'white',
+          color: 'red',
+          borderRadius: '8px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          padding: '12px 24px',
+          fontSize: '16px',
+          textAlign: 'center',
+        },
+      })
     }
   }
 
@@ -48,7 +76,10 @@ const EditUsername = () => {
             Edit Username
           </h1>
         </section>
-        <form className="flex flex-col w-full ss:w-[475px]">
+        <form
+          className="flex flex-col w-full ss:w-[475px]"
+          onSubmit={handleUpdateUsername}
+        >
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Username
@@ -75,13 +106,21 @@ const EditUsername = () => {
           </div>
 
           <button
-            onClick={handleUpdateUsername}
+            type="submit"
             className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px] text-[14px] xs:text-[16px] bg-primary-600 text-white"
           >
             Update Username
           </button>
         </form>
       </div>
+      <ToastContainer
+        position="top-center" // Position the toast container at the bottom-center
+        autoClose={1500} // Close after 3 seconds (adjust as needed)
+        style={{
+          width: 'fit-content', // Adjust the width as needed
+          textAlign: 'center', // Center-align the container's content
+        }}
+      />
     </section>
   )
 }

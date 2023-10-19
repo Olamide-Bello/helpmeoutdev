@@ -37,7 +37,6 @@ function Videos() {
     fetchVideos()
   }, [user])
 
- 
   const fetchVideos = async () => {
     setLoading(true) // Set loading state to true when starting the fetch operation
     try {
@@ -72,7 +71,6 @@ function Videos() {
                 })
               }
 
-             
               videoElement.load()
             })
           }),
@@ -215,13 +213,12 @@ function Videos() {
             >  */
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 justify-between lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full ">
               {filteredVideos.length === 0 ? (
-                        <div
+                <div
                   className="NoRecentVideosMessage text-xl text-neutral-900 font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center flex flex-col justify-center"
                   style={{
                     textAlign: 'center',
                     transform: 'translate(-50%, -50%)',
                     width: '100%',
-                    height: '100vh',
                   }}
                 >
                   <Image

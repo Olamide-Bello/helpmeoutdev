@@ -11,7 +11,7 @@ const EditUsername = () => {
   const history = useRouter()
   const { setUser } = useContext(GlobalContext)
 
-  const handleUpdateUsername = async (event) => {
+  const handleUpdateUsername = async (event: React.FormEvent) => {
     event.preventDefault()
 
     try {

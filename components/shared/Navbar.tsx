@@ -17,12 +17,12 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
   }
 
   const handleLogout = async () => {
-    setLogged(false);
-    setShowLogout(false);
-    setUser('');
-    localStorage.removeItem("user")
-    localStorage.removeItem("logged")
-    history.push('/logIn');
+    setLogged(false)
+    setShowLogout(false)
+    setUser('')
+    localStorage.removeItem('user')
+    localStorage.removeItem('logged')
+    history.push('/logIn')
     // try {
     //   // Send a POST request to the logout endpoint without a request body
     //   const response = await fetch("https://www.cofucan.tech/srce/api/logout/", {
@@ -52,8 +52,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
     //   console.error("Network error: ");
     //   // You can also provide a user-friendly message for network errors
     // }
-  };
-
+  }
 
   /*const handleLogout = () => {
     //call or put the logic for log out here
@@ -64,7 +63,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
   }*/
 
   return (
-    <div className='bg-white  '>
+    <div className="bg-white  ">
       <div className="container text-primary-600 h-[84px] px-3 xs:px-5 ss:px-12 md:px-[80px] flex justify-between items-center">
         {/* Logo container */}
         <Link href="/" className="flex gap-1 items-center">
@@ -111,8 +110,16 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
               />
             </div>
             {logged && showLogout && (
-              <div className='absolute flex flex-col bottom-[-80px] text-[#141414] font-Work-Sans font-[500]  bg-white shadow-lg'>
-                <Link href="/videos" className='py-2 px-5 hover:bg-gray-100'><p>Dashboard</p></Link>
+              <div className="absolute flex flex-col bottom-[-80px] text-[#141414] font-Work-Sans font-[500]  bg-white shadow-lg">
+                <Link href="/videos" className="py-2 px-5 hover:bg-gray-100">
+                  <p>Dashboard</p>
+                </Link>
+                <Link
+                  href="/editUsername"
+                  className="py-2 px-5 hover:bg-gray-100"
+                >
+                  <p>Edit Username</p>
+                </Link>
                 <div
                   onClick={handleLogout}
                   className="flex gap-[10px] py-2 px-5 cursor-pointer text-[#141414] font-Work-Sans font-[500] hover:bg-gray-100"
@@ -122,7 +129,8 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
                     height={20}
                     width={20}
                     alt="logout"
-                  /> Logout
+                  />{' '}
+                  Logout
                 </div>
               </div>
             )}

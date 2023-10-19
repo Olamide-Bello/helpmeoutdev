@@ -107,7 +107,7 @@ const SignUp = () => {
     //const data: StateObject = { username, email, password, otp };
     try {
       const response = await fetch(
-        'https://www.cofucan.tech/srce/api/get_signup_otp/',
+        'https://helpmeout.cofucan.tech/srce/api/get_signup_otp/',
         {
           method: 'POST',
           headers: {

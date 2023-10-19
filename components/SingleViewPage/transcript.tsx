@@ -12,6 +12,7 @@ const Transcript: React.FC<TranscriptSingelViewProps> = ({ data, videoID, curren
   }>({ transcript: '', words: [] });
   const transcriptContainerRef = useRef<HTMLDivElement>(null); // Ref for the transcript container
 
+  //to store the videoDuration from videoDetails API endpoint
   const [totalVidDuration, setTotalVidDuration] = useState(0);
 
 

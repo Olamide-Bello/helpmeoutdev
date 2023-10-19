@@ -26,7 +26,6 @@ function Videos() {
   const router = useRouter()
   const { id } = router.query
   const { user } = useContext(GlobalContext)
-  //const displayName: string = user?.displayName || 'user13'
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
@@ -38,66 +37,7 @@ function Videos() {
     fetchVideos()
   }, [user])
 
-  /*  const fetchVideos = async () => {
-    try {
-      const headers = new Headers();
-      headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN'); // Add your access token or any other necessary headers
-      headers.append("Content-Type", "application/json");
-      headers.append("Access-Control-Allow-Origin", "*");
-      const response = await fetch(
-        `https://www.cofucan.tech/srce/api/recording/user/${user}`,
-        {
-          method: 'GET',
-          headers: headers,
-          mode: "cors"
-        }
-      );
-  
-      if (response.ok) {
-        const responseData = await response.json() // Parse JSON response
-        const formattedVideos: Video[] = await Promise.all(
-          responseData.map(async (video: any) => {
-            const videoElement = document.createElement('video')
-            videoElement.src = video.original_location
-            return new Promise<Video>((resolve) => {
-              videoElement.onloadedmetadata = () => {
-                const duration = videoElement.duration // Duration in seconds
-                resolve({
-                  id: video.id,
-                  name: video.title,
-                  src: video.thumbnail_location,
-                  created_date: formatDate(video.created_date),
-                  duration: duration,
-                })
-              }
-
-              videoElement.onerror = (error) => {
-                console.error('Error loading video:', error)
-                resolve({
-                  id: video.id,
-                  name: video.title,
-                  src: video.thumbnail_location,
-                  created_date: formatDate(video.created_date),
-                  duration: 0, // Set duration to 0 if there's an error loading the video
-                })
-              }
-
-              videoElement.load()
-            })
-          }),
-        )
-
-        setVideos(formattedVideos)
-        setLoading(false)
-      } else {
-        console.error('Error fetching videos:', response.status)
-        setLoading(false)
-      }
-    } catch (error) {
-      console.error('Error fetching videos:', error)
-      setLoading(false)
-    }
-  } */
+ 
   const fetchVideos = async () => {
     setLoading(true) // Set loading state to true when starting the fetch operation
     try {
@@ -106,7 +46,7 @@ function Videos() {
       headers.append('Content-Type', 'application/json')
       headers.append('Access-Control-Allow-Origin', '*')
       const response = await fetch(
-        `https://www.cofucan.tech/srce/api/recording/user/${user}`,
+        `https://helpmeout.cofucan.tech/srce/api/recording/user/${user}`,
         {
           method: 'GET',
           headers: headers,
@@ -128,21 +68,11 @@ function Videos() {
                   name: video.title,
                   src: video.thumbnail_location,
                   created_date: formatDate(video.created_date),
-                  duration: duration,
+                  duration: video.video_length, // Use video_length from the API response
                 })
               }
 
-              videoElement.onerror = (error) => {
-                console.error('Error loading video:', error)
-                resolve({
-                  id: video.id,
-                  name: video.title,
-                  src: video.thumbnail_location,
-                  created_date: formatDate(video.created_date),
-                  duration: 0, // Set duration to 0 if there's an error loading the video
-                })
-              }
-
+             
               videoElement.load()
             })
           }),
@@ -202,7 +132,7 @@ function Videos() {
     try {
       if (selectedVideoId !== null) {
         await axios.delete(
-          `https://www.cofucan.tech/srce/api/video/${selectedVideoId}`,
+          `https://helpmeout.cofucan.tech/srce/api/video/${selectedVideoId}`,
         )
         // Fetch videos again after deletion
         fetchVideos()

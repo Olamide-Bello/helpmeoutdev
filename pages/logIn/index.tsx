@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -6,44 +6,64 @@ import {
   facebookProvider,
   googleProvider,
 } from '../../components/Auth/firebase'
-import {
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-} from 'firebase/auth'
+import { signInWithPopup } from 'firebase/auth'
 
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
+//import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
+import { BsEye, BsEyeSlash } from 'react-icons/bs'
 
-
-interface User {
-  uid: string
-  email: string | null
-  displayName: string | null
-}
-
-const LogIn: React.FC = () => {
+const LogIn = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [user, setUser] = useState<User | null>(null)
+  const { setUser, setLogged } = useContext(GlobalContext)
   const [message, setMessage] = useState<boolean | string>(false)
-  const {setUsername, setLogged} = useContext(GlobalContext)
+
   const history = useRouter()
 
-  console.log(auth?.currentUser?.email)
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
 
-  const login = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const newUser = userCredential.user
-        console.log(newUser)
-        setUser(newUser)
-        setUserExist(true)
-        toast.success('Successfully Logged In', {
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setUsername(value)
+    console.log(value)
+  }
+
+  const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setPassword(value)
+    console.log(value)
+  }
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault()
+    const data = { username, password }
+    try {
+      const response = await fetch('https://helpmeout.cofucan.tech/srce/api/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin"
+        },
+
+        mode: 'cors',
+        body: JSON.stringify(data)
+      })
+
+      console.log(response)
+      const result = await response.json()
+      console.log(result)
+      if (result.status_code === 200) {
+        console.log('Login Successful!')
+        toast.success('Welcome Back', {
           style: {
             background: 'white', // Change the background color as needed
             color: 'green', // Change the text color as needed
@@ -54,15 +74,19 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/videos")
-      })
-      .catch((error) => {
-        const errorCode = error.code
-
-        toast.error(`Error: ${errorCode}`, {
+        setLogged(true)
+        localStorage.setItem('user', result.username)
+        const num = Number(true)
+        localStorage.setItem('logged', JSON.stringify(num))
+        setUser(result.username)
+        history.push('/videos')
+        // You can handle success here, e.g., redirect to a success page
+      } else {
+        console.error('Sign-up failed with status code', result.message)
+        toast.error(`Login failed`, {
           style: {
-            background: 'red', // Change the background color as needed
-            color: 'white', // Change the text color as needed
+            background: 'white', // Change the background color as needed
+            color: 'red', // Change the text color as needed
             borderRadius: '8px', // Rounded corners for the toast
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
             padding: '12px 24px', // Adjust padding as needed
@@ -70,17 +94,38 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
+        // Handle the error, show an error message, etc.
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+      toast.error(`Error: ${error}`, {
+        style: {
+          background: 'white', // Change the background color as needed
+          color: 'red', // Change the text color as needed
+          borderRadius: '8px', // Rounded corners for the toast
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
+          padding: '12px 24px', // Adjust padding as needed
+          fontSize: '16px', // Adjust font size as needed
+          textAlign: 'center',
+        },
       })
+    }
   }
-
+  /*  */
   const loginWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
-        console.log(newUser)
-        setUser(newUser)
+        const copy = newUser.displayName
+        setLogged(true)
+        if (typeof copy === 'string') {
+          localStorage.setItem('user', copy)
+          setUser(copy)
+        }
+        const num = Number(true)
+        localStorage.setItem('logged', JSON.stringify(num))
         setUserExist(true) // Change to true
-        toast.success('Successfully Logged In Google Account', {
+        toast.success('Successfully Logged In Facebook Account', {
           style: {
             background: 'white', // Change the background color as needed
             color: 'green', // Change the text color as needed
@@ -91,7 +136,8 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/videos")
+        setLogged(true)
+        history.push('/videos')
       })
       .catch((error) => {
         const errorCode = error.code
@@ -113,8 +159,14 @@ const LogIn: React.FC = () => {
     signInWithPopup(auth, facebookProvider)
       .then((userCredential) => {
         const newUser = userCredential.user
-        console.log(newUser)
-        setUser(newUser)
+        const copy = newUser.displayName
+        setLogged(true)
+        if (typeof copy === 'string') {
+          localStorage.setItem('user', copy)
+          setUser(copy)
+        }
+        const num = Number(true)
+        localStorage.setItem('logged', JSON.stringify(num))
         setUserExist(true) // Change to true
         toast.success('Successfully Logged In Facebook Account', {
           style: {
@@ -127,7 +179,8 @@ const LogIn: React.FC = () => {
             textAlign: 'center',
           },
         })
-        history.push("/videos")
+        setLogged(true)
+        history.push('/videos')
       })
       .catch((error) => {
         const errorCode = error.code
@@ -145,52 +198,12 @@ const LogIn: React.FC = () => {
       })
   }
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user)
-      } else {
-        setUser(null)
-      }
-    })
-
-    return () => unsubscribe()
-  }, [])
-  const handleSignOut = () =>
-    signOut(auth)
-      .then(() => {
-        setUser(null)
-        setUserExist(false)
-        toast.success('Successfully signed out', {
-          style: {
-            background: 'white', // Change the background color as needed
-            color: 'green', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        toast.error(`Error: ${errorCode}`, {
-          style: {
-            background: 'red', // Change the background color as needed
-            color: 'white', // Change the text color as needed
-            borderRadius: '8px', // Rounded corners for the toast
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-            padding: '12px 24px', // Adjust padding as needed
-            fontSize: '16px', // Adjust font size as needed
-            textAlign: 'center',
-          },
-        })
-      })
-
   return (
-    <section className="px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem]">
-      <Link href={'/'} className="flex items-center gap-[10px] cursor-pointer">
+    <section className="px-[1rem] xs:px-[10%] py-[3rem] md-px[2rem] md-py[2.5rem] ">
+      <Link
+        href={'/'}
+        className="flex items-center gap-[10px] cursor-pointer mb-[2rem]"
+      >
         <Image
           src={'/assets/shared/logo.svg'}
           alt="logo"
@@ -212,7 +225,8 @@ const LogIn: React.FC = () => {
           </p>
           <div
             onClick={loginWithGoogle}
-            className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px] cursor-pointer"
+            className="rounded-lg border-2 border-black-600 
+            w-[230px] xs:w-[300px] ss:w-[475px]  bg-white flex justify-center items-center gap-[0.5rem] xs:gap-[1rem] py-[0.8rem] px-[0] mb-[30px] cursor-pointer"
           >
             <Image
               src={'/assets/login/Google.svg'}
@@ -220,14 +234,14 @@ const LogIn: React.FC = () => {
               width={20}
               height={20}
             />
-            <p className="mb-[-0.2rem] font-Work-Sans text-[16px] font-medium tracking-tight">
+            <p className="mb-[-0.2rem] font-Work-Sans  text-[14px] xs:text-[16px] font-medium tracking-tight">
               Continue with Google
             </p>
           </div>
 
           <div
             onClick={logInWithFacebook}
-            className="rounded-lg border-2 border-black-600 w-[475px] bg-white flex justify-center items-center gap-[1rem] py-[0.8rem] px-[0] mb-[30px]"
+            className="rounded-lg border-2 border-black-600 w-[230px] xs:w-[300px] ss:w-[475px]  bg-white flex justify-center items-center gap-[0.5rem] xs:gap-[1rem] py-[0.8rem] px-[0] mb-[30px]"
           >
             <div className="flex gap-[1rem] ml-[1.5rem] cursor-pointer">
               <Image
@@ -236,75 +250,94 @@ const LogIn: React.FC = () => {
                 width={20}
                 height={20}
               />
-              <p className="mb-[-0.2rem] font-Work-Sans text-[16px] font-medium tracking-tight">
+              <p className="mb-[-0.2rem] font-Work-Sans  text-[14px] xs:text-[16px] font-medium tracking-tight">
                 Continue with Facebook
               </p>
             </div>
           </div>
 
           <div className="flex items-center justify-center gap-[1rem] mb-[1rem]">
-            <div className="w-[200px] h-[1px] bg-black-100 "></div>
+            <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
             <p className="font-medium text-primary-500 mt-[-10px]">or</p>
-            <div className="w-[200px] h-[1px] bg-black-100 "></div>
+            <div className="w-[100px] ss:w-[200px] h-[1px] bg-black-100 "></div>
           </div>
         </section>
-        <div className="flex flex-col w-[475px]">
+        <form
+          className="flex flex-col w-full ss:w-[475px]"
+          onSubmit={handleSubmit}
+        >
           <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">Email</p>
+            <p className="text-[16px] font-Sora font-medium mb-[14px]">
+              Username
+            </p>
             <input
-              type="email"
-              placeholder="Enter your email address"
+              type="text"
+              placeholder="Enter your username"
               required
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[17px]"
+              value={username}
+              onChange={handleNameChange}
+              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Password
             </p>
-            <input
-              type="password"
-              placeholder="Enter your Password"
-              required
-              onChange={(e) => setPassword(e.target.value)}
-              minLength={5}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[17px]"
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                placeholder="Enter your Password"
+                required
+                value={password}
+                onChange={handlePassChange}
+                minLength={5}
+                className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
+              >
+                {showPassword ? <BsEye /> : <BsEyeSlash />}
+              </button>
+            </div>
           </div>
-          {userExist && (
-            <button
-              onClick={handleSignOut}
-              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
-            >
-              Sign Out
-            </button>
-          )}
-          {!userExist && (
-            <button
-              onClick={login}
-              className="mt-[1rem] border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[17px] bg-primary-600 text-white "
-            >
-              Log In
-            </button>
-          )}
+
+          <button
+            // onClick={login}
+            className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
+          >
+            Log In
+          </button>
+          <Link href={'/forgotPassword'}>
+            <p className="text-[16px] font-Sora mt-2 font-medium mb-[14px]">
+              Forgot Password?
+            </p>
+          </Link>
 
           {message && (
             <p className="mt-[0.5rem] text-center text-[19px] font-semibold">
               {message}
             </p>
           )}
-          <h2 className="mt-[1rem] text-center text-[17px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
-            Don&apos;t Have Account{' '}
+          <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
+            Don&apos;t Have Account?{' '}
             <Link href={'/signUp'}>
-              <span className="font-bold text-[18px] hover:underline cursor-pointer font-Sora">
+              <span className="font-bold hover:underline cursor-pointer font-Sora">
                 Sign Up
               </span>
             </Link>
           </h2>
-        </div>
+        </form>
       </div>
-      
+      <ToastContainer
+        position="top-center" // Position the toast container at the bottom-center
+        autoClose={1500} // Close after 3 seconds (adjust as needed)
+        style={{
+          width: 'fit-content', // Adjust the width as needed
+          textAlign: 'center', // Center-align the container's content
+        }}
+      />
     </section>
   )
 }

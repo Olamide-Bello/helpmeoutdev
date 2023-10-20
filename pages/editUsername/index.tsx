@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { GlobalContext } from '@/context/GlobalContext'
@@ -46,8 +46,21 @@ const EditUsername = () => {
 
         setUser(newUsername)
         history.push('/videos')
+      } else if (response.status === 409) {
+        toast.error(`Username Already in Use`, {
+          style: {
+            background: 'white',
+            color: 'red',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            padding: '12px 24px',
+            fontSize: '16px',
+            textAlign: 'center',
+          },
+        })
       }
     } catch (error) {
+      console.log(error)
       toast.error(`Error: ${error}`, {
         style: {
           background: 'white',

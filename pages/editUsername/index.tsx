@@ -9,20 +9,20 @@ const EditUsername = () => {
   const [newUsername, setNewUsername] = useState('')
   const [oldUsername, setOldUsername] = useState('')
   const history = useRouter()
-  const { setUser } = useContext(GlobalContext)
+  const { setUser, user } = useContext(GlobalContext)
 
   const handleUpdateUsername = async (event: React.FormEvent) => {
     event.preventDefault()
 
     try {
       const response = await fetch(
-        `https://api.helpmeout.tech/username/${oldUsername}/?new_username=${newUsername}`,
+        `https://api.helpmeout.tech/username/${user}/?new_username=${newUsername}`,
         {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ newUsername, oldUsername }),
+          body: JSON.stringify({ newUsername, user }),
         },
       )
 
@@ -88,17 +88,6 @@ const EditUsername = () => {
           onSubmit={handleUpdateUsername}
         >
           <div>
-            <p className="text-[16px] font-Sora font-medium mb-[14px]">
-              Username
-            </p>
-            <input
-              type="text"
-              placeholder="Enter your username"
-              required
-              value={oldUsername}
-              onChange={(e) => setOldUsername(e.target.value)}
-              className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
-            />
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               New Username
             </p>

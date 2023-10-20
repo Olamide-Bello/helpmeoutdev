@@ -91,27 +91,27 @@ const Single = () => {
     const fetchVideoData = async () => {
       try {
         const response = await axios.get(
-          `https://helpmeout.cofucan.tech/srce/api/recording/${id}`,
+          `https://api.helpmeout.tech/recording/${id}`,
         )
         const data = response.data
-        const videoUrl = `https://helpmeout.cofucan.tech/srce/api/stream/${id}`
+        const videoUrl = `https://api.helpmeout.tech/stream/${id}`
 
         setVideoName(data.title)
         setUrl(videoUrl)
 
         // Fetch transcript data if required
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Access-Control-Allow-Origin", "*");
-        const requestOptions:RequestInit = {
+        const myHeaders = new Headers()
+        myHeaders.append('Content-Type', 'application/json')
+        myHeaders.append('Access-Control-Allow-Origin', '*')
+        const requestOptions: RequestInit = {
           method: 'GET',
           headers: myHeaders,
           redirect: 'follow',
-          mode: 'cors'
-        };
+          mode: 'cors',
+        }
         const transcriptResponse = await fetch(
-          `https://helpmeout.cofucan.tech/srce/api/transcript/${id}`,
-          requestOptions
+          `https://api.helpmeout.tech/transcript/${id}`,
+          requestOptions,
         )
         const transcriptData = await transcriptResponse.json()
         const convertedTranscript = convertToUrlTranscript(transcriptData.words)
@@ -156,15 +156,15 @@ const Single = () => {
   const updateName = async () => {
     try {
       const response = await fetch(
-        `https://helpmeout.cofucan.tech/srce/api/video/${id}?title=${newName}`,
+        `https://api.helpmeout.tech/video/${id}?title=${newName}`,
         {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*",
-            "Vary": "Origin"
+            'Access-Control-Allow-Origin': '*',
+            Vary: 'Origin',
           },
-          mode: "cors"
+          mode: 'cors',
         },
       )
 
@@ -222,7 +222,7 @@ const Single = () => {
             onChange={changeName}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                updateName();
+                updateName()
               }
             }}
             className={`border p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600 `}
@@ -299,7 +299,9 @@ const Single = () => {
           textAlign: 'center', // Center-align the container's content
         }}
       />
-      {showModal && <Modal setShowModal={setShowModal} email={email} videoID={id} />}
+      {showModal && (
+        <Modal setShowModal={setShowModal} email={email} videoID={id} />
+      )}
     </div>
   )
 }

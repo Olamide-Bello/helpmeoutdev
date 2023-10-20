@@ -3,7 +3,11 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { VideoContainerProps } from '@/types/video-container'
 
-const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVideoTime, setCurrentVidDuration }) => {
+const VideoContainer: React.FC<VideoContainerProps> = ({
+  videoID,
+  setCurrentVideoTime,
+  setCurrentVidDuration,
+}) => {
   //to get the videoID
   const videoRef = useRef<HTMLVideoElement>(null)
   const router = useRouter()
@@ -16,18 +20,17 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVide
       console.log('videoREF:', videoRef)
       // videoRef.current.src = `http://web-02.cofucan.tech/srce/api/recording/${currentVideoID}`;  //API that is given by BE inidial one
       // videoRef.current.src = `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`; //API that i've taken from online
-      videoRef.current.src = `https://helpmeout.cofucan.tech/srce/api/stream/${videoID}` //updated API to get video
-
+      videoRef.current.src = `https://api.helpmeout.tech/stream/${videoID}` //updated API to get video
 
       // to get the vid duration
-      videoRef.current.preload = 'metadata'; // Preload metadata to get duration
-      
-      videoRef.current.addEventListener('loadeddata', function() {
-        console.log("videoref.current: ", videoRef.current?.duration);
+      videoRef.current.preload = 'metadata' // Preload metadata to get duration
+
+      videoRef.current.addEventListener('loadeddata', function () {
+        console.log('videoref.current: ', videoRef.current?.duration)
         // const duration = videoRef.current.duration;
         // setCurrentVidDuration(duration);
         // console.log(`The video duration is ${duration} seconds.`);
-      });
+      })
     }
   }, [videoID, router.query.videoID])
 
@@ -105,46 +108,49 @@ const VideoContainer: React.FC<VideoContainerProps> = ({ videoID, setCurrentVide
     startVolumeSliderTimeout()
   }
 
-
-  // to set CurrentVideoTime 
+  // to set CurrentVideoTime
   const handleTimeUpdate = (event: any) => {
     // console.log("this handletimeupdate is called")
     // console.log("event.target.currentTime:", event.target.currentTime);
-    setCurrentVideoTime(event.target.currentTime);
-  };
+    setCurrentVideoTime(event.target.currentTime)
+  }
 
   // to set current video duration - overall duration of the video
   useEffect(() => {
     const fetchVideo = async () => {
       // const videoUrl = `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`;
-      const videoUrl = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4`;
-      const video = document.createElement('video');
-      
-      video.src = videoUrl;
-      video.preload = 'metadata'; // Preload metadata to get duration
-      
-      video.addEventListener('loadeddata', function() {
-        const duration = video.duration;
-        if(duration <= 1200){
-          setCurrentVidDuration(duration);
-        }
-        console.log(`The video duration is ${duration} seconds.`);
-      });
-      
-    };
+      const videoUrl = `https://api.helpmeout.tech/video/${videoID}.mp4`
+      const video = document.createElement('video')
 
-    fetchVideo();
-  }, [videoID, setCurrentVidDuration]);
+      video.src = videoUrl
+      video.preload = 'metadata' // Preload metadata to get duration
+
+      video.addEventListener('loadeddata', function () {
+        const duration = video.duration
+        if (duration <= 1200) {
+          setCurrentVidDuration(duration)
+        }
+        console.log(`The video duration is ${duration} seconds.`)
+      })
+    }
+
+    fetchVideo()
+  }, [videoID, setCurrentVidDuration])
 
   return (
     <div className="w-full h-auto rounded-[8px] bg-gray-200 border-[1px] border-primary-400 ss:flex flex-col overflow-hidden">
       {videoID && (
-        <video ref={videoRef} controls className="w-full h-auto" onTimeUpdate={handleTimeUpdate}>
+        <video
+          ref={videoRef}
+          controls
+          className="w-full h-auto"
+          onTimeUpdate={handleTimeUpdate}
+        >
           <source type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       )}
-             <div className="hidden w-full h-[80px] bg-white ss:flex justify-between items-center  px-[12px] ss:px-[40px]">
+      <div className="hidden w-full h-[80px] bg-white ss:flex justify-between items-center  px-[12px] ss:px-[40px]">
         <h3 className="font-Inter text-primary-200 font-[500] text-[14px] ss:text-[24px]">
           {formatTime(currentTime)}
         </h3>

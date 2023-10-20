@@ -45,7 +45,7 @@ function Videos() {
       headers.append('Content-Type', 'application/json')
       headers.append('Access-Control-Allow-Origin', '*')
       const response = await fetch(
-        `https://helpmeout.cofucan.tech/srce/api/recording/user/${user}`,
+        `https://api.helpmeout.tech/recording/user/${user}`,
         {
           method: 'GET',
           headers: headers,
@@ -130,7 +130,7 @@ function Videos() {
     try {
       if (selectedVideoId !== null) {
         await axios.delete(
-          `https://helpmeout.cofucan.tech/srce/api/video/${selectedVideoId}`,
+          `https://api.helpmeout.tech/video/${selectedVideoId}`,
         )
         // Fetch videos again after deletion
         fetchVideos()

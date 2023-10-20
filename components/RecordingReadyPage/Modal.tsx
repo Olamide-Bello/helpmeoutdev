@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import Image from 'next/image'
 import { GlobalContext } from '@/context/GlobalContext'
 import Link from 'next/link'
@@ -14,7 +14,7 @@ interface idProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ setShowModal, email, videoID }) => {
-  const {user, logged} = useContext(GlobalContext)
+  const { user, logged } = useContext(GlobalContext)
   return (
     <div className="w-full h-full fixed top-0">
       <div className="w-full h-full relative flex justify-center items-center md:py-16 px-3 ss:px-0">
@@ -45,15 +45,19 @@ const Modal: React.FC<ModalProps> = ({ setShowModal, email, videoID }) => {
             <h3 className="font-Sora font-[400] text-[18px] text-black-600 w-full text-center">
               Would you need to view this video later? Save to your account now!
             </h3>
-            <Link href={`https://www.cofucan.tech/srce/api/download/${videoID}`}><button className="font-Work-Sans text-[16px] font-[500px] text-white bg-primary-600 px-[32px] py-[16px] rounded-[8px]">
-              Save Video
-            </button></Link>
-            {!logged && !user && <h2 className="font-Sora text-[14px] ss:text-[16px] font-[400] text-gray-400 text-center ss:mb-[64px]">
-              Don’t have an account?{' '}
-              <span className="text-primary-600 underline font-[600]">
-                Create account
-              </span>
-            </h2>}
+            <Link href={`https://api.helpmeout.tech/download/${videoID}`}>
+              <button className="font-Work-Sans text-[16px] font-[500px] text-white bg-primary-600 px-[32px] py-[16px] rounded-[8px]">
+                Save Video
+              </button>
+            </Link>
+            {!logged && !user && (
+              <h2 className="font-Sora text-[14px] ss:text-[16px] font-[400] text-gray-400 text-center ss:mb-[64px]">
+                Don’t have an account?{' '}
+                <span className="text-primary-600 underline font-[600]">
+                  Create account
+                </span>
+              </h2>
+            )}
           </div>
         </div>
         <div className="bg-black-400 absolute h-full w-full opacity-50" />

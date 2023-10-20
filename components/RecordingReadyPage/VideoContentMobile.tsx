@@ -40,7 +40,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
   useEffect(() => {
     const currentVideoID = videoID || (router.query.videoID as string)
     if (currentVideoID && videoRef.current) {
-      videoRef.current.src = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4`
+      videoRef.current.src = `https://api.helpmeout.tech/video/${videoID}.mp4`
     }
   }, [videoID, router.query.videoID])
 
@@ -62,7 +62,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
       displayModal()
       try {
         const response = await fetch(
-          `https://www.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`,
+          `https://api.helpmeout.tech/send-email/${videoID}?receipient=${email}`,
           {
             method: 'POST',
             headers: {
@@ -71,7 +71,7 @@ const VideoContentMobile: React.FC<VideoPageContentProps> = ({
               'Access-Control-Allow-Origin': '*',
               Vary: 'Origin',
             },
-           
+
             mode: 'cors',
           },
         )

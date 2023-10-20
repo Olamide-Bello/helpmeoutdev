@@ -1,7 +1,12 @@
 import { VideoPlayerProps } from '@/types/video-player'
 import React, { useRef, useState, useEffect } from 'react'
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, videoID, setCurrentVideoTime, setCurrentVidDuration }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({
+  url,
+  videoID,
+  setCurrentVideoTime,
+  setCurrentVidDuration,
+}) => {
   const [currentTime, setCurrentTime] = useState<number>(0)
   const [duration, setDuration] = useState<number>(0)
   const recRef = useRef<HTMLVideoElement>(null)
@@ -50,40 +55,38 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, videoID, setCurrentVideo
     return () => clearInterval(interval)
   }, [])
 
-  // to set CurrentVideoTime 
+  // to set CurrentVideoTime
   const handleTimeUpdate = (event: any) => {
     // console.log("this handletimeupdate is called")
-    setCurrentVideoTime(event.target.currentTime);
-  };
+    setCurrentVideoTime(event.target.currentTime)
+  }
 
   // to set current video duration - overall duration of the video
   useEffect(() => {
     const fetchVideo = async () => {
       // const videoUrl = `http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`;
-      const videoUrl = `https://www.cofucan.tech/srce/api/video/${videoID}.mp4`;
-      const video = document.createElement('video');
-      
-      video.src = videoUrl;
-      video.preload = 'metadata'; // Preload metadata to get duration
-      
-      video.addEventListener('loadeddata', function() {
-        const duration = video.duration;
-        if(duration <= 1200){
-          setCurrentVidDuration(duration);
+      const videoUrl = `https://api.helpmeout.tech/video/${videoID}.mp4`
+      const video = document.createElement('video')
+
+      video.src = videoUrl
+      video.preload = 'metadata' // Preload metadata to get duration
+
+      video.addEventListener('loadeddata', function () {
+        const duration = video.duration
+        if (duration <= 1200) {
+          setCurrentVidDuration(duration)
         }
-        console.log(`The video duration is ${duration} seconds.`);
-      });
-      
-    };
+        console.log(`The video duration is ${duration} seconds.`)
+      })
+    }
 
-    fetchVideo();
-  }, [videoID, setCurrentVidDuration]);
-
+    fetchVideo()
+  }, [videoID, setCurrentVidDuration])
 
   return (
-    <div className='pt-2 px-2 pb-3 bg-[#FBFBFB80] relative  rounded-[24px] border border-gray-200 border-opacity-60 bg-opacity-50'>
+    <div className="pt-2 px-2 pb-3 bg-[#FBFBFB80] relative  rounded-[24px] border border-gray-200 border-opacity-60 bg-opacity-50">
       <video
-        id='videoPlayer'
+        id="videoPlayer"
         onClick={playPause}
         ref={recRef}
         autoPlay
@@ -92,7 +95,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ url, videoID, setCurrentVideo
       >
         <source src={url} type="video/mp4" />
       </video>
-      <div className='bottom-5 right-4 bg-[#E7E7ED] font-[500] font-Work-Sans text-[14px] px-[14px] py-[7px] absolute rounded-[4px] '>{customTime(currentTime, duration)}</div>
+      <div className="bottom-5 right-4 bg-[#E7E7ED] font-[500] font-Work-Sans text-[14px] px-[14px] py-[7px] absolute rounded-[4px] ">
+        {customTime(currentTime, duration)}
+      </div>
     </div>
   )
 }

@@ -36,7 +36,8 @@ const ForgotPassword2: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showPassword2, setShowPassword2] = useState<boolean>(false)
   const [valErrMsg, setValErrMsg] = useState<boolean>(false)
-  const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
+  const errMsgVal =
+    'Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long'
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -49,7 +50,8 @@ const ForgotPassword2: React.FC = () => {
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/
 
     if (!passwordRegex.test(value)) {
       setValErrMsg(true)
@@ -91,16 +93,17 @@ const ForgotPassword2: React.FC = () => {
     setConsecutiveFailures(0)
     try {
       const response = await fetch(
-        `https://helpmeout.cofucan.tech/srce/api/request_otp/?username=${username}`,
+        `https://api.helpmeout.tech/request_otp/?username=${username}`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*",
-            "Vary": "Origin"
+            'Access-Control-Allow-Origin': '*',
+            Vary: 'Origin',
           },
-          mode: "cors"
-        })
+          mode: 'cors',
+        },
+      )
 
       console.log(response)
       const result = await response.json()
@@ -157,7 +160,7 @@ const ForgotPassword2: React.FC = () => {
     const { value } = e.target
     setPassword(value)
     console.log(value)
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])\S{5,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])\S{5,}$/
     if (passwordRegex.test(value)) {
       setValErrMsg(false)
     }
@@ -176,7 +179,7 @@ const ForgotPassword2: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    
+
     if (valErrMsg) {
       return
     }
@@ -204,14 +207,14 @@ const ForgotPassword2: React.FC = () => {
 
       return
     }
-    
+
     setConsecutiveFailures(0)
     setOtpExpiredMessage(null)
     const data = { username, password }
     console.log(data)
     try {
       const response = await fetch(
-        'https://www.cofucan.tech/srce/api/change_password/',
+        'https://api.helpmeout.tech/change_password/',
         {
           method: 'POST',
           headers: {

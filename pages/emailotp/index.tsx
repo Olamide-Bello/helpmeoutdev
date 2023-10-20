@@ -59,19 +59,16 @@ const EmailOtp: React.FC = () => {
     const data = { username, email, password }
     console.log(data)
     try {
-      const response = await fetch(
-        'https://helpmeout.cofucan.tech/srce/api/signup/',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*",
-            "Vary": "Origin"
-          },
-          mode: 'cors',
-          body: JSON.stringify(data)
+      const response = await fetch('https://api.helpmeout.tech/signup/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          Vary: 'Origin',
         },
-      )
+        mode: 'cors',
+        body: JSON.stringify(data),
+      })
 
       const result = await response.json()
       console.log(result)

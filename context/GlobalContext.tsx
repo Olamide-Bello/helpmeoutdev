@@ -52,9 +52,11 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const extensionId = localStorage.getItem('extension_id')
+      const savedSession = localStorage.getItem('user')
+      console.log(extensionId)
       chrome.runtime?.sendMessage(extensionId, {
         action: 'FROM_PAGE',
-        username: user,
+        username: savedSession,
       })
     }
   }, [user])
@@ -78,7 +80,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
         const init = titleCase(user)
         try {
           const response = await fetch(
-            `https://www.cofucan.tech/srce/api/send-email/${id}?sender=${init}&recipient=${email}`,
+            `https://api.helpmeout.tech/send-email/${id}?sender=${init}&recipient=${email}`,
             {
               method: 'POST',
               headers: {
@@ -99,7 +101,7 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       } else {
         try {
           const response = await fetch(
-            `https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}&sender=""`,
+            `https://api.helpmeout.tech/send-email/${id}?receipient=${email}&sender=""`,
             {
               method: 'POST',
               headers: {

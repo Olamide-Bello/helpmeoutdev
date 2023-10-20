@@ -18,7 +18,8 @@ const Hero = () => {
           <div className="w-full flex justify-center md:justify-start">
             {' '}
             <a
-              href="https://drive.google.com/file/d/1DwxWRhQjHoK5YbLyngG5-2-QEaDnD9tN/view?usp=drive_link"
+              href="https://github.com/hngx-org/helpmeout-app/archive/refs/heads/main.zip"
+              download
               className="px-[24px] py-[22px] bg-primary-600 rounded-[8px] flex items-center gap-[10px] text-pastel-bg text-[18px]"
             >
               {' '}

@@ -16,7 +16,7 @@ const EditUsername = () => {
 
     try {
       const response = await fetch(
-        `https://helpmeout.cofucan.tech/srce/api/username/${oldUsername}/?new_username=${newUsername}`,
+        `https://api.helpmeout.tech/username/${oldUsername}/?new_username=${newUsername}`,
         {
           method: 'PUT',
           headers: {

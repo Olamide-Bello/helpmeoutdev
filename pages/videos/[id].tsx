@@ -91,10 +91,10 @@ const Single = () => {
     const fetchVideoData = async () => {
       try {
         const response = await axios.get(
-          `https://www.cofucan.tech/srce/api/recording/${id}`,
+          `https://helpmeout.cofucan.tech/srce/api/recording/${id}`,
         )
         const data = response.data
-        const videoUrl = `https://www.cofucan.tech/srce/api/video/${id}.mp4`
+        const videoUrl = `https://helpmeout.cofucan.tech/srce/api/stream/${id}`
 
         setVideoName(data.title)
         setUrl(videoUrl)
@@ -110,7 +110,7 @@ const Single = () => {
           mode: 'cors'
         };
         const transcriptResponse = await fetch(
-          `https://www.cofucan.tech/srce/api/transcript/${id}.json`,
+          `https://helpmeout.cofucan.tech/srce/api/transcript/${id}`,
           requestOptions
         )
         const transcriptData = await transcriptResponse.json()
@@ -156,7 +156,7 @@ const Single = () => {
   const updateName = async () => {
     try {
       const response = await fetch(
-        `https://www.cofucan.tech/srce/api/video/${id}?title=${newName}`,
+        `https://helpmeout.cofucan.tech/srce/api/video/${id}?title=${newName}`,
         {
           method: 'PATCH',
           headers: {

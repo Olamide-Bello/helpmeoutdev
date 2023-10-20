@@ -34,6 +34,7 @@ const ForgotPassword2: React.FC = () => {
     null,
   )
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showPassword2, setShowPassword2] = useState<boolean>(false)
   const [valErrMsg, setValErrMsg] = useState<boolean>(false)
   const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
 
@@ -41,10 +42,14 @@ const ForgotPassword2: React.FC = () => {
     setShowPassword(!showPassword)
   }
 
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2)
+  }
+
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{5,}$/
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/
 
     if (!passwordRegex.test(value)) {
       setValErrMsg(true)
@@ -86,7 +91,7 @@ const ForgotPassword2: React.FC = () => {
     setConsecutiveFailures(0)
     try {
       const response = await fetch(
-        `https://www.cofucan.tech/srce/api/request_otp/?username=${username}`,
+        `https://helpmeout.cofucan.tech/srce/api/request_otp/?username=${username}`,
         {
           method: 'POST',
           headers: {
@@ -173,11 +178,10 @@ const ForgotPassword2: React.FC = () => {
     e.preventDefault()
     
     if (valErrMsg) {
-      return;
+      return
     }
 
     if (otpErr) {
-      // Increment consecutive failures
       setConsecutiveFailures(consecutiveFailures + 1)
 
       if (consecutiveFailures >= 5) {
@@ -348,7 +352,7 @@ const ForgotPassword2: React.FC = () => {
             </div>
           </div>
           {valErrMsg && (
-            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
               {errMsgVal}
             </p>
           )}
@@ -359,7 +363,7 @@ const ForgotPassword2: React.FC = () => {
             </p>
             <div className="relative w-full">
               <input
-                type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                type={showPassword2 ? 'text' : 'password'} // Toggle input type based on showPassword state
                 placeholder="Enter your Password"
                 required
                 value={password2}
@@ -369,15 +373,15 @@ const ForgotPassword2: React.FC = () => {
               />
               <button
                 type="button"
-                onClick={togglePasswordVisibility}
+                onClick={togglePasswordVisibility2}
                 className="password-toggle-button text-xl absolute top-[50%] right-[1rem] transform translate-y-[-90%]"
               >
-                {showPassword ? <BsEye /> : <BsEyeSlash />}
+                {showPassword2 ? <BsEye /> : <BsEyeSlash />}
               </button>
             </div>
           </div>
           {err && (
-            <p className="text-[16px] text-red-400 font-Sora font-medium mb-[14px]">
+            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
               {errMsg}
             </p>
           )}

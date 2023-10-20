@@ -27,7 +27,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   // }, [videoID, router.query.videoID]);
   const router = useRouter()
   const { id } = router.query
-  const videoUrl = `https://www.cofucan.tech/srce/api/video/${id}.mp4`
+  const videoUrl = `https://helpmeout.cofucan.tech/srce/api/stream/${id}`
   //custom file name
   const [customFileName, setCustomFileName] = useState('')
   const placeHolder = `Untitled_Video_${videoID}`
@@ -66,7 +66,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
       displayModal()
       try {
         const response = await fetch(
-          `https://www.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`,
+          `https://helpmeout.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`,
           {
             method: 'POST',
             headers: {
@@ -127,10 +127,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
     const fetchVideoData = async () => {
       try {
         const response = await axios.get(
-          `https://www.cofucan.tech/srce/api/recording/${videoID}`,
+          `https://helpmeout.cofucan.tech/srce/api/recording/${videoID}`,
         )
         const data = response.data
-        setCurrentURL(`https://www.cofucan.tech/srce/api/video/${videoID}.mp4`)
+        setCurrentURL(`https://helpmeout.cofucan.tech/srce/api/stream/${videoID}`)
 
         setCustomFileName(data.title)
       } catch (error) {
@@ -146,7 +146,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   const updateName = async () => {
     try {
       const response = await fetch(
-        `https://www.cofucan.tech/srce/api/video/${videoID}?title=${customFileName}`,
+        `https://helpmeout.cofucan.tech/srce/api/video/${videoID}?title=${customFileName}`,
         {
           method: 'PATCH',
           headers: {

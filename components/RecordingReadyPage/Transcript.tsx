@@ -13,6 +13,8 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
   }>({ transcript: '', words: [] });
   const transcriptContainerRef = useRef<HTMLDivElement>(null); // Ref for the transcript container
 
+  const [totalVidDuration, setTotalVidDuration] = useState(0);
+
 
   // Fetch transcript data
   // useEffect(() => {
@@ -31,6 +33,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
   //     fetchTranscription();
   //   }
   // }, [videoID]);
+
   // Fetch transcript data
   useEffect(() => {
     const fetchTranscription = async () => {
@@ -45,7 +48,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
           redirect: 'follow',
           mode: 'cors'
         };
-        const response = await fetch(`https://www.cofucan.tech/srce/api/transcript/${videoID}.json`, requestOptions);
+        const response = await fetch(`https://helpmeout.cofucan.tech/srce/api/transcript/${videoID}`, requestOptions);
         // const response = await fetch("https://random-words-api.vercel.app/word");
         console.log("response at 40T:", response);
         const data = await response.json();
@@ -57,6 +60,26 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
     };
     if (videoID) {
       fetchTranscription();
+    }
+  }, [videoID]);
+
+   //fetch the videoDuration from videoDetails API
+   useEffect(() => {
+    const fetchVideoFromNewAPI = async () => {
+      console.log("this is in videoDetails fetch");
+      try {
+        const response = await fetch(`https://helpmeout.cofucan.tech/srce/api/recording/${videoID}`);
+        // const response = await fetch("https://random-words-api.vercel.app/word");
+        // console.log("response at 30VD in Transcript:", response);
+        const data = await response.json();
+        console.log("data in VD at 76:", data);
+        setTotalVidDuration(data.video_length);
+      } catch (error) {
+        console.error('Error fetching videoDetails in Transcript:', error);
+      }
+    };
+    if (videoID) {
+      fetchVideoFromNewAPI();
     }
   }, [videoID]);
 
@@ -90,10 +113,10 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
 
   useEffect(() => {
     // Making sure videoDuration is greater than 0 to avoid division by zero
-    if (currentVidDuration > 0 && currentVideoTime > 0) {
-      // console.log("curentVidDur:", currentVidDuration, " & currVidTime:", currentVideoTime);
+    if (totalVidDuration > 0 && currentVideoTime > 0) {
+      // console.log("curentVidDur:", totalVidDuration, " & currVidTime:", currentVideoTime);
       // Calculate the progress percentage
-      const progress = (currentVideoTime / currentVidDuration) * 100;
+      const progress = (currentVideoTime / totalVidDuration) * 100;
       console.log("Progresses:", progress);
       // Scroll your transcript container here
       const transcriptContainer = document.getElementById('org-transcipt-container');
@@ -101,17 +124,17 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
         transcriptContainer.scrollTop = (progress / 100) * transcriptContainer.scrollHeight * 0.9;  //adjust the scroll speed
       }
     }
-  }, [currentVidDuration, currentVideoTime]);
+  }, [totalVidDuration, currentVideoTime]);
 
 
   // set interval to show the transcript in different div with interval of 'intervalDuration'
   const intervalDuration = 6; // 6 seconds
-  const duration = currentVidDuration;
+  const duration = totalVidDuration;
   const intervals = [];
   for (let i = 0; i < duration; i += intervalDuration) {
     intervals.push(i);
   }
-  console.log(intervals)
+  // console.log(intervals)
 
   return (
     <div className='w-full'>
@@ -133,7 +156,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
 
           {/* if we are getting duration infinity err then uncomment this piece of code and comment the next section of code also the above code that is used to set intervals in intervals[] */}
           {/* transcript to show as a single piece of text -start */}
-          <div className='p-2 overflow-y-scroll custom-scrollbar flex gap-4 h-full pt-10 ' id='org-transcipt-container'>
+          {/* <div className='p-2 overflow-y-scroll custom-scrollbar flex gap-4 h-full pt-10 ' id='org-transcipt-container'>
           <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3">
               {formatTime(currentVideoTime)}
               </h5>
@@ -146,18 +169,18 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
                 );
               })}
 
-            </div>
+            </div> */}
           {/* transcript to show as a single piece of text -end */}
 
 
 
           {/* this code to work - we need video duration, if duration is infinity then this piece of code will return memory overflow err as duration is infinity the arr will give memory overload */}
           {/* transcript to display as it is in design -start */}
-          {/* <div className='p-2 overflow-y-scroll custom-scrollbar gap-4 h-full pt-10 ' id='org-transcipt-container'>
+          <div className='p-2 overflow-y-scroll custom-scrollbar gap-4 h-full pt-10 ' id='org-transcipt-container'>
             {intervals.map((startTime, index) => {
               const endTime = startTime + intervalDuration;
               const wordsInInterval = transcriptionData.words.filter(item => item.start >= startTime && item.start < endTime);
-              console.log(wordsInInterval)
+              // console.log(wordsInInterval)
               return (
                 <div key={index} className='flex'>
                   <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3 xs:w-2/12">
@@ -175,7 +198,7 @@ const Transcript: React.FC<TranscriptProps> = ({ videoID, currentVideoTime, curr
                   </div>
                 </div>
               );
-            })} */}
+            })}
             {/* transcript to display as it is in design -end */}
             {/* this section ends here till here  */}
           </div>

@@ -8,7 +8,7 @@ import Navbar from '@/components/shared/Navbar'
 import Link from 'next/link'
 import axios from 'axios'
 import { GlobalContext } from '../context/GlobalContext'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Spinner from '../components/Spinner/Spinner'
 import MainLayout from '@/components/shared/MainLayout'
@@ -26,7 +26,6 @@ function Videos() {
   const router = useRouter()
   const { id } = router.query
   const { user } = useContext(GlobalContext)
-  //const displayName: string = user?.displayName || 'user13'
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
@@ -35,28 +34,27 @@ function Videos() {
   const [selectedVideoId, setSelectedVideoId] = useState<number | null>(null)
 
   useEffect(() => {
-    fetchVideos();
-  }, [user]);
+    fetchVideos()
+  }, [user])
 
- 
-   
   const fetchVideos = async () => {
+    setLoading(true) // Set loading state to true when starting the fetch operation
     try {
-      const headers = new Headers();
-      headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN'); // Add your access token or any other necessary headers
-      headers.append("Content-Type", "application/json");
-      headers.append("Access-Control-Allow-Origin", "*");
+      const headers = new Headers()
+      headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN') // Add your access token or any other necessary headers
+      headers.append('Content-Type', 'application/json')
+      headers.append('Access-Control-Allow-Origin', '*')
       const response = await fetch(
-        `https://www.cofucan.tech/srce/api/recording/user/${user}`,
+        `https://helpmeout.cofucan.tech/srce/api/recording/user/${user}`,
         {
           method: 'GET',
           headers: headers,
-          mode: "cors"
-        }
-      );
-  
+          mode: 'cors',
+        },
+      )
+
       if (response.ok) {
-        const responseData = await response.json(); // Parse JSON response
+        const responseData = await response.json() // Parse JSON response
         const formattedVideos: Video[] = await Promise.all(
           responseData.map(async (video: any) => {
             const videoElement = document.createElement('video')
@@ -69,18 +67,7 @@ function Videos() {
                   name: video.title,
                   src: video.thumbnail_location,
                   created_date: formatDate(video.created_date),
-                  duration: duration,
-                })
-              }
-
-              videoElement.onerror = (error) => {
-                console.error('Error loading video:', error)
-                resolve({
-                  id: video.id,
-                  name: video.title,
-                  src: video.thumbnail_location,
-                  created_date: formatDate(video.created_date),
-                  duration: 0, // Set duration to 0 if there's an error loading the video
+                  duration: video.video_length, // Use video_length from the API response
                 })
               }
 
@@ -89,18 +76,15 @@ function Videos() {
           }),
         )
 
-        setVideos(formattedVideos);
-        setLoading(false);
-      } else {
-        console.error('Error fetching videos:', response.status);
-        setLoading(false);
+        setVideos(formattedVideos)
       }
     } catch (error) {
-      console.error('Error fetching videos:', error);
-      setLoading(false);
+      console.error('Error fetching videos:', error)
+      // Handle errors here
+    } finally {
+      setLoading(false) // Set loading state to false after the fetch operation is complete (either success or error)
     }
-  };
-
+  }
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
@@ -131,31 +115,52 @@ function Videos() {
     ).padStart(2, '0')}`
   }
 
-const handleMoreClick = (videoId: number) => {
-  if (selectedVideoId === videoId && showDeleteOption) {
-    // If the same "more" button is clicked again, hide the delete option
-    setShowDeleteOption(false);
-    setSelectedVideoId(null);
-  } else {
-    setShowDeleteOption(true);
-    setSelectedVideoId(videoId);
-  }
-};
-
-const handleDeleteVideo = async () => {
-  try {
-    if (selectedVideoId !== null) {
-      await axios.delete(
-        `https://www.cofucan.tech/srce/api/video/${selectedVideoId}`,
-      );
-      // Fetch videos again after deletion
-      fetchVideos();
+  const handleMoreClick = (videoId: number) => {
+    if (selectedVideoId === videoId && showDeleteOption) {
+      // If the same "more" button is clicked again, hide the delete option
+      setShowDeleteOption(false)
+      setSelectedVideoId(null)
+    } else {
+      setShowDeleteOption(true)
+      setSelectedVideoId(videoId)
     }
-    setShowDeleteOption(false); // Hide the delete option after deletion
-  } catch (error) {
-    console.error('Error deleting video:', error);
   }
-};
+
+  const handleDeleteVideo = async () => {
+    try {
+      if (selectedVideoId !== null) {
+        await axios.delete(
+          `https://helpmeout.cofucan.tech/srce/api/video/${selectedVideoId}`,
+        )
+        // Fetch videos again after deletion
+        fetchVideos()
+        // Show Toastify message
+        toast.success('Video has been deleted successfully!', {
+          position: 'top-center',
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        })
+      }
+      setShowDeleteOption(false) // Hide the delete option after deletion
+    } catch (error) {
+      console.error('Error deleting video:', error)
+      // Show Toastify error message
+      toast.error('Error deleting video. Please try again later.', {
+        position: 'top-center',
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      })
+    }
+  }
+
   return (
     <div>
       <div className="w-full min-h-full flex flex-col justify-between">
@@ -194,33 +199,49 @@ const handleDeleteVideo = async () => {
           {loading ? (
             <Spinner />
           ) : (
-            <div
-              className="lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full"
+            /*  <div
+               className="lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full"
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 justifyContent: 'space-around',
-                alignItems: 'center',
-                margin: '0 auto',
+                alignItems: 'start',
+                //margin: '0 auto',
                 // overflowY: 'scroll',
                 // maxHeight: '100%',
               }}
-            >
+            >  */
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 justify-between lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full ">
               {filteredVideos.length === 0 ? (
-                <div className="NoRecentVideosMessage text-xl text-neutral-900 font-medium">
-                  You have no recent videos
+                <div
+                  className="NoRecentVideosMessage text-xl text-neutral-900 font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center flex flex-col justify-center"
+                  style={{
+                    textAlign: 'center',
+                    transform: 'translate(-50%, -50%)',
+                    width: '100%',
+                  }}
+                >
+                  <Image
+                    className="w-[50px] h-[50px]"
+                    width={50}
+                    height={50}
+                    src="/assets/video-repo/opps1.gif"
+                    alt="thumbnail"
+                    quality={100}
+                  />
+                  <div>Opps! No video found</div>
                 </div>
               ) : (
                 filteredVideos.map((item, index) => (
                   <>
                     <div
-                      className="WebCard px-1 pt-4 pb-6 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify-center items-center gap-0 inline-flex lg:w-[400px] lg:h-[322px]  md:w-[400px] md:h-[322px]  sm:w-[400px] sm:h-[322px] ss:w-[400px] ss:h-[322px] xs:w-[320px] xs:h-[280px]"
+                      className="WebCard px-1 pt-1 pb-1 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify items-center gap-0 inline-flex lg:w-[500px] lg:h-[322px]  md:w-[500px] md:h-[322px]  sm:w-[500px] sm:h-[322px] ss:w-[500px] ss:h-[322px] xs:w-[320px] xs:h-[280px]"
                       style={{
-                        margin: '1rem',
+                        margin: '10px',
                       }}
                     >
                       <div
-                        className="VideoFrame  relative rounded-xl border border-gray-200"
+                        className="VideoFrame  relative rounded-2xl border border-gray-200"
                         style={{
                           margin: '0.5rem',
                           position: 'relative',
@@ -228,11 +249,12 @@ const handleDeleteVideo = async () => {
                       >
                         <Link key={index} href={`/videos/${item?.id}`} passHref>
                           <Image
-                            className="lg:w-[380px] lg:h-[220px] md:w-[380px] md:h-[220px] sm:w-[380px] sm:h-[220px] ss:w-[380px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-md bg-gray-300 object-cover"
-                            width={100}
-                            height={100}
+                            className="w-[525px] h-[220px] lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-2xl bg-gray-300 "
+                            width={525}
+                            height={220}
                             src={item.src}
                             alt="thumbnail"
+                            quality={100}
                           />
                         </Link>
                         <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
@@ -279,9 +301,14 @@ const handleDeleteVideo = async () => {
                                     className="DeleteButton text-xl font-medium font-['Work Sans'] capitalize"
                                     style={{
                                       position: 'absolute',
-                                      top: '25px',
-                                      right: '10px',
-                                      color: 'red',
+                                      top: '22px',
+                                      right: '12px',
+                                      backgroundColor: 'white', // Background color red
+                                      color: 'red', // Text color white
+                                      padding: '2px 12px', // Padding for the button
+                                      borderRadius: '8px', // Border radius for rounded corners
+                                      boxShadow:
+                                        '0px 4px 10px rgba(0, 0, 0, 0.7)', // Shadow effect
                                     }}
                                   >
                                     Delete

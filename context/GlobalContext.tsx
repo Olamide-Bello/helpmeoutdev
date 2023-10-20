@@ -52,10 +52,11 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const extensionId = localStorage.getItem('extension_id')
+      const savedSession = localStorage.getItem('user')
       console.log(extensionId)
       chrome.runtime?.sendMessage(extensionId,{
         action: "FROM_PAGE",
-        username: user
+        username: savedSession
       })
     }
   }, [user])
@@ -84,10 +85,10 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "*",
-                "Vary": "Origin"
+                'Access-Control-Allow-Origin': '*',
+                Vary: 'Origin',
               },
-              mode: "cors"
+              mode: 'cors',
             },
           )
           console.log(response)
@@ -105,10 +106,10 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "*",
-                "Vary": "Origin"
+                'Access-Control-Allow-Origin': '*',
+                Vary: 'Origin',
               },
-              mode: "cors"
+              mode: 'cors',
             },
           )
           console.log(response)

@@ -36,7 +36,7 @@ const ForgotPassword: React.FC = () => {
     e.preventDefault()
     try {
       const response = await fetch(
-        `https://www.cofucan.tech/srce/api/request_otp/?username=${userName}`,
+        `https://helpmeout.cofucan.tech/srce/api/request_otp/?username=${userName}`,
         {
           method: 'POST',
           headers: {

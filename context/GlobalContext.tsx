@@ -52,9 +52,11 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const extensionId = localStorage.getItem('extension_id')
-      chrome.runtime?.sendMessage(extensionId, {
-        action: 'FROM_PAGE',
-        username: user,
+      const savedSession = localStorage.getItem('user')
+      console.log(extensionId)
+      chrome.runtime?.sendMessage(extensionId,{
+        action: "FROM_PAGE",
+        username: savedSession
       })
     }
   }, [user])

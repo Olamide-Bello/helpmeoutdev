@@ -111,7 +111,7 @@ const SignUp = () => {
     //const data: StateObject = { username, email, password, otp };
     try {
       const response = await fetch(
-        'https://api.helpmeout.tech/get_signup_otp/',
+        'https://api.helpmeout.tech/get-signup-otp/',
         {
           method: 'POST',
           headers: {

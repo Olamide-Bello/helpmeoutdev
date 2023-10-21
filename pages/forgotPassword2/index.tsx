@@ -93,7 +93,7 @@ const ForgotPassword2: React.FC = () => {
     setConsecutiveFailures(0)
     try {
       const response = await fetch(
-        `https://api.helpmeout.tech/request_otp/?username=${username}`,
+        `https://api.helpmeout.tech/request-otp/?username=${username}`,
         {
           method: 'POST',
           headers: {
@@ -214,7 +214,7 @@ const ForgotPassword2: React.FC = () => {
     console.log(data)
     try {
       const response = await fetch(
-        'https://api.helpmeout.tech/change_password/',
+        'https://api.helpmeout.tech/change-password/',
         {
           method: 'POST',
           headers: {

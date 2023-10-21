@@ -247,7 +247,7 @@ function Videos() {
                             quality={100}
                           />
                         </Link>
-                        <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
+                        <div className="VideoDuration px-4 py-1 absolute bottom-3 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
                           <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
                             {item.duration
                               ? formatDuration(item.duration)

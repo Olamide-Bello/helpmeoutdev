@@ -45,8 +45,6 @@ function Videos() {
     fetchVideos()
   }, [user])
 
-
- 
   const fetchVideos = async () => {
     setLoading(true) // Set loading state to true when starting the fetch operation
     try {
@@ -55,7 +53,7 @@ function Videos() {
       headers.append('Content-Type', 'application/json')
       headers.append('Access-Control-Allow-Origin', '*')
       const response = await fetch(
-        `https://helpmeout.cofucan.tech/srce/api/recording/user/${user}`,
+        `https://api.helpmeout.tech/recording/user/${user}`,
         {
           method: 'GET',
           headers: headers,
@@ -64,31 +62,20 @@ function Videos() {
       )
 
       if (response.ok) {
-        const responseData = await response.json() // Parse JSON response
-        const formattedVideos: Video[] = await Promise.all(
-          responseData.map(async (video: any) => {
-            const videoElement = document.createElement('video')
-            videoElement.src = video.original_location
-            return new Promise<Video>((resolve) => {
-              videoElement.onloadedmetadata = () => {
-                const duration = videoElement.duration // Duration in seconds
-                resolve({
-                  id: video.id,
-                  name: video.title,
-                  src: video.thumbnail_location,
-                  created_date: formatDate(video.created_date),
-                  duration: video.video_length, // Use video_length from the API response
-                })
-              }
-
-             
-              videoElement.load()
-            })
-          }),
-        )
-
-        setVideos(formattedVideos)
-      }
+      const responseData = await response.json();
+      const formattedVideos: Video[] = await Promise.all(
+        responseData.map(async (video: any) => {
+          return {
+            id: video.id,
+            name: video.title,
+            src: video.thumbnail_location,
+            created_date: formatDate(video.created_date),
+            duration: video.video_length,
+          };
+        })
+      );
+      setVideos(formattedVideos);
+    }
     } catch (error) {
       console.error('Error fetching videos:', error)
       // Handle errors here
@@ -141,7 +128,7 @@ function Videos() {
     try {
       if (selectedVideoId !== null) {
         await axios.delete(
-          `https://helpmeout.cofucan.tech/srce/api/video/${selectedVideoId}`,
+          `https://api.helpmeout.tech/video/${selectedVideoId}`,
         )
         // Fetch videos again after deletion
         fetchVideos()
@@ -224,13 +211,12 @@ function Videos() {
             >  */
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 justify-between lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full ">
               {filteredVideos.length === 0 ? (
-                        <div
+                <div
                   className="NoRecentVideosMessage text-xl text-neutral-900 font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center flex flex-col justify-center"
                   style={{
                     textAlign: 'center',
                     transform: 'translate(-50%, -50%)',
                     width: '100%',
-                    height: '100vh',
                   }}
                 >
                   <Image
@@ -261,15 +247,15 @@ function Videos() {
                       >
                         <Link key={index} href={`/videos/${item?.id}`} passHref>
                           <Image
-                            className="w-[525px] h-[220px] lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-2xl bg-gray-300 "
-                            width={525}
+                            className="w-[280px] h-[220px] lg:w-[475px] lg:h-[220px] md:w-[475px] md:h-[220px] sm:w-[475px] sm:h-[220px] ss:w-[475px] ss:h-[220px] xs:w-[290px] xs:h-[170px] xx:w-[210px] xx:h-[170px] rounded-2xl bg-gray-300 "
+                            width={280}
                             height={220}
                             src={item.src}
                             alt="thumbnail"
                             quality={100}
                           />
                         </Link>
-                        <div className="VideoDuration px-4 py-1 absolute bottom-4 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
+                        <div className="VideoDuration px-4 py-1 absolute bottom-3 right-3 bg-gray-200 rounded justify-end items-end gap-2 inline-flex">
                           <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
                             {item.duration
                               ? formatDuration(item.duration)

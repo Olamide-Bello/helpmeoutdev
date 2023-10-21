@@ -52,16 +52,16 @@ const LogIn = () => {
     e.preventDefault()
     const data = { username, password }
     try {
-      const response = await fetch('https://helpmeout.cofucan.tech/srce/api/login/', {
+      const response = await fetch('https://api.helpmeout.tech/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "Access-Control-Allow-Origin": "*",
-          "Vary": "Origin"
+          'Access-Control-Allow-Origin': '*',
+          Vary: 'Origin',
         },
 
         mode: 'cors',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       })
 
       console.log(response)

@@ -52,10 +52,14 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const extensionId = localStorage.getItem('extension_id')
-      chrome.runtime?.sendMessage(extensionId,{
-        action: "FROM_PAGE",
-        username: user
-      })
+      if (extensionId) {
+	const savedSession = localStorage.getItem('user')
+	console.log(extensionId)
+        chrome.runtime?.sendMessage(extensionId, {
+          action: 'FROM_PAGE',
+          username: savedSession,
+        })
+      }
     }
   }, [user])
 
@@ -78,15 +82,15 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
         const init = titleCase(user)
         try {
           const response = await fetch(
-            `https://www.cofucan.tech/srce/api/send-email/${id}?sender=${init}&recipient=${email}`,
+            `https://api.helpmeout.tech/send-email/${id}?sender=${init}&recipient=${email}`,
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "*",
-                "Vary": "Origin"
+                'Access-Control-Allow-Origin': '*',
+                Vary: 'Origin',
               },
-              mode: "cors"
+              mode: 'cors',
             },
           )
           console.log(response)
@@ -99,15 +103,15 @@ const GlobalState = ({ children }: { children: React.ReactNode }) => {
       } else {
         try {
           const response = await fetch(
-            `https://www.cofucan.tech/srce/api/send-email/${id}?receipient=${email}&sender=""`,
+            `https://api.helpmeout.tech/send-email/${id}?receipient=${email}&sender=""`,
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "*",
-                "Vary": "Origin"
+                'Access-Control-Allow-Origin': '*',
+                Vary: 'Origin',
               },
-              mode: "cors"
+              mode: 'cors',
             },
           )
           console.log(response)

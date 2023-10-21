@@ -14,7 +14,6 @@ interface User {
 }
 
 const ForgotPassword: React.FC = () => {
-  
   const [message, setMessage] = useState<boolean | string>(false)
   const {otp, setOtp} = useContext(GlobalContext)
   const {username, setUsername} = useContext(GlobalContext)
@@ -38,22 +37,23 @@ const ForgotPassword: React.FC = () => {
     console.log(value)
   }
 
-  
-
-  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
+  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = async (
+    e,
+  ) => {
     e.preventDefault()
     try {
       const response = await fetch(
-        `https://helpmeout.cofucan.tech/srce/api/request_otp/?username=${userName}`,
+        `https://api.helpmeout.tech/request-otp/?username=${userName}`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*",
-            "Vary": "Origin"
+            'Access-Control-Allow-Origin': '*',
+            Vary: 'Origin',
           },
-          mode: "cors"
-        })
+          mode: 'cors',
+        },
+      )
 
       console.log(response)
       const result = await response.json()
@@ -130,10 +130,7 @@ const ForgotPassword: React.FC = () => {
             Enter your username to continue
           </p>
         </section>
-        <div
-          className="flex flex-col w-full ss:w-[475px]"
-         
-        >
+        <div className="flex flex-col w-full ss:w-[475px]">
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">
               Username
@@ -148,7 +145,7 @@ const ForgotPassword: React.FC = () => {
             />
           </div>
           <button
-           onClick={handleSubmit}
+            onClick={handleSubmit}
             className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
           >
             Get Verification code via Email

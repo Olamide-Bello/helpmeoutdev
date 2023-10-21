@@ -36,7 +36,8 @@ const SignUp = () => {
   const [email, setEmail] = useState('')
   const [isEmailValid, setIsEmailValid] = useState(false)
   const [valErrMsg, setValErrMsg] = useState<boolean>(false)
-  const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
+  const errMsgVal =
+    'Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long'
   const [errorMessage, setErrorMessage] = useState<boolean | string>(false)
 
   useEffect(() => {
@@ -49,7 +50,8 @@ const SignUp = () => {
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/
 
     if (!passwordRegex.test(value)) {
       setValErrMsg(true)
@@ -58,24 +60,24 @@ const SignUp = () => {
     }
   }
 
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
   const handleEmailOtp = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setEmail(value);
-    setIsEmailValid(value !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
-  };
+    const { value } = e.target
+    setEmail(value)
+    setIsEmailValid(value !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+  }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setUsername(value)
     if (/[^a-zA-Z0-9_]/.test(value)) {
-      setErrorMessage('Username cannot contain symbols or spaces');
-    }
-    else if (/^\s+|\s+$|\s+(?=\s)/.test(value)) {
-      setErrorMessage('Username cannot contain leading, trailing, or consecutive spaces');
+      setErrorMessage('Username cannot contain symbols or spaces')
+    } else if (/^\s+|\s+$|\s+(?=\s)/.test(value)) {
+      setErrorMessage(
+        'Username cannot contain leading, trailing, or consecutive spaces',
+      )
     } else {
       setErrorMessage('')
     }
@@ -84,13 +86,12 @@ const SignUp = () => {
   const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setPassword(value)
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[.?}")+;:,<>/(_!@#$%^&*])\S{8,}$/
     if (passwordRegex.test(value)) {
       setValErrMsg(false)
     }
   }
-
- 
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
@@ -117,16 +118,16 @@ const SignUp = () => {
     //const data: StateObject = { username, email, password, otp };
     try {
       const response = await fetch(
-        'https://helpmeout.cofucan.tech/srce/api/get_signup_otp/',
+        'https://api.helpmeout.tech/get-signup-otp/',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*",
-                        "Vary": "Origin"
+            'Access-Control-Allow-Origin': '*',
+            Vary: 'Origin',
           },
           body: JSON.stringify({ username, email }),
-          mode: "cors"
+          mode: 'cors',
         },
       )
 
@@ -169,25 +170,24 @@ const SignUp = () => {
         console.error('Sign-up failed with status code', result.message)
         toast.error(`Sign-up failed`, {
           style: {
-            background: 'white', 
-            color: 'red', 
-            borderRadius: '8px', 
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
-            padding: '12px 24px', 
-            fontSize: '16px', 
+            background: 'white',
+            color: 'red',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            padding: '12px 24px',
+            fontSize: '16px',
             textAlign: 'center',
           },
         })
-        
       }
     } catch (error) {
       console.error('An error occurred:', error)
       toast.error(`Error: ${error}`, {
         style: {
-          background: 'white', 
-          color: 'red', 
-          borderRadius: '8px', 
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+          background: 'white',
+          color: 'red',
+          borderRadius: '8px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           padding: '12px 24px',
           fontSize: '16px',
           textAlign: 'center',
@@ -363,7 +363,11 @@ const SignUp = () => {
               className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium  text-[14px] xs:text-[16px]"
             />
           </div>
-          {errorMessage && <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
+              {errorMessage}
+            </p>
+          )}
 
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">Email</p>
@@ -376,10 +380,10 @@ const SignUp = () => {
               className="w-full input__tag h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
             {!isEmailValid && email.length > 0 && (
-            <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
-              Invalid email address
-            </p>
-          )}
+              <p className="text-[14px] text-red-400 font-Sora font-medium mb-[14px]">
+                Invalid email address
+              </p>
+            )}
           </div>
           <div>
             <p className="text-[16px] font-Sora font-medium mb-[14px]">

@@ -1,7 +1,11 @@
-import Link from "next/link";
-import React from "react";
-
-function VideoCard({ url, id, date }) {
+import Link from 'next/link'
+import React from 'react'
+interface VideoProps {
+  url: string
+  id: string
+  date: string
+}
+function VideoCard({ url, id, date }: VideoProps) {
   return (
     <Link
       href={`/file/${id}`}
@@ -14,12 +18,12 @@ function VideoCard({ url, id, date }) {
         loop={true}
         className="w-full h-[120px] rounded-[10px] bg-white-300 object-cover"
       ></video>
-      <p className="text-dark-100 font-ppSB text-[15px] mt-1">{id ?? "N/A"}</p>
+      <p className="text-dark-100 font-ppSB text-[15px] mt-1">{id ?? 'N/A'}</p>
       <p className="text-white-400 opacity-[.5] font-ppReg text-[11px]">
-        {date ?? "N/A"}
+        {date ?? 'N/A'}
       </p>
     </Link>
-  );
+  )
 }
 
-export default VideoCard;
+export default VideoCard

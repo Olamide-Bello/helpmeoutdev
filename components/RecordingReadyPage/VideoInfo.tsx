@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useContext, ChangeEvent } from 'react'
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useContext,
+  ChangeEvent,
+} from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import axios from 'axios'
@@ -7,7 +13,6 @@ import { Share } from '../SingleViewPage/share'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { GlobalContext } from '@/context/GlobalContext'
-
 
 const VideoInfo: React.FC<VideoPageContentProps> = ({
   displayModal,
@@ -27,7 +32,8 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   // }, [videoID, router.query.videoID]);
   const router = useRouter()
   const { id } = router.query
-  const videoUrl = `https://helpmeout.cofucan.tech/srce/api/stream/${id}`
+  const videoUrl = `https://api.helpmeout.tech/stream/${id}`
+  const videoToViewUrl = `https://helpmeout.tech/RecordingReadyPage?videoID=${videoID}`
   //custom file name
   const [customFileName, setCustomFileName] = useState('')
   const placeHolder = `Untitled_Video_${videoID}`
@@ -41,7 +47,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   const { sendEmail, user } = useContext(GlobalContext)
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(currentURL)
+    navigator.clipboard.writeText(videoToViewUrl)
     setClicked(true)
     setTimeout(() => {
       setClicked(false)
@@ -66,7 +72,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
       displayModal()
       try {
         const response = await fetch(
-          `https://helpmeout.cofucan.tech/srce/api/send-email/${videoID}?receipient=${email}`,
+          `https://api.helpmeout.tech/send-email/${videoID}?receipient=${email}`,
           {
             method: 'POST',
             headers: {
@@ -75,7 +81,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
               'Access-Control-Allow-Origin': '*',
               Vary: 'Origin',
             },
-           
+
             mode: 'cors',
           },
         )
@@ -127,10 +133,10 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
     const fetchVideoData = async () => {
       try {
         const response = await axios.get(
-          `https://helpmeout.cofucan.tech/srce/api/recording/${videoID}`,
+          `https://api.helpmeout.tech/recording/${videoID}`,
         )
         const data = response.data
-        setCurrentURL(`https://helpmeout.cofucan.tech/srce/api/stream/${videoID}`)
+        setCurrentURL(`https://api.helpmeout.tech/stream/${videoID}`)
 
         setCustomFileName(data.title)
       } catch (error) {
@@ -146,15 +152,15 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   const updateName = async () => {
     try {
       const response = await fetch(
-        `https://helpmeout.cofucan.tech/srce/api/video/${videoID}?title=${customFileName}`,
+        `https://api.helpmeout.tech/video/${videoID}?title=${customFileName}`,
         {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*",
-            "Vary": "Origin"
+            'Access-Control-Allow-Origin': '*',
+            Vary: 'Origin',
           },
-          mode: "cors"
+          mode: 'cors',
         },
       )
 
@@ -175,9 +181,9 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
     } catch (err) {}
   }
   const changeName = (e: ChangeEvent<HTMLInputElement>) => {
-    setCustomFileName(e.target.value);
-    setIsTyping(true);
-  };
+    setCustomFileName(e.target.value)
+    setIsTyping(true)
+  }
   return (
     <div className=" ss:flex flex-col items-start ss:gap-[36px] md:gap-[64px] w-full md:w-[1/2]">
       {/* Header */}
@@ -188,15 +194,17 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         {/* Name container */}
         <div className="w-full">
           <h4 className="text-[16px] text-gray-400 mb-[9px]">Name:</h4>
-          <div className={`flex font-2xl font-[600] text-lg text-black font-Sora  items-center mb-5 w-full`}>
+          <div
+            className={`flex font-2xl font-[600] text-lg text-black font-Sora  items-center mb-5 w-full`}
+          >
             <input
               type="text"
               placeholder={placeHolder}
               value={customFileName}
-              onChange={changeName} 
+              onChange={changeName}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  updateName();
+                  updateName()
                 }
               }}
               className=" w-full border p-2 mb-2  text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600
@@ -204,7 +212,9 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
             />
             <Image
               onClick={updateName}
-               className={`cursor-pointer ${isTyping ? 'dark' : ''} transform hover:scale-110 w-[16px] h-auto xs:h-[32px] xs:w-[32px]`}
+              className={`cursor-pointer ${
+                isTyping ? 'dark' : ''
+              } transform hover:scale-110 w-[16px] h-auto xs:h-[32px] xs:w-[32px]`}
               src="/assets/video-repo/edit.svg"
               alt="edit"
               width="32"
@@ -244,7 +254,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         <div className="w-full">
           <div className="py-[12px] mb-[12px] md:px-[12px] px-[12px] border-[1px] border-primary-200 rounded-[16px] h-[64px] w-full flex items-center gap-2 justify-between">
             <p className="text-black-400 text-[14px] ss:w-full w-[150px]  xs:w-[250px] ss:text-[16px] font-[400] leading-[24.8px] font-Work-Sans overflow-x-hidden">
-              {currentURL}
+              {videoToViewUrl}
             </p>
             <div
               onClick={copyToClipboard}
@@ -274,8 +284,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
       </div>
       <div className="hidden ss:block">
         {/* Share options */}
-        <Share text={videoUrl} />
-
+        <Share text={videoToViewUrl} />
       </div>
       <ToastContainer
         position="top-center" // Position the toast container at the bottom-center

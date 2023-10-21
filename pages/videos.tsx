@@ -54,30 +54,20 @@ function Videos() {
       )
 
       if (response.ok) {
-        const responseData = await response.json() // Parse JSON response
-        const formattedVideos: Video[] = await Promise.all(
-          responseData.map(async (video: any) => {
-            const videoElement = document.createElement('video')
-            videoElement.src = video.original_location
-            return new Promise<Video>((resolve) => {
-              videoElement.onloadedmetadata = () => {
-                const duration = videoElement.duration // Duration in seconds
-                resolve({
-                  id: video.id,
-                  name: video.title,
-                  src: video.thumbnail_location,
-                  created_date: formatDate(video.created_date),
-                  duration: video.video_length, // Use video_length from the API response
-                })
-              }
-
-              videoElement.load()
-            })
-          }),
-        )
-
-        setVideos(formattedVideos)
-      }
+      const responseData = await response.json();
+      const formattedVideos: Video[] = await Promise.all(
+        responseData.map(async (video: any) => {
+          return {
+            id: video.id,
+            name: video.title,
+            src: video.thumbnail_location,
+            created_date: formatDate(video.created_date),
+            duration: video.video_length,
+          };
+        })
+      );
+      setVideos(formattedVideos);
+    }
     } catch (error) {
       console.error('Error fetching videos:', error)
       // Handle errors here
@@ -249,8 +239,8 @@ function Videos() {
                       >
                         <Link key={index} href={`/videos/${item?.id}`} passHref>
                           <Image
-                            className="w-[525px] h-[220px] lg:w-[525px] lg:h-[220px] md:w-[525px] md:h-[220px] sm:w-[525px] sm:h-[220px] ss:w-[525px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-2xl bg-gray-300 "
-                            width={525}
+                            className="w-[475px] h-[220px] lg:w-[475px] lg:h-[220px] md:w-[475px] md:h-[220px] sm:w-[475px] sm:h-[220px] ss:w-[475px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-2xl bg-gray-300 "
+                            width={475}
                             height={220}
                             src={item.src}
                             alt="thumbnail"

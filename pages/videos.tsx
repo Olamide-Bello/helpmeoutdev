@@ -239,8 +239,8 @@ function Videos() {
                       >
                         <Link key={index} href={`/videos/${item?.id}`} passHref>
                           <Image
-                            className="w-[475px] h-[220px] lg:w-[475px] lg:h-[220px] md:w-[475px] md:h-[220px] sm:w-[475px] sm:h-[220px] ss:w-[475px] ss:h-[220px] xs:w-[300px] xs:h-[170px] rounded-2xl bg-gray-300 "
-                            width={475}
+                            className="w-[280px] h-[220px] lg:w-[475px] lg:h-[220px] md:w-[475px] md:h-[220px] sm:w-[475px] sm:h-[220px] ss:w-[475px] ss:h-[220px] xs:w-[290px] xs:h-[170px] xx:w-[210px] xx:h-[170px] rounded-2xl bg-gray-300 "
+                            width={280}
                             height={220}
                             src={item.src}
                             alt="thumbnail"

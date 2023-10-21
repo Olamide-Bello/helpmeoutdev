@@ -24,8 +24,15 @@ interface TranscriptWord {
 const Single = () => {
   const router = useRouter()
   const { id } = router.query
-  const { user, sendEmail } = useContext(GlobalContext)
+  const { user, logged, sendEmail } = useContext(GlobalContext)
   const TranscriptId = '5z7aWVvi8lE1SFh'
+
+  useEffect(() => {
+    if(user === '' && logged === false) {
+     router.replace('/signUp')
+    }
+ }, [user, logged])
+
 
   const [email, setEmail] = useState<string>('')
   const [errMsg, setErrMsg] = useState<boolean>(false)

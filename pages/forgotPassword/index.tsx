@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { toast, ToastContainer } from 'react-toastify'
@@ -18,10 +18,18 @@ const ForgotPassword: React.FC = () => {
   const [message, setMessage] = useState<boolean | string>(false)
   const {otp, setOtp} = useContext(GlobalContext)
   const {username, setUsername} = useContext(GlobalContext)
+  const { user, logged } = useContext(GlobalContext)
 
   const history = useRouter()
 
   const [userName, setUserName] = useState<string>('')
+
+  useEffect(() => {
+    if(user !== '' && logged === true) {
+     history.replace('/videos')
+    }
+ }, [user, logged])
+
 
 
   const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {

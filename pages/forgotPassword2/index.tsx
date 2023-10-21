@@ -18,7 +18,7 @@ const ForgotPassword2: React.FC = () => {
   const [message, setMessage] = useState<boolean | string>(false)
   const { otp, setOtp } = useContext(GlobalContext)
   const { username, setUsername } = useContext(GlobalContext)
-  const { setUser, setLogged } = useContext(GlobalContext)
+  const { user, logged, setUser, setLogged } = useContext(GlobalContext)
 
   const history = useRouter()
 
@@ -37,6 +37,13 @@ const ForgotPassword2: React.FC = () => {
   const [showPassword2, setShowPassword2] = useState<boolean>(false)
   const [valErrMsg, setValErrMsg] = useState<boolean>(false)
   const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
+  
+  useEffect(() => {
+    if(user !== '' && logged === true) {
+     history.replace('/videos')
+    }
+ }, [user, logged])
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)

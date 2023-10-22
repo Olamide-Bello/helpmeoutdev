@@ -41,11 +41,6 @@ const SignUp = () => {
     'Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long'
   const [errorMessage, setErrorMessage] = useState<boolean | string>(false)
 
-  /*useEffect(() => {
-    if(user !== '' && logged === true) {
-     history.replace('/videos')
-    }
- }, [user, logged])*/
 
 
 const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {

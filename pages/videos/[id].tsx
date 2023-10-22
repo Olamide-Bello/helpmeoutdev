@@ -14,6 +14,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MainLayout from '@/components/shared/MainLayout'
 import Modal from '@/components/RecordingReadyPage/Modal'
+import withAuth from '../authOrder1'
 
 interface TranscriptWord {
   start: number
@@ -27,11 +28,11 @@ const Single = () => {
   const { user, logged, sendEmail } = useContext(GlobalContext)
   const TranscriptId = '5z7aWVvi8lE1SFh'
 
-  useEffect(() => {
+  /*useEffect(() => {
     if(user === '' && logged === false) {
      router.replace('/signUp')
     }
- }, [user, logged])
+ }, [user, logged])*/
 
 
   const [email, setEmail] = useState<string>('')
@@ -315,4 +316,4 @@ const Single = () => {
   )
 }
 
-export default Single
+export default withAuth(Single)

@@ -14,11 +14,15 @@ import { useRouter } from 'next/router'
 //import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
+import withAuth2 from '../authOrder2'
+import { ThreeDots } from 'react-loading-icons'
 
 const LogIn = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
   const { user, logged, setUser, setLogged } = useContext(GlobalContext)
   const [message, setMessage] = useState<boolean | string>(false)
+  const [isLoading, setIsLoading] = useState(false)
+
 
   const history = useRouter()
 
@@ -26,11 +30,11 @@ const LogIn = () => {
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
-  useEffect(() => {
+ /* useEffect(() => {
     if(user !== '' && logged === true) {
      history.replace('/videos')
     }
- }, [user, logged])
+ }, [user, logged]) */
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -51,6 +55,7 @@ const LogIn = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     const data = { username, password }
+    setIsLoading(true)
     try {
       const response = await fetch('https://api.helpmeout.tech/login/', {
         method: 'POST',
@@ -89,7 +94,7 @@ const LogIn = () => {
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Sign-up failed with status code', result.message)
-        toast.error(`Login failed`, {
+        toast.error(`${result.detail}`, {
           style: {
             background: 'white', // Change the background color as needed
             color: 'red', // Change the text color as needed
@@ -115,6 +120,8 @@ const LogIn = () => {
           textAlign: 'center',
         },
       })
+    } finally {
+      setIsLoading(false); // Turn off the loader after data processing is complete
     }
   }
   /*  */
@@ -309,12 +316,20 @@ const LogIn = () => {
             </div>
           </div>
 
-          <button
-            // onClick={login}
-            className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
-          >
-            Log In
-          </button>
+          <>
+      {isLoading ? (
+        <div className='flex justify-center items-center'>
+        <ThreeDots fill="#000000" speed={.75}/> 
+        </div>// You can replace this with your loader component
+      ) : (
+        <button
+          className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px] text-[14px] xs:text-[16px] bg-primary-600 text-white"
+        >
+          Log in
+        </button>
+      )}
+    </>
+
           <Link href={'/forgotPassword'}>
             <p className="text-[16px] font-Sora mt-2 font-medium mb-[14px]">
               Forgot Password?
@@ -348,4 +363,4 @@ const LogIn = () => {
   )
 }
 
-export default LogIn
+export default withAuth2(LogIn)

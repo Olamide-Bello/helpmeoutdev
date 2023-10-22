@@ -15,6 +15,8 @@ import { useRouter } from 'next/router'
 import { GlobalContext } from '@/context/GlobalContext'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
 import { UrlObject } from 'url'
+import withAuth2 from '../authOrder2'
+import { ThreeDots } from 'react-loading-icons'
 
 type StateObject = {
   username: string
@@ -39,15 +41,10 @@ const SignUp = () => {
   const errMsgVal =
     'Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long'
   const [errorMessage, setErrorMessage] = useState<boolean | string>(false)
-
-  useEffect(() => {
-    if(user !== '' && logged === true) {
-     history.replace('/videos')
-    }
- }, [user, logged])
+  const [isLoading, setIsLoading] = useState(false)
 
 
-  const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
     const passwordRegex =
@@ -114,7 +111,7 @@ const SignUp = () => {
       })
       return
     }
-
+    setIsLoading(true)
     //const data: StateObject = { username, email, password, otp };
     try {
       const response = await fetch(
@@ -168,7 +165,7 @@ const SignUp = () => {
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Sign-up failed with status code', result.message)
-        toast.error(`Sign-up failed`, {
+        toast.error(`${result.detail}`, {
           style: {
             background: 'white',
             color: 'red',
@@ -193,6 +190,8 @@ const SignUp = () => {
           textAlign: 'center',
         },
       })
+    } finally {
+      setIsLoading(false); // Turn off the loader after data processing is complete
     }
   }
 
@@ -415,12 +414,26 @@ const SignUp = () => {
             </p>
           )}
 
-          <button
+    <>
+      {isLoading ? (
+        <div className='flex justify-center items-center'>
+        <ThreeDots fill="#000000" speed={.75}/> 
+        </div>// You can replace this with your loader component
+      ) : (
+        <button
+          className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px] text-[14px] xs:text-[16px] bg-primary-600 text-white"
+        >
+          Sign Up
+        </button>
+      )}
+    </>
+
+          {/*<button
             // onClick={signUp}
             className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
           >
             Sign Up
-          </button>
+          </button>*/}
 
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Already Have Account?{' '}
@@ -444,4 +457,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default withAuth2(SignUp)

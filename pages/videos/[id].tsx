@@ -24,8 +24,15 @@ interface TranscriptWord {
 const Single = () => {
   const router = useRouter()
   const { id } = router.query
-  const { user, sendEmail } = useContext(GlobalContext)
+  const { user, logged, sendEmail } = useContext(GlobalContext)
   const TranscriptId = '5z7aWVvi8lE1SFh'
+
+  useEffect(() => {
+    if(user === '' && logged === false) {
+     router.replace('/signUp')
+    }
+ }, [user, logged])
+
 
   const [email, setEmail] = useState<string>('')
   const [errMsg, setErrMsg] = useState<boolean>(false)
@@ -227,7 +234,7 @@ const Single = () => {
                 updateName()
               }
             }}
-            className={`border p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600 `}
+            className={`border p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600 h-[36px] mr-2`}
           />
           <Image
             className={`cursor-pointer ${
@@ -236,8 +243,8 @@ const Single = () => {
             onClick={updateName}
             src="/assets/video-repo/edit.svg"
             alt="Logo"
-            width={20}
-            height={20}
+            width={32}
+            height={32}
           />
         </div>
         {/* video player component*/}

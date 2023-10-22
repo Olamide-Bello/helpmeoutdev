@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -31,7 +31,7 @@ const SignUp = () => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const { setLogged, setUser } = useContext(GlobalContext)
+  const { user, logged, setLogged, setUser } = useContext(GlobalContext)
   const [otp, setOtp] = useState('')
   const [email, setEmail] = useState('')
   const [isEmailValid, setIsEmailValid] = useState(false)
@@ -39,6 +39,13 @@ const SignUp = () => {
   const errMsgVal =
     'Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long'
   const [errorMessage, setErrorMessage] = useState<boolean | string>(false)
+
+  useEffect(() => {
+    if(user !== '' && logged === true) {
+     history.replace('/videos')
+    }
+ }, [user, logged])
+
 
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target

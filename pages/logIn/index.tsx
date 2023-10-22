@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -17,7 +17,7 @@ import { BsEye, BsEyeSlash } from 'react-icons/bs'
 
 const LogIn = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
-  const { setUser, setLogged } = useContext(GlobalContext)
+  const { user, logged, setUser, setLogged } = useContext(GlobalContext)
   const [message, setMessage] = useState<boolean | string>(false)
 
   const history = useRouter()
@@ -25,6 +25,12 @@ const LogIn = () => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
+
+  useEffect(() => {
+    if(user !== '' && logged === true) {
+     history.replace('/videos')
+    }
+ }, [user, logged])
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -79,7 +85,7 @@ const LogIn = () => {
         const num = Number(true)
         localStorage.setItem('logged', JSON.stringify(num))
         setUser(result.username)
-        history.push('/videos')
+        history.push('/videos', )
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Sign-up failed with status code', result.message)

@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
+import withAuth2 from '../authOrder2'
 
 interface User {
   uid: string
@@ -23,11 +24,11 @@ const ForgotPassword: React.FC = () => {
 
   const [userName, setUserName] = useState<string>('')
 
-  useEffect(() => {
+  /*useEffect(() => {
     if(user !== '' && logged === true) {
      history.replace('/videos')
     }
- }, [user, logged])
+ }, [user, logged])*/
 
 
 
@@ -178,4 +179,4 @@ const ForgotPassword: React.FC = () => {
   )
 }
 
-export default ForgotPassword
+export default withAuth2(ForgotPassword)

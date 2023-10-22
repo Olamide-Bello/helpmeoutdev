@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { GlobalContext } from '@/context/GlobalContext'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
 import { UrlObject } from 'url'
+import withAuth2 from '../authOrder2'
 
 type StateObject = {
   username: string
@@ -40,11 +41,11 @@ const SignUp = () => {
     'Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long'
   const [errorMessage, setErrorMessage] = useState<boolean | string>(false)
 
-  useEffect(() => {
+  /*useEffect(() => {
     if(user !== '' && logged === true) {
      history.replace('/videos')
     }
- }, [user, logged])
+ }, [user, logged])*/
 
 
   const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -444,4 +445,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default withAuth2(SignUp)

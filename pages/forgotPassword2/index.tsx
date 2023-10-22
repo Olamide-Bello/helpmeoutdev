@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
+import withAuth2 from '../authOrder2'
 
 interface User {
   uid: string
@@ -38,11 +39,11 @@ const ForgotPassword2: React.FC = () => {
   const [valErrMsg, setValErrMsg] = useState<boolean>(false)
   const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
   
-  useEffect(() => {
+  /*useEffect(() => {
     if(user !== '' && logged === true) {
      history.replace('/videos')
     }
- }, [user, logged])
+ }, [user, logged])*/
 
 
   const togglePasswordVisibility = () => {
@@ -442,4 +443,4 @@ const ForgotPassword2: React.FC = () => {
   )
 }
 
-export default ForgotPassword2
+export default withAuth2(ForgotPassword2)

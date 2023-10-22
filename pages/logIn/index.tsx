@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 //import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
+import withAuth2 from '../authOrder2'
 
 const LogIn = () => {
   const [userExist, setUserExist] = useState<boolean>(false)
@@ -26,11 +27,11 @@ const LogIn = () => {
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
-  useEffect(() => {
+ /* useEffect(() => {
     if(user !== '' && logged === true) {
      history.replace('/videos')
     }
- }, [user, logged])
+ }, [user, logged]) */
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -348,4 +349,4 @@ const LogIn = () => {
   )
 }
 
-export default LogIn
+export default withAuth2(LogIn)

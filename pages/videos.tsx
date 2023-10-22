@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Spinner from '../components/Spinner/Spinner'
 import MainLayout from '@/components/shared/MainLayout'
 import { useRouter } from 'next/router'
+import withAuth from './authOrder1'
 
 
 interface Video {
@@ -29,11 +30,11 @@ function Videos() {
 
   const { user, logged } = useContext(GlobalContext)
 
-useEffect(() => {
+/*useEffect(() => {
     if(user === '' && logged === false) {
      router.replace('/signUp')
     }
- }, [user, logged])
+ }, [user, logged])*/
 
 
 
@@ -339,4 +340,4 @@ useEffect(() => {
 }
 
 
-export default Videos
+export default withAuth(Videos)

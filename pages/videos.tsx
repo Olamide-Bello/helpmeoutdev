@@ -14,6 +14,7 @@ import Spinner from '../components/Spinner/Spinner'
 import MainLayout from '@/components/shared/MainLayout'
 import { useRouter } from 'next/router'
 
+
 interface Video {
   id: number
   name: string
@@ -27,12 +28,13 @@ function Videos() {
   const { id } = router.query
 
   const { user, logged } = useContext(GlobalContext)
-  
-  useEffect(() => {
+
+useEffect(() => {
     if(user === '' && logged === false) {
      router.replace('/signUp')
     }
  }, [user, logged])
+
 
 
   const [videos, setVideos] = useState<Video[]>([])
@@ -335,5 +337,6 @@ function Videos() {
     </div>
   )
 }
+
 
 export default Videos

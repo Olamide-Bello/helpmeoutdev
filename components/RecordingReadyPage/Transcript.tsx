@@ -150,6 +150,12 @@ const Transcript: React.FC<TranscriptProps> = ({
     intervals.push(i)
   }
   // console.log(intervals)
+  function transcriptionDataDisplay() {
+
+    if (totalVidDuration === null || totalVidDuration === Infinity) {
+
+    }
+  }
 
   return (
     <div className="w-full">
@@ -188,10 +194,27 @@ const Transcript: React.FC<TranscriptProps> = ({
 
           {/* this code to work - we need video duration, if duration is infinity then this piece of code will return memory overflow err as duration is infinity the arr will give memory overload */}
           {/* transcript to display as it is in design -start */}
-          <div
-            className="p-2 overflow-y-scroll custom-scrollbar gap-4 h-full pt-10 "
-            id="org-transcipt-container"
-          >
+
+          {totalVidDuration === null || totalVidDuration === Infinity ? (
+            // the older version of the transcript
+            <div className='p-2 overflow-y-scroll custom-scrollbar flex gap-4 h-full pt-10 ' id='org-transcipt-container'>
+              <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3">
+                {formatTime(currentVideoTime)}
+              </h5>
+              <div id="transcript-container" ref={transcriptContainerRef} className="custom-scrollbar  overflow-x-auto flex flex-wrap" >
+                {transcriptionData.words?.map((item, index) => {
+                  return (
+                    <p id={`transcript-${item.start}`} key={index} className="mr-1 text-gray-400">
+                      <strong>{item.punctuated_word}</strong>
+                    </p>
+                  );
+                })}
+
+              </div>
+            </div>
+          ) : (
+            // the newer version of the transcript
+            <div className="p-2 overflow-y-scroll custom-scrollbar gap-4 h-full pt-10 " id="org-transcipt-container" >
             {intervals.map((startTime, index) => {
               const endTime = startTime + intervalDuration
               const wordsInInterval = transcriptionData.words.filter(
@@ -224,9 +247,44 @@ const Transcript: React.FC<TranscriptProps> = ({
                 </div>
               )
             })}
-            {/* transcript to display as it is in design -end */}
-            {/* this section ends here till here  */}
           </div>
+          )}
+
+          {/* <div className="p-2 overflow-y-scroll custom-scrollbar gap-4 h-full pt-10 " id="org-transcipt-container" >
+            {intervals.map((startTime, index) => {
+              const endTime = startTime + intervalDuration
+              const wordsInInterval = transcriptionData.words.filter(
+                (item) => item.start >= startTime && item.start < endTime,
+              )
+              // console.log(wordsInInterval)
+              return (
+                <div key={index} className="flex">
+                  <h5 className="font-[400] w-1/12  font-Work-Sans text-[14px] xs:text-[16px] text-black  py-2 mr-3 xs:w-2/12">
+                    {formatTime(startTime)}
+                  </h5>
+                  <div className="w-11/12 flex flex-wrap py-2 xs:w-10/12">
+                    {wordsInInterval.map((item, wordIndex) => (
+                      //mapping with key 'wordIndex'
+                      <div
+                        key={wordIndex}
+                        id="transcript-container"
+                        ref={transcriptContainerRef}
+                        className="custom-scrollbar  overflow-x-auto flex flex-wrap"
+                      >
+                        <p
+                          id={`transcript-${item.start}`}
+                          className="mr-1 text-gray-400"
+                        >
+                          <strong>{item.punctuated_word}</strong>
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+            
+          </div> */}
         </div>
       </div>
     </div>

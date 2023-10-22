@@ -25,7 +25,15 @@ interface Video {
 function Videos() {
   const router = useRouter()
   const { id } = router.query
-  const { user } = useContext(GlobalContext)
+
+  const { user, logged } = useContext(GlobalContext)
+  
+  useEffect(() => {
+    if(user === '' && logged === false) {
+     router.replace('/signUp')
+    }
+ }, [user, logged])
+
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)

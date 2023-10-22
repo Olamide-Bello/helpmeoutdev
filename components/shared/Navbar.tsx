@@ -110,7 +110,7 @@ const Navbar: React.FC<{ noNav?: boolean }> = ({ noNav }) => {
               />
             </div>
             {logged && showLogout && (
-              <div className="absolute flex flex-col bottom-[-80px] text-[#141414] font-Work-Sans font-[500]  bg-white shadow-lg">
+              <div className="absolute flex flex-col bottom-[-80px] top-[45px] text-[#141414] font-Work-Sans font-[500] h-[120px]  bg-white shadow-lg z-30">
                 <Link href="/videos" className="py-2 px-5 hover:bg-gray-100">
                   <p>Dashboard</p>
                 </Link>

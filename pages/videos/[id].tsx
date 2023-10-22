@@ -225,7 +225,7 @@ const Single = () => {
                 updateName()
               }
             }}
-            className={`border p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600 h-[36px] mr-5`}
+            className={`border p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600 h-[36px] mr-2`}
           />
           <Image
             className={`cursor-pointer ${

@@ -24,8 +24,15 @@ interface TranscriptWord {
 const Single = () => {
   const router = useRouter()
   const { id } = router.query
-  const { user, sendEmail } = useContext(GlobalContext)
+  const { user, logged, sendEmail } = useContext(GlobalContext)
   const TranscriptId = '5z7aWVvi8lE1SFh'
+
+  useEffect(() => {
+    if(user === '' && logged === false) {
+     router.replace('/signUp')
+    }
+ }, [user, logged])
+
 
   const [email, setEmail] = useState<string>('')
   const [errMsg, setErrMsg] = useState<boolean>(false)
@@ -39,6 +46,8 @@ const Single = () => {
   )
   const [loading, setLoading] = useState<boolean>(true)
   const [isTyping, setIsTyping] = useState(false)
+  const videoToViewUrl = `https://helpmeout.tech/RecordingReadyPage?videoID=${id}`
+
 
   const convertToUrlTranscript = (
     transcriptData: TranscriptWord[],
@@ -272,8 +281,8 @@ const Single = () => {
                 bg="border-[1px] border-black bg-gray-100 h-[60px] w-full md:w-1/2"
                 btStyles="rounded-lg  border-[1px] border-black bg-white text-indigo-900"
                 text={copied ? 'Copied!!!' : 'Copy URL'}
-                value={url}
-                onClick={() => copyToClipboard(url)}
+                value={videoToViewUrl}
+                onClick={() => copyToClipboard(videoToViewUrl)}
                 readOnly={true}
                 icon={
                   <Image
@@ -289,7 +298,7 @@ const Single = () => {
           </div>
         </div>
         {/* share the video on social media */}
-        <Share text={url} />
+        <Share text={videoToViewUrl} />
       </MainLayout>
       <ToastContainer
         position="top-center" // Position the toast container at the bottom-center

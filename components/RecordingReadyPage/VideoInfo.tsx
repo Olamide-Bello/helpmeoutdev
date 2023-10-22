@@ -33,6 +33,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   const router = useRouter()
   const { id } = router.query
   const videoUrl = `https://api.helpmeout.tech/stream/${id}`
+  const videoToViewUrl = `https://helpmeout.tech/RecordingReadyPage?videoID=${videoID}`
   //custom file name
   const [customFileName, setCustomFileName] = useState('')
   const placeHolder = `Untitled_Video_${videoID}`
@@ -46,7 +47,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
   const { sendEmail, user } = useContext(GlobalContext)
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(currentURL)
+    navigator.clipboard.writeText(videoToViewUrl)
     setClicked(true)
     setTimeout(() => {
       setClicked(false)
@@ -253,7 +254,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         <div className="w-full">
           <div className="py-[12px] mb-[12px] md:px-[12px] px-[12px] border-[1px] border-primary-200 rounded-[16px] h-[64px] w-full flex items-center gap-2 justify-between">
             <p className="text-black-400 text-[14px] ss:w-full w-[150px]  xs:w-[250px] ss:text-[16px] font-[400] leading-[24.8px] font-Work-Sans overflow-x-hidden">
-              {currentURL}
+              {videoToViewUrl}
             </p>
             <div
               onClick={copyToClipboard}
@@ -283,7 +284,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
       </div>
       <div className="hidden ss:block">
         {/* Share options */}
-        <Share text={videoUrl} />
+        <Share text={videoToViewUrl} />
       </div>
       <ToastContainer
         position="top-center" // Position the toast container at the bottom-center

@@ -3,6 +3,7 @@ const nextConfig = {
   images: {
     domains: ["www.cofucan.tech"],
     domains: ['helpmeout.cofucan.tech'],
+    domains: ['api.helpmeout.tech'],
   },
   swcMinify: false
 }

@@ -18,7 +18,7 @@ const ForgotPassword2: React.FC = () => {
   const [message, setMessage] = useState<boolean | string>(false)
   const { otp, setOtp } = useContext(GlobalContext)
   const { username, setUsername } = useContext(GlobalContext)
-  const { setUser, setLogged } = useContext(GlobalContext)
+  const { user, logged, setUser, setLogged } = useContext(GlobalContext)
 
   const history = useRouter()
 
@@ -36,8 +36,14 @@ const ForgotPassword2: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showPassword2, setShowPassword2] = useState<boolean>(false)
   const [valErrMsg, setValErrMsg] = useState<boolean>(false)
-  const errMsgVal =
-    'Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long'
+  const errMsgVal = "Password must contain one lowercase letter, one uppercase letter, one symbol, and be at least 5 characters long"
+  
+  useEffect(() => {
+    if(user !== '' && logged === true) {
+     history.replace('/videos')
+    }
+ }, [user, logged])
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
@@ -93,7 +99,7 @@ const ForgotPassword2: React.FC = () => {
     setConsecutiveFailures(0)
     try {
       const response = await fetch(
-        `https://api.helpmeout.tech/request_otp/?username=${username}`,
+        `https://api.helpmeout.tech/request-otp/?username=${username}`,
         {
           method: 'POST',
           headers: {
@@ -214,7 +220,7 @@ const ForgotPassword2: React.FC = () => {
     console.log(data)
     try {
       const response = await fetch(
-        'https://api.helpmeout.tech/change_password/',
+        'https://api.helpmeout.tech/change-password/',
         {
           method: 'POST',
           headers: {

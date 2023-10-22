@@ -234,8 +234,8 @@ const Single = () => {
             onClick={updateName}
             src="/assets/video-repo/edit.svg"
             alt="Logo"
-            width={20}
-            height={20}
+            width={30}
+            height={30}
           />
         </div>
         {/* video player component*/}

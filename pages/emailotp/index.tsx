@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
+import withAuth2 from '../authOrder2'
+import { ThreeDots } from 'react-loading-icons'
 
 interface User {
   username: string
@@ -24,6 +26,7 @@ const EmailOtp: React.FC = () => {
     password: '',
   })
   const history = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     // Access localStorage inside useEffect, which runs only on the client side
@@ -48,6 +51,7 @@ const EmailOtp: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+    setLogged(true)
     const { username, email, password } = userInfo
     const tokenNumber = parseInt(token, 10)
 
@@ -92,7 +96,7 @@ const EmailOtp: React.FC = () => {
         history.push('/videos')
       } else {
         console.error('Email Confirmation failed', result.message)
-        toast.error(`Email Confirmation failed`, {
+        toast.error(`${result.detail}`, {
           style: {
             background: 'white',
             color: 'red',
@@ -117,6 +121,8 @@ const EmailOtp: React.FC = () => {
           textAlign: 'center',
         },
       })
+    } finally{
+      setIsLoading(false)
     }
   }
 
@@ -160,9 +166,23 @@ const EmailOtp: React.FC = () => {
             />
           </div>
 
-          <button className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px] text-white bg-primary-600">
+          <>
+      {isLoading ? (
+        <div className='flex justify-center items-center'>
+        <ThreeDots fill="#000000" speed={.75}/> 
+        </div>// You can replace this with your loader component
+      ) : (
+        <button
+          className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px] text-[14px] xs:text-[16px] bg-primary-600 text-white"
+        >
+          Confirm Email
+        </button>
+      )}
+    </>
+
+          {/*<button className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px] text-white bg-primary-600">
             Confirm Email
-          </button>
+  </button>*/}
 
           <h2 className="mt-[1rem] text-center text-[16px] text-primary-400 tracker-medium font-semibold font-Work-Sans">
             Don&apos;t Have Account?{' '}
@@ -186,4 +206,4 @@ const EmailOtp: React.FC = () => {
   )
 }
 
-export default EmailOtp
+export default withAuth2(EmailOtp)

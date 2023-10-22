@@ -8,6 +8,7 @@ import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
 import withAuth2 from '../authOrder2'
+import { ThreeDots } from 'react-loading-icons'
 
 interface User {
   uid: string
@@ -20,6 +21,7 @@ const ForgotPassword2: React.FC = () => {
   const { otp, setOtp } = useContext(GlobalContext)
   const { username, setUsername } = useContext(GlobalContext)
   const { user, logged, setUser, setLogged } = useContext(GlobalContext)
+  const [isLoading, setIsLoading] = useState(false)
 
   const history = useRouter()
 
@@ -186,7 +188,7 @@ const ForgotPassword2: React.FC = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-
+    setIsLoading(true)
     if (valErrMsg) {
       return
     }
@@ -261,7 +263,7 @@ const ForgotPassword2: React.FC = () => {
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Password Change failed', result.message)
-        toast.error(`Password Change failed`, {
+        toast.error(`${result.detail}`, {
           style: {
             background: 'white', // Change the background color as needed
             color: 'red', // Change the text color as needed
@@ -287,6 +289,8 @@ const ForgotPassword2: React.FC = () => {
           textAlign: 'center',
         },
       })
+    } finally {
+      setIsLoading(false); // Turn off the loader after data processing is complete
     }
   }
 
@@ -395,13 +399,29 @@ const ForgotPassword2: React.FC = () => {
               {errMsg}
             </p>
           )}
-          <button
+
+<>
+      {isLoading ? (
+        <div className='flex justify-center items-center'>
+        <ThreeDots fill="#000000" speed={.75}/> 
+        </div>// You can replace this with your loader component
+      ) : (
+        <button
+        disabled={consecutiveFailures >= 6}
+          className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px] text-[14px] xs:text-[16px] bg-primary-600 text-white"
+        >
+          Update Password
+        </button>
+      )}
+    </>
+          
+          {/*<button
             // onClick={login}
             disabled={consecutiveFailures >= 6}
             className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
           >
             Update Password
-          </button>
+          </button>*/}
 
           <div>
             <div className="mt-[1rem] text-center text-[18px] text-primary-400 tracker-medium font-semibold font-Work-Sans">

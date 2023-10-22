@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { GlobalContext } from '@/context/GlobalContext'
 import withAuth2 from '../authOrder2'
+import { ThreeDots } from 'react-loading-icons'
 
 interface User {
   uid: string
@@ -19,6 +20,7 @@ const ForgotPassword: React.FC = () => {
   const {otp, setOtp} = useContext(GlobalContext)
   const {username, setUsername} = useContext(GlobalContext)
   const { user, logged } = useContext(GlobalContext)
+  const [isLoading, setIsLoading] = useState(false)
 
   const history = useRouter()
 
@@ -42,6 +44,7 @@ const ForgotPassword: React.FC = () => {
     e,
   ) => {
     e.preventDefault()
+    setIsLoading(true)
     try {
       const response = await fetch(
         `https://api.helpmeout.tech/request-otp/?username=${userName}`,
@@ -78,7 +81,7 @@ const ForgotPassword: React.FC = () => {
         // You can handle success here, e.g., redirect to a success page
       } else {
         console.error('Unsuccessful', result.status_code)
-        toast.error(`User Email not found`, {
+        toast.error(`${result.detail}`, {
           style: {
             background: 'white', // Change the background color as needed
             color: 'red', // Change the text color as needed
@@ -104,6 +107,8 @@ const ForgotPassword: React.FC = () => {
           textAlign: 'center',
         },
       })
+    } finally {
+      setIsLoading(false); // Turn off the loader after data processing is complete
     }
   }
 
@@ -145,12 +150,27 @@ const ForgotPassword: React.FC = () => {
               className="w-full h-[50px] rounded-lg border-2 border-solid border-black-400 outline-none pl-[1rem] mb-[1rem] font-Sora font-medium text-[14px] xs:text-[16px]"
             />
           </div>
-          <button
+
+          <>
+      {isLoading ? (
+        <div className='flex justify-center items-center'>
+        <ThreeDots fill="#000000" speed={.75}/> 
+        </div>// You can replace this with your loader component
+      ) : (
+        <button
+        onClick={handleSubmit}
+          className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px] text-[14px] xs:text-[16px] bg-primary-600 text-white"
+        >
+          Get Verification code via Email
+        </button>
+      )}
+    </>
+          {/*<button
             onClick={handleSubmit}
             className="mt-[1rem] input__tag border-2 border-primary-600 rounded-md h-[50px] hover:btn-hover font-Sora text-[16px]  text-[14px] xs:text-[16px] bg-primary-600 text-white "
           >
             Get Verification code via Email
-          </button>
+      </button>*/}
 
           {message && (
             <p className="mt-[0.5rem] text-center text-[19px] font-semibold">

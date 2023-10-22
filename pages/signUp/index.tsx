@@ -48,7 +48,7 @@ const SignUp = () => {
  }, [user, logged])*/
 
 
-  const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
     const passwordRegex =

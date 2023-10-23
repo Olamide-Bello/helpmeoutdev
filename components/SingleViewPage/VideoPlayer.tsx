@@ -14,8 +14,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [showPlayButton, setShowPlayButton] = useState(true)
 
   const hidePlayButton = () => {
-    setShowPlayButton(false);
+    setShowPlayButton(false)
   }
+
+  const showPlayBotton = () => {
+    setShowPlayButton(true)
+  }
+  
 
   
   //to update the timer every second and set the duration
@@ -25,7 +30,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         setDuration(recRef.current?.duration)
         setCurrentTime(recRef.current.currentTime)
         setIsPlaying(!recRef.current.paused)
-        setShowPlayButton(true)
       }
     }, 1000)
 
@@ -48,7 +52,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
       width="48"
       height="48"
-      fill="#FF0000"
+      fill="#808080"
       viewBox="0 0 16 16"
     >
       <path
@@ -62,10 +66,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
     width="48"
     height="48"
-    fill="#FF0000"
+    fill="#808080"
     viewBox="0 0 16 16"
 >
-<path d="M4.5 0v12L12 6z" fill="#ff0000"></path>
+<path d="M4.5 0v12L12 6z" fill="#808080"></path>
 </svg>
   )
 
@@ -121,14 +125,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   }, [videoID, setCurrentVidDuration])
 
   return (
-    <div className="pt-2 px-2 pb-3 bg-[#FBFBFB80] relative  rounded-[24px] border border-gray-200 border-opacity-60 bg-opacity-50 h-full">
+    <div onMouseEnter={showPlayBotton}
+    onMouseLeave={hidePlayButton} className="pt-2 px-2 pb-3 bg-[#FBFBFB80] relative  rounded-[24px] border border-gray-200 border-opacity-60 bg-opacity-50 h-full">
+      
       <video
         id="videoPlayer"
-        
         ref={recRef}
         autoPlay
         onTimeUpdate={handleTimeUpdate}
-        onMouseMove={hidePlayButton}
         className="w-full md:max-h-[500px] b rounded-[16px] border border-gray-200 border-opacity-60 bg-opacity-50 object-cover aspect-video"
       >
         <source src={url} type="video/mp4" />
@@ -136,9 +140,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       <div className="bottom-5 right-4 bg-[#E7E7ED] font-[500] font-Work-Sans text-[14px] px-[14px] py-[7px] absolute rounded-[4px] ">
         {customTime(currentTime, duration)}
       </div>
+      {showPlayButton && (
       <div className='absolute top-[50%] left-[50%] transform translate-x-[-50] translate-y-[-50]'>
-      {showPlayButton  && playPauseIcon}
-      </div>
+      {playPauseIcon}
+      </div>)}
     </div>
   )
 }

@@ -155,7 +155,7 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
                   updateName()
                 }
               }}
-              className=" w-full border p-2 mb-2  text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-primary-600
+              className="w-full p-2 mb-2  text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] rounded-md outline-none focus:border-b focus:border-b-4 focus:!border-b-[#120B48]
               "
             />
             <Image

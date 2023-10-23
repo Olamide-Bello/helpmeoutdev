@@ -1,6 +1,6 @@
-import { useContext,useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { GlobalContext } from '@/context/GlobalContext'
+
 
 const withAuth = (WrappedComponent: any) => {
   const ComponentWithAuth = (props: any) => {

@@ -69,63 +69,11 @@ const VideoInfo: React.FC<VideoPageContentProps> = ({
         setError(false)
       }, 3000)
     } else {
-      displayModal()
-      try {
-        const response = await fetch(
-          `https://api.helpmeout.tech/send-email/${videoID}?receipient=${email}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-              'Access-Control-Allow-Origin': '*',
-              Vary: 'Origin',
-            },
-
-            mode: 'cors',
-          },
-        )
-        if (response.status === 200) {
-          const result = await response.json()
-          console.log(response)
-          console.log(result.message)
-          // toast.success(`${result.message}`, {
-          //   style: {
-          //     background: 'white', // Change the background color as needed
-          //     color: 'green', // Change the text color as needed
-          //     borderRadius: '8px', // Rounded corners for the toast
-          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-          //     padding: '12px 24px', // Adjust padding as needed
-          //     fontSize: '16px', // Adjust font size as needed
-          //     textAlign: 'center',
-          //   },
-          // })
-        } else {
-          // toast.error(`Unable to send to Email!`, {
-          //   style: {
-          //     background: 'white', // Change the background color as needed
-          //     color: 'red', // Change the text color as needed
-          //     borderRadius: '8px', // Rounded corners for the toast
-          //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-          //     padding: '12px 24px', // Adjust padding as needed
-          //     fontSize: '16px', // Adjust font size as needed
-          //     textAlign: 'center',
-          //   },
-          // })
-        }
-      } catch (error) {
-        // toast.error(`${error}`, {
-        //   style: {
-        //     background: 'white', // Change the background color as needed
-        //     color: 'red', // Change the text color as needed
-        //     borderRadius: '8px', // Rounded corners for the toast
-        //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a subtle box shadow
-        //     padding: '12px 24px', // Adjust padding as needed
-        //     fontSize: '16px', // Adjust font size as needed
-        //     textAlign: 'center',
-        //   },
-        // })
+      if (typeof videoID === "string") {
+        sendEmail(email, videoID)
+        displayModal()
       }
+      
     }
   }
 

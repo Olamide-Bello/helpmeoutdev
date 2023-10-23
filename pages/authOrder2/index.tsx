@@ -1,11 +1,9 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { GlobalContext } from '@/context/GlobalContext'
 
 const withAuth2 = (WrappedComponent: any) => {
   const ComponentWithAuth = (props: any) => {
     const router = useRouter()
-    const { user, logged } = useContext(GlobalContext)
 
     useEffect(() => {
       if (typeof window !== 'undefined') {

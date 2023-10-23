@@ -14,6 +14,7 @@ import Spinner from '../components/Spinner/Spinner'
 import MainLayout from '@/components/shared/MainLayout'
 import { useRouter } from 'next/router'
 import withAuth from './authOrder1'
+import { SpinningCircles } from 'react-loading-icons'
 
 interface Video {
   id: number
@@ -345,7 +346,7 @@ function Videos() {
                           <div className="text-slate-950 text-sm font-medium font-['Work Sans']">
                             {item.duration
                               ? formatDuration(item.duration)
-                              : 'Loading...'}
+                              : < SpinningCircles width="30" height="30"/>}
                           </div>
                         </div>
                       </div>

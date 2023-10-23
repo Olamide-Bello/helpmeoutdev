@@ -241,7 +241,7 @@ return (
               updateName()
             }
           }}
-          className={`border-b border-b-4 border-b-[#100A42] p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] focus:outline-none focus:border-b-[#100A42] h-[36px] mr-2`}
+          className={`focus:border-b focus:border-b-4 focus:!border-b-[#120B48] p-2 mb-2 w-auto text-[13px] xs:text-[16px] ss:text-[24px] text-primary-400 font-[600] focus:outline-none h-[36px] mr-2`}
         />
         <Image
           className={`cursor-pointer ${isTyping ? 'dark' : ''

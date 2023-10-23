@@ -1,19 +1,22 @@
-import { useContext } from 'react'
+import { useContext,useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { GlobalContext } from '@/context/GlobalContext'
 
 const withAuth = (WrappedComponent: any) => {
   const ComponentWithAuth = (props: any) => {
     const router = useRouter()
-    const { user, logged } = useContext(GlobalContext)
-
-    if (user === '' && logged === false) {
-      // Redirect to the signUp page
+    
+    useEffect(() => {
       if (typeof window !== 'undefined') {
-        router.replace('/logIn')
+        const retrieved = localStorage.getItem('logged')
+        const savedUser = localStorage.getItem('user')
+        if (!savedUser && !retrieved) {
+          // Redirect to the signUp page
+          router.replace('/logIn')
+
+        }
       }
-    return null
-    }
+    },[])
 
     return <WrappedComponent {...props} />
   }

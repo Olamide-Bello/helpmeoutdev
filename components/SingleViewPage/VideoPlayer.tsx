@@ -3,12 +3,12 @@ import React, { useRef, useState, useEffect } from 'react'
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
   url,
+  duration,
   videoID,
   setCurrentVideoTime,
   setCurrentVidDuration,
 }) => {
   const [currentTime, setCurrentTime] = useState<number>(0)
-  const [duration, setDuration] = useState<number>(0)
   const recRef = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState<boolean>(true)
   const [showPlayButton, setShowPlayButton] = useState(true)
@@ -27,7 +27,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   useEffect(() => {
     const interval = setInterval(() => {
       if (recRef.current) {
-        setDuration(recRef.current?.duration)
         setCurrentTime(recRef.current.currentTime)
         setIsPlaying(!recRef.current.paused)
       }

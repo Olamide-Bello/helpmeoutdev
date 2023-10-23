@@ -3,19 +3,18 @@ import React, { useRef, useState, useEffect } from 'react'
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
   url,
+  duration,
   videoID,
   setCurrentVideoTime,
   setCurrentVidDuration,
 }) => {
   const [currentTime, setCurrentTime] = useState<number>(0)
-  const [duration, setDuration] = useState<number>(0)
   const recRef = useRef<HTMLVideoElement>(null)
 
   //to update the timer every second and set the duration
   useEffect(() => {
     const interval = setInterval(() => {
       if (recRef.current) {
-        setDuration(recRef.current?.duration)
         setCurrentTime(recRef.current.currentTime)
       }
     }, 1000)

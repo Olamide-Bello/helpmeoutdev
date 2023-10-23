@@ -52,3 +52,22 @@ html {
   /* Darken the update button color */
   filter: brightness(0.8); /* Change the brightness to darken the button */
 }
+
+
+.PaginationButton {
+  padding: 0.5rem 1rem;
+  background-color: #1758c9;
+  color: #ffffff;
+  border: 1px solid #022d77;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: #254274;
+    border-color: #2d3748;
+  }
+}
+
+.PaginationButton.Active {
+  background-color: #023285;
+  border-color: #023285;
+}

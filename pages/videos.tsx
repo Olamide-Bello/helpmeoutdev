@@ -15,7 +15,6 @@ import MainLayout from '@/components/shared/MainLayout'
 import { useRouter } from 'next/router'
 import withAuth from './authOrder1'
 
-
 interface Video {
   id: number
   name: string
@@ -29,71 +28,166 @@ function Videos() {
   const { id } = router.query
 
   const { user, logged } = useContext(GlobalContext)
+  
 
-/*useEffect(() => {
+  /*useEffect(() => {
     if(user === '' && logged === false) {
      router.replace('/signUp')
     }
  }, [user, logged])*/
-
-
 
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [showDeleteOption, setShowDeleteOption] = useState(false)
   const [selectedVideoId, setSelectedVideoId] = useState<number | null>(null)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Video[]>([]);
 
+  // Debounce function to delay the API request by 2 seconds after user stops typing
+  function debounce<T extends (...args: any[]) => void>(func: T, delay: number) {
+    let timeoutId: NodeJS.Timeout | null;
+    return (...args: Parameters<T>) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  }
+  
+
+  // Update debounced search query when user stops typing for 2 seconds
   useEffect(() => {
-    fetchVideos()
-  }, [user])
+    const debounceSearch = debounce(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 2000);
+    debounceSearch();
+  }, [searchQuery]);
 
-  const fetchVideos = async () => {
-    setLoading(true) // Set loading state to true when starting the fetch operation
+  // Fetch videos based on debounced search query and current page
+  useEffect(() => {
+    if (debouncedSearchQuery !== '') {
+      // If there is a search query, fetch videos based on the search query and current page
+      fetchSearchResults(debouncedSearchQuery);
+    } else {
+      // If there is no search query, fetch videos based on the user and current page
+      fetchVideos(currentPage, '');
+    }
+  }, [user, currentPage, debouncedSearchQuery]);
+
+  const fetchSearchResults = async (query: string) => {
+    setLoading(true);
     try {
-      const headers = new Headers()
-      headers.append('Authorization', 'Bearer YOUR_ACCESS_TOKEN') // Add your access token or any other necessary headers
-      headers.append('Content-Type', 'application/json')
-      headers.append('Access-Control-Allow-Origin', '*')
-      const response = await fetch(
-        `https://api.helpmeout.tech/recording/user/${user}`,
+      const response = await axios.get(
+        `https://api.helpmeout.tech/search/user/${user}?video_name=${query}&page=${currentPage}`
+      );
+      // Process the response and update the searchResults state
+      const { videos } = response.data;
+      const formattedVideos: Video[] = videos.map((video: any) => ({
+        id: video.id,
+        name: video.title,
+        src: video.thumbnail_location,
+        created_date: formatDate(video.created_date),
+        duration: video.video_length,
+      }));
+      setSearchResults(formattedVideos);
+    } catch (error) {
+      console.error('Error searching videos:', error);
+      // Handle errors here
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Determine which set of videos to display based on the search query
+  const videosToDisplay = debouncedSearchQuery !== '' ? searchResults : videos;
+
+
+  const fetchVideos = async (page: number, query: string) => {
+    setLoading(true)
+    try {
+      const response = await axios.get(
+        `https://api.helpmeout.tech/recording/user/${user}?page=${page}`,
         {
-          method: 'GET',
-          headers: headers,
-          mode: 'cors',
+          headers: {
+            Authorization: 'Bearer YOUR_ACCESS_TOKEN',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
         },
       )
 
-      if (response.ok) {
-      const responseData = await response.json();
-      const formattedVideos: Video[] = await Promise.all(
-        responseData.map(async (video: any) => {
-          return {
-            id: video.id,
-            name: video.title,
-            src: video.thumbnail_location,
-            created_date: formatDate(video.created_date),
-            duration: video.video_length,
-          };
-        })
-      );
-      setVideos(formattedVideos);
-    }
+      if (response.status >= 200 && response.status < 300) {
+        const { total_items, items_per_page, total_pages, videos } =
+          response.data
+        setTotalPages(total_pages)
+
+        const formattedVideos: Video[] = videos.map((video: any) => ({
+          id: video.id,
+          name: video.title,
+          src: video.thumbnail_location,
+          created_date: formatDate(video.created_date),
+          duration: video.video_length,
+        }))
+
+        setVideos(formattedVideos)
+      } else {
+        // Handle non-successful response here, if needed
+        console.error('Error fetching videos. Status code:', response.status)
+        setVideos([])
+        setTotalPages(1)
+      }
     } catch (error) {
       console.error('Error fetching videos:', error)
-      // Handle errors here
+      setVideos([])
+      setTotalPages(1)
     } finally {
-      setLoading(false) // Set loading state to false after the fetch operation is complete (either success or error)
+      setLoading(false)
     }
   }
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePagination = (pageNumber: number) => {
+    setCurrentPage(pageNumber)
+    if (searchQuery !== '') {
+      // If there is a search query, fetch videos based on the search query and current page
+      fetchVideos(pageNumber, searchQuery)
+    } else {
+      // If there is no search query, fetch videos based on the user and current page
+      fetchVideos(pageNumber, '') // Set search query to empty string for fetching all videos
+    }
+  }
+  const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
+    setCurrentPage(1) // Reset current page to 1 when performing a new search.
+
+    try {
+      const response = await axios.get(
+        `https://api.helpmeout.tech/search/user/${user}?video_name=${event.target.value}&page=${currentPage}`,
+      )
+
+      const { total_items, items_per_page, total_pages, videos } = response.data
+      setTotalPages(total_pages)
+
+      const formattedVideos: Video[] = videos.map((video: any) => ({
+        id: video.id,
+        name: video.title,
+        src: video.thumbnail_location,
+        created_date: formatDate(video.created_date),
+        duration: video.video_length,
+      }))
+
+      setVideos(formattedVideos)
+    } catch (error) {
+      console.error('Error searching videos:', error)
+      // Handle errors here
+    }
   }
 
-  const filteredVideos = videos.filter((video) =>
-    video.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+ 
 
   const formatDate = (dateString: string): string => {
     const options: Intl.DateTimeFormatOptions = {
@@ -133,8 +227,8 @@ function Videos() {
         await axios.delete(
           `https://api.helpmeout.tech/video/${selectedVideoId}`,
         )
-        // Fetch videos again after deletion
-        fetchVideos()
+        // Fetch videos again for the current page after deletion
+        fetchVideos(currentPage, searchQuery) // Pass the current page number here
         // Show Toastify message
         toast.success('Video has been deleted successfully!', {
           position: 'top-center',
@@ -200,20 +294,8 @@ function Videos() {
           {loading ? (
             <Spinner />
           ) : (
-            /*  <div
-               className="lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full"
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'space-around',
-                alignItems: 'start',
-                //margin: '0 auto',
-                // overflowY: 'scroll',
-                // maxHeight: '100%',
-              }}
-            >  */
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 justify-between lg:overflow-y-scroll  ss:overflow-y-scroll xs:overflow-y-hidden sm:overflow-y-scroll lg:max-h-screen md:max-h-screen ss:max-h-screen sm:max-h-screen xs:h-full ">
-              {filteredVideos.length === 0 ? (
+              {videosToDisplay.length === 0 ? (
                 <div
                   className="NoRecentVideosMessage text-xl text-neutral-900 font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center flex flex-col justify-center"
                   style={{
@@ -233,7 +315,8 @@ function Videos() {
                   <div>Opps! No video found</div>
                 </div>
               ) : (
-                filteredVideos.map((item, index) => (
+                
+                videosToDisplay.map((item, index) => (
                   <>
                     <div
                       className="WebCard px-1 pt-1 pb-1 bg-neutral-50 bg-opacity-50 rounded-3xl border border-gray-400 border-opacity-60 flex-col justify items-center gap-0 inline-flex lg:w-[500px] lg:h-[322px]  md:w-[500px] md:h-[322px]  sm:w-[500px] sm:h-[322px] ss:w-[500px] ss:h-[322px] xs:w-[320px] xs:h-[280px]"
@@ -325,8 +408,43 @@ function Videos() {
               )}
             </div>
           )}
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="PaginationContainer flex justify-center items-center mt-4 mb-4 space-x-2 ">
+              {currentPage > 1 && (
+                <button
+                  className="PaginationButton"
+                  onClick={() => handlePagination(currentPage - 1)}
+                >
+                  &lt; Prev
+                </button>
+              )}
+              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                (pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    className={`PaginationButton ${
+                      pageNumber === currentPage ? 'Active' : ''
+                    }`}
+                    onClick={() => handlePagination(pageNumber)}
+                  >
+                    {pageNumber}
+                  </button>
+                ),
+              )}
+              {currentPage < totalPages && (
+                <button
+                  className="PaginationButton"
+                  onClick={() => handlePagination(currentPage + 1)}
+                >
+                  Next &gt;
+                </button>
+              )}
+            </div>
+          )}
         </MainLayout>
       </div>
+
       <ToastContainer
         position="top-center"
         autoClose={1500}
@@ -338,6 +456,5 @@ function Videos() {
     </div>
   )
 }
-
 
 export default withAuth(Videos)
